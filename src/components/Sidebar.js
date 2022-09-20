@@ -4,6 +4,8 @@ import ViewAgendaIcon from "@material-ui/icons/ViewAgenda";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Logo from "../styles/img/itf-logo.jpg";
+import PeopleIcon from '@mui/icons-material/People';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";
 import ArticleIcon from "@mui/icons-material/Article";
@@ -17,8 +19,8 @@ const Sidebar = () => {
 					style={{
 						cursor: "pointer",
 						flex: "0.2",
-						width: "20%",
-						height: "20%",
+						width: "17%",
+						height: "17%",
 						marginLeft: "0%",
 					}}
 				/>
@@ -30,6 +32,8 @@ const Sidebar = () => {
 			<Navigation Logo={ViewAgendaIcon} text="Agenda" />
 			<Navigation Logo={ArticleIcon} text="Meeting Documents" />
 			<Navigation Logo={HowToVoteIcon} text="Vote" />
+			<Navigation Logo={PeopleIcon} text="Users" />
+			<Navigation Logo={MeetingRoomIcon} text="Meetings" />
 			<Navigation Logo={LogoutIcon} text="Sign out" />
 		</Container>
 	);
@@ -65,7 +69,7 @@ const HeaderText = styled.p`
 	margin-top: 21%;
 	margin-left: 5%;
 	font-family: Helvetica;
-	font-size: 19px;
+	font-size: 17px;
 	font-weight: bold;
 `;
 

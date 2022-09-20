@@ -2,7 +2,8 @@ export const initialState = {
 	email: "",
 	password: "",
 	token: null,
-	user: null
+	user: null,
+	events: []
 };
 
 // The reducer's primary job is to listen to actions
@@ -34,10 +35,10 @@ const reducer = (state, action) => {
 				user: action.user,
 			};
 
-		case "SET_SONGS":
+		case "SET_EVENTS":
 			return {
 				...state,
-				songs: action.songs,
+				events: action.events,
 			};
 
 		case "SET_SEARCH":

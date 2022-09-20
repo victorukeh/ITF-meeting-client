@@ -1,7 +1,10 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
 import Body from "../components/Body";
+import Dashboard from "./Dashboard";
 import styled from "styled-components";
+import AddMeeting from "./AddMeeting"
+
 import { useDataLayerValue } from "../reducer/DataLayer";
 
 function Main() {
@@ -9,7 +12,8 @@ function Main() {
 		<>
 			<Container>
 				<Sidebar />
-				<Body />
+				{/* <Dashboard /> */}
+				<AddMeeting/>
 			</Container>
 		</>
 	);
