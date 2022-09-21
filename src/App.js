@@ -4,7 +4,6 @@ import Main from "./layouts/Main"
 import { useDataLayerValue } from "./reducer/DataLayer";
 function App() {
 	const [{ token, user }, dispatch] = useDataLayerValue();
-  console.log(user)
   return (
     <div className="App">
       {!token && <Login/>}

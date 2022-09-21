@@ -1,14 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 function Navigation({ Logo, text }) {
 	return (
-		// <Container>
-		//     <LogoField><Logo/></LogoField>
-		//     <LogoText>{text}</LogoText>
-
-		// </Container>
-
 		<Container>
 			<LogoField className="logoField">
 				<Logo />

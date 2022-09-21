@@ -10,6 +10,8 @@ import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";
 import ArticleIcon from "@mui/icons-material/Article";
 
+import { Link } from "react-router-dom";
+			
 const Sidebar = () => {
 	return (
 		<Container>
@@ -29,11 +31,11 @@ const Sidebar = () => {
 			<SubHeader>
 				Menu
 			</SubHeader>
-			<Navigation Logo={ViewAgendaIcon} text="Agenda" />
+			<Link style={{textDecoration: "none"}} to="/"><Navigation Logo={ViewAgendaIcon} text="Dashboard" /></Link>
 			<Navigation Logo={ArticleIcon} text="Meeting Documents" />
 			<Navigation Logo={HowToVoteIcon} text="Vote" />
 			<Navigation Logo={PeopleIcon} text="Users" />
-			<Navigation Logo={MeetingRoomIcon} text="Meetings" />
+			<Link style={{textDecoration: "none"}} to="/meeting"><Navigation Logo={MeetingRoomIcon} text="Meetings" /></Link>
 			<Navigation Logo={LogoutIcon} text="Sign out" />
 		</Container>
 	);

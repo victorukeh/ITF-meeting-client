@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Calender from "../components/Calender"
-import Header from "../components/Header"
-import Meeting from "../components/Meeting"
+import Calender from "../components/Calender";
+import Header from "../components/Header";
+import Meeting from "../components/Meeting";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { useDataLayerValue } from "../reducer/DataLayer";
@@ -15,7 +15,7 @@ const Dashboard = () => {
 			start: "2022-09-12T16:00:00",
 			end: "2022-09-12T18:00:00",
 		},
-        {
+		{
 			title: "Emmanuel's Birthday",
 			description: "THe annoying Guy has his birthday today",
 			start: "2022-09-28",
@@ -31,15 +31,10 @@ const Dashboard = () => {
 		});
 	};
 	return (
-		<Container>
-			<MainContent>
-				<Header/>
-				<BodyContent>
-					<Meeting/>
-					<Calender content={content} handleMouseEnter={handleMouseEnter}/>
-				</BodyContent>
-			</MainContent>
-		</Container>
+		<BodyContent>
+			<Meeting />
+			<Calender content={content} handleMouseEnter={handleMouseEnter} />
+		</BodyContent>
 	);
 };
 
@@ -64,4 +59,3 @@ const BodyContent = styled.div`
 	display: flex;
 	flex-direction: row;
 `;
-

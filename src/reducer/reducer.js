@@ -3,19 +3,34 @@ export const initialState = {
 	password: "",
 	token: null,
 	user: null,
-	events: []
+	events: [],
+	dropDepth: 0,
+	inDropZone: false,
+	fileList: [],
+	meeting: null
 };
 
 // The reducer's primary job is to listen to actions
 const reducer = (state, action) => {
 	// Action has a type and a payload
 	switch (action.type) {
-        
 		case "SET_EMAIL":
 			return {
 				...state,
 				email: action.email,
 			};
+
+		case "SET_ADDMEETING":
+			return {
+				...state,
+				addMeeting: action.addMeeting,
+			};
+		
+		case "SET_MEETING":
+		return {
+			...state,
+			meeting: action.meeting,
+		};
 
 		case "SET_PASSWORD":
 			return {
@@ -41,28 +56,22 @@ const reducer = (state, action) => {
 				events: action.events,
 			};
 
-		case "SET_SEARCH":
+		case "SET_DROP_DEPTH":
 			return {
 				...state,
-				search: action.search,
+				dropDepth: action.dropDepth,
 			};
 
-		case "SET_SEARCHRESULTS":
+		case "SET_IN_DROP_ZONE":
 			return {
 				...state,
-				searchResults: action.searchResults,
+				inDropZone: action.inDropZone,
 			};
 
-		case "SET_SPOTIFY":
+		case "ADD_FILE_TO_LIST":
 			return {
 				...state,
-				spotify: action.spotify,
-			};
-
-		case "SET_CHOOSETRACK":
-			return {
-				...state,
-				chooseTrack: action.chooseTrack,
+				fileList: action.fileList,
 			};
 
 		case "SET_PLAYLIST_TO_PLAY":
