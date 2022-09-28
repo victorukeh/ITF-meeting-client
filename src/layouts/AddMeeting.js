@@ -100,6 +100,21 @@ const AddMeeting = () => {
               fullWidth
               size="small"
             />
+
+            <TextField
+              id="datetime-local"
+              type="datetime-local"
+              defaultValue="2017-05-24T10:30"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              size="small"
+              style={{
+                marginTop: 10,
+                marginBottom: 10,
+              }}
+            />  
           </div>
 
           <div

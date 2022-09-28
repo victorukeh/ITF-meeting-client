@@ -4,6 +4,10 @@ import { useDataLayerValue } from "../reducer/DataLayer";
 
 const Header = () => {
 	const [{ token, user }, dispatch] = useDataLayerValue();
+	user.title = 'Dr'
+	user.fullName = 'Gambo Neimogah'
+	user.department = 'Information and Communication Technology '
+	user.position= 'Director'
 	return (
 		<>
 			<HeaderText>Welcome {user.title}. {user.fullName}</HeaderText>
