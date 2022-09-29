@@ -7,13 +7,38 @@ export const initialState = {
 	dropDepth: 0,
 	inDropZone: false,
 	fileList: [],
-	meeting: null
+	meetings: [],
+	addMeeting: { title: "", description: "", start: "", end: "" },
+	agenda: "",
+	docs: [],
+	fullAgenda: [],
+	notification: "",
+	viewMeeting: null,
+	agendaAndDocs: [],
+	checkMeeting: false
 };
 
 // The reducer's primary job is to listen to actions
 const reducer = (state, action) => {
 	// Action has a type and a payload
 	switch (action.type) {
+		case "SET_CHECKMEETING":
+			return {
+				...state,
+				checkMeeting: action.checkMeeting,
+			};
+
+		case "SET_VIEWMEETING":
+			return {
+				...state,
+				viewMeeting: action.viewMeeting,
+			};
+
+		case "SET_AGENDAANDDOCS":
+			return {
+				...state,
+				agendaAndDocs: action.agendaAndDocs,
+			};
 		case "SET_EMAIL":
 			return {
 				...state,
@@ -25,12 +50,12 @@ const reducer = (state, action) => {
 				...state,
 				addMeeting: action.addMeeting,
 			};
-		
-		case "SET_MEETING":
-		return {
-			...state,
-			meeting: action.meeting,
-		};
+
+		case "SET_MEETINGS":
+			return {
+				...state,
+				meetings: action.meetings,
+			};
 
 		case "SET_PASSWORD":
 			return {
@@ -38,6 +63,16 @@ const reducer = (state, action) => {
 				password: action.password,
 			};
 
+		case "SET_AGENDA":
+			return {
+				...state,
+				agenda: action.agenda,
+			};
+		case "SET_FULLAGENDA":
+			return {
+				...state,
+				fullAgenda: action.fullAgenda,
+			};
 		case "SET_TOKEN":
 			return {
 				...state,
@@ -74,10 +109,10 @@ const reducer = (state, action) => {
 				fileList: action.fileList,
 			};
 
-		case "SET_PLAYLIST_TO_PLAY":
+		case "SET_NOTIFICATION":
 			return {
 				...state,
-				choice: action.choice,
+				notification: action.notification,
 			};
 
 		case "SET_PLAYINGTRACK":

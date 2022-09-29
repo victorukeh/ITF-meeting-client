@@ -1,8 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 function Navigation({ Logo, text }) {
+	// const onClickChange = () => {
+	// 	let MyDiv = document.getElementById('myDIV')
+	// 	setActive({
+	// 	   active: MyDiv.style.display === 'none' 
+	// 	})
+	// }
+	// const [active, setActive] = useState("")
 	return (
 		<Container>
 			<LogoField className="logoField">
@@ -48,6 +55,9 @@ const Container = styled.div`
 		}
 		/* color: red; */
 	}
+	/* &:active{
+        color: #e6007e;
+    } */
 `;
 
 const LogoField = styled.div`

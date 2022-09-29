@@ -6,12 +6,14 @@ import styled from "styled-components";
 import AddMeeting from "./AddMeeting";
 import Meeting from "./Meeting";
 import Header from "../components/Header";
+import AddAgenda from "../layouts/AddAgenda"
+import Preview from "../layouts/Preview"
+import SetMeeting from "../layouts/SetMeeting"
+import UserMeeting from "../layouts/UserMeeting"
+import ViewComments from "../layouts/ViewComments"
 import {
 	Routes,
 	Route,
-	Link,
-	useRouteMatch,
-	useParams,
 } from "react-router-dom";
 
 import { useDataLayerValue } from "../reducer/DataLayer";
@@ -26,7 +28,12 @@ function Main() {
 						<Header />
 						<Routes>
 							<Route path="/" element={<Dashboard />} />
-							<Route path="/meeting" element={<Meeting />} />
+							<Route path="/meeting/admin" element={<Meeting />} />
+							<Route path="/meeting" element={<UserMeeting />} />
+							<Route path="/meeting/agenda" element={<AddAgenda />} />
+							<Route path="/meeting/create" element={<AddMeeting />} />
+							<Route path="/meeting/agenda/preview" element={<Preview />} />
+							<Route path="/meeting/comments" element={<ViewComments />} />
 						</Routes>
 					</MainContent>
 				</Container>
@@ -42,6 +49,7 @@ const MainContainer = styled.div`
 	flex-direction: row;
 	height: 100vh;
 	width: 100%;
+	/* overflow-y: hidden; */
 `;
 
 const Container = styled.div`

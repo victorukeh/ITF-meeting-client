@@ -9,10 +9,14 @@ import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";
 import ArticleIcon from "@mui/icons-material/Article";
+import { useDataLayerValue } from "../reducer/DataLayer";
 
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 			
 const Sidebar = () => {
+	
+	const [{ checkMeeting, user }, dispatch] =
+		useDataLayerValue();
 	return (
 		<Container>
 			<Header>
@@ -31,11 +35,11 @@ const Sidebar = () => {
 			<SubHeader>
 				Menu
 			</SubHeader>
-			<Link style={{textDecoration: "none"}} to="/"><Navigation Logo={ViewAgendaIcon} text="Dashboard" /></Link>
-			<Navigation Logo={ArticleIcon} text="Meeting Documents" />
-			<Navigation Logo={HowToVoteIcon} text="Vote" />
+			<NavLink style={{textDecoration: "none"}} to="/" ><Navigation Logo={ViewAgendaIcon} text="Dashboard" /></NavLink>
+			{checkMeeting && user.role === "user" && <NavLink style={{textDecoration: "none"}} to="/meeting" ><Navigation Logo={ArticleIcon} text="Meeting" /></NavLink>
+			}<Navigation Logo={HowToVoteIcon} text="Vote" />
 			<Navigation Logo={PeopleIcon} text="Users" />
-			<Link style={{textDecoration: "none"}} to="/meeting"><Navigation Logo={MeetingRoomIcon} text="Meetings" /></Link>
+			<NavLink style={{textDecoration: "none"}} to="/meeting/admin"><Navigation Logo={MeetingRoomIcon} text="Set Meetings" /></NavLink>
 			<Navigation Logo={LogoutIcon} text="Sign out" />
 		</Container>
 	);
@@ -50,7 +54,6 @@ const ItfLogo = styled.img`
 `;
 
 const Container = styled.div`
-    /* background: linear-gradient(100deg, rgba(63, 63, 63, 0.8) 0%, rgba(255, 255, 255, 0) 25%); */
 	flex: 0.2;
 	background-color: #fff;
 	height: 100vh;
@@ -62,7 +65,6 @@ const Header = styled.div`
 	display: flex;
 	flex-direction: row;
     margin-top: -4%;
-	/* width: 20vw; */
 	width: 100%;
 `;
 

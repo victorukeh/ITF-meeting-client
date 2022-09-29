@@ -1,13 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 import { useDataLayerValue } from "../reducer/DataLayer";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 
 const Header = () => {
 	const [{ token, user }, dispatch] = useDataLayerValue();
 	return (
 		<>
-			<HeaderText>Welcome {user.title}. {user.fullName}</HeaderText>
-			<HeaderParagraph>{user.position}, {user.department}</HeaderParagraph>
+			<AppBar sx={{ position: "static", background: "#b20505", overflowY: "hidden" }} style={{marginTop: "0px"}}>
+				<Toolbar>
+					<Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+						<HeaderText>
+							Welcome {user.title}. {user.fullName}
+						</HeaderText>
+						<HeaderParagraph>
+							{user.position}, {user.department}
+						</HeaderParagraph>
+					</Typography>
+				</Toolbar>
+			</AppBar>
+			{/* <HeaderText>Welcome {user.title}. {user.fullName}</HeaderText>
+			<HeaderParagraph>{user.position}, {user.department}</HeaderParagraph> */}
 			<Line className="solid" />
 		</>
 	);
@@ -15,9 +31,10 @@ const Header = () => {
 
 export default Header;
 
+
 const HeaderText = styled.h3`
 	font-family: "Segoe UI", Arial, sans-serif;
-	color: #b03f58;
+	color: white;
 	font-family: Verdana;
 	margin-bottom: 0%;
 `;
@@ -30,5 +47,6 @@ const HeaderParagraph = styled.p`
 
 const Line = styled.hr`
 	border-top: 1px solid #bbb;
+	margin-left: 5%;
 	margin-right: 5%;
 `;

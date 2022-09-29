@@ -7,22 +7,7 @@ import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { useDataLayerValue } from "../reducer/DataLayer";
 const Dashboard = () => {
-	const [{ token, user }, dispatch] = useDataLayerValue();
-	const content = [
-		{
-			title: "Meeting Board Room 12:30pm",
-			description: "description for Long Event",
-			start: "2022-09-12T16:00:00",
-			end: "2022-09-12T18:00:00",
-		},
-		{
-			title: "Emmanuel's Birthday",
-			description: "THe annoying Guy has his birthday today",
-			start: "2022-09-28",
-			end: "2022-09-28",
-		},
-	];
-
+	const [{ token, user, meetings }, dispatch] = useDataLayerValue();
 	const handleMouseEnter = (arg) => {
 		tippy(arg.el, {
 			content: `<strong>${arg.event._def.title}</strong>
@@ -32,8 +17,8 @@ const Dashboard = () => {
 	};
 	return (
 		<BodyContent>
-			<Meeting />
-			<Calender content={content} handleMouseEnter={handleMouseEnter} />
+			<Meeting/>
+			<Calender content={meetings} handleMouseEnter={handleMouseEnter} />
 		</BodyContent>
 	);
 };
@@ -58,4 +43,6 @@ const BodyContent = styled.div`
 	height: 83vh;
 	display: flex;
 	flex-direction: row;
+	width: 100%;
+	justify-content: space-between;
 `;

@@ -1,0 +1,18 @@
+.dropDownIcon {
+	font-size: 2.3rem;
+	margin-top: 2%;
+	cursor: pointer;
+    color: #333
+}
+
+.leftIcon {
+	font-size: 2.3rem;
+	margin-top: 2%;
+	cursor: pointer;
+    color: #333
+}
+
+.commentIcon{
+    font-size: 1rem;
+    color: #333;
+}

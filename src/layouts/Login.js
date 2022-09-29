@@ -8,10 +8,11 @@ import LockIcon from "@material-ui/icons/Lock";
 import Logo from "../styles/img/itf-logo.jpg";
 import Button from "@mui/material/Button";
 import { useDataLayerValue } from "../reducer/DataLayer";
+import { Link } from "react-router-dom";
 import "../styles/css/login.css";
 
 const Login = () => {
-	const [{ email, password,user }, dispatch] = useDataLayerValue();
+	const [{ email, password, user }, dispatch] = useDataLayerValue();
 	const handleSubmit = async () => {
 		const response = await axios.post(
 			"http://localhost:2000/api/v1/auth/login",
@@ -26,8 +27,8 @@ const Login = () => {
 		});
 		await dispatch({
 			type: "SET_USER",
-			user: response.data.user
-		})
+			user: response.data.user,
+		});
 	};
 	return (
 		<>
@@ -40,15 +41,17 @@ const Login = () => {
 						<Form>
 							<LoginField Label="Username" Logo={AccountCircle} />
 							<LoginField Label="Password" Logo={LockIcon} />
-							<Button
-								style={{ marginTop: "10%", width: "77%" }}
-								onClick={handleSubmit}
-								className="button"
-								variant="contained"
-								color="success"
-							>
-								Login
-							</Button>
+							<Link style={{ textDecoration: "none", color: "white" }} to="/">
+								<Button
+									style={{ marginTop: "10%", width: "77%" }}
+									onClick={handleSubmit}
+									className="button"
+									variant="contained"
+									color="success"
+								>
+									Login
+								</Button>
+							</Link>
 						</Form>
 					</LoginContainer>
 				</LoginForm>
