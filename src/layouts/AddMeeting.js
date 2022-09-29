@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import DragAndDrop from "../components/DragAndDrop";
 import { useDataLayerValue } from "../reducer/DataLayer";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Stack from "@mui/material/Stack";
@@ -160,14 +160,14 @@ const AddMeeting = () => {
             >
               <input
                 hidden
-                accept="image/*"
+                accept="image/*,application/*"
                 type="file"
                 multiple
                 onChange={(e) => {
                   setSelectedFiles(e.target.files);
                 }}
               />
-              <PhotoCamera />
+              <UploadFileIcon />
             </IconButton>
           </div>
 

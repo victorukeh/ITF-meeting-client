@@ -1,6 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { useDataLayerValue } from "../reducer/DataLayer";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+
 
 const Header = () => {
 	const [{ token, user }, dispatch] = useDataLayerValue();
@@ -10,9 +15,17 @@ const Header = () => {
 	user.position= 'Director'
 	return (
 		<>
-			<HeaderText>Welcome {user.title}. {user.fullName}</HeaderText>
-			<HeaderParagraph>{user.position}, {user.department}</HeaderParagraph>
-			<Line className="solid" />
+		<AppBar sx={{ position: "static", background: "#b20505"}}>
+          <Toolbar>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+				<HeaderText>Welcome {user.title}. {user.fullName}</HeaderText>
+				<HeaderParagraph>{user.position}, {user.department}</HeaderParagraph>
+            </Typography>
+          </Toolbar>
+        </AppBar>
+
+		<Line className="solid" />
+			
 		</>
 	);
 };
@@ -21,7 +34,7 @@ export default Header;
 
 const HeaderText = styled.h3`
 	font-family: "Segoe UI", Arial, sans-serif;
-	color: #b03f58;
+	color: white;
 	font-family: Verdana;
 	margin-bottom: 0%;
 `;
