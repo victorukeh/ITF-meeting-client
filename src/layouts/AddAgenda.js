@@ -23,20 +23,24 @@ const AddMeeting = () => {
 		});
 	};
 	const [agendas, setagendas] = React.useState([]);
+	const [files, setFiles] = useState([]);
 	// const [agendaName, setagendaName] = useState("");
 	const [selectedFiles, setSelectedFiles] = useState(null);
 	const addnewAgenda = async () => {
 		setagendas((x) => {
 			return [...x, { name: agenda, id: agendas.length + 1, selectedFiles }];
 		});
-		const docs = [];
-		for (const file of selectedFiles) {
-			docs.push(file);
-		}
+		const docs = files;
+		console.log(docs)
+		// for (const file of selectedFiles) {
+		// 	docs.push(file);
+		// }
 		const file = {
 			agenda: agenda,
 			docs: docs,
 		};
+		console.log(file)
+		setFiles([])
 		fullAgenda.push(file);
 		await dispatch({
 			type: "SET_FULLAGENDA",
@@ -135,6 +139,11 @@ const AddMeeting = () => {
 								type="file"
 								multiple
 								onChange={(e) => {
+									let hold = []
+									for(const file of e.target.files){
+										hold.push(file)
+									}
+									setFiles(hold)
 									setSelectedFiles(e.target.files);
 								}}
 							/>
