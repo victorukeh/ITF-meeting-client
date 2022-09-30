@@ -8,13 +8,14 @@ import { useDataLayerValue } from "../reducer/DataLayer";
 import AddCommentIcon from "@material-ui/icons/AddComment";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import DropDown from "../components/DropDown";
 import axios from "axios";
 import "../styles/css/dropDown.css";
 
 const UserMeeting = () => {
 	const [{ addMeeting, viewMeeting, notification, agendaAndDocs }, dispatch] =
 		useDataLayerValue();
-    const [addComment, setAddComment] = useState("")
+	const [addComment, setAddComment] = useState("");
 	const [dropDown, setDropDown] = useState({
 		id: "",
 		isOpen: false,
@@ -30,26 +31,27 @@ const UserMeeting = () => {
 		});
 	};
 
-    const handleComment = (event) => {
-		setAddComment(event.target.value)
+	const handleComment = (event) => {
+		setAddComment(event.target.value);
 	};
 
 	const commentHandler = (id) => {
-        setAddComment("")
+		setAddComment("");
 		setComment({
 			id: id,
 			isOpen: !comment.isOpen,
 		});
 	};
 
-    const createComment = async(id, index) => {
-        const response = await axios.post(`http://localhost:2000/api/v1/meeting/comment/add?meeting=${viewMeeting._id}&agenda=${id}`,{
-            text: addComment
-        })
-        console.log(response)
-        await commentHandler(index)
-
-    }
+	const createComment = async (id, index) => {
+		const response = await axios.post(
+			`http://localhost:2000/api/v1/meeting/comment/add?meeting=${viewMeeting._id}&agenda=${id}`,
+			{
+				text: addComment,
+			}
+		);
+		await commentHandler(index);
+	};
 	return (
 		<Container>
 			<MeetingBox>
@@ -58,13 +60,15 @@ const UserMeeting = () => {
 
 			<MeetingView>
 				{agendaAndDocs.map((f, id) => {
+					console.log(f.docs)
 					return (
 						<AgendaView key={id}>
 							<AgendaItems>
 								<Agenda>
 									{id + 1}. {f.agenda.name}
 								</Agenda>
-								{dropDown.isOpen && dropDown.id === id ? (
+								<DropDown key={id} button="Documents" items={f.docs}/>
+								{/* {dropDown.isOpen && dropDown.id === id ? (
 									<ArrowDropDownIcon
 										className="dropDownIcon"
 										onClick={() => onClickHandler(id)}
@@ -74,10 +78,11 @@ const UserMeeting = () => {
 										className="leftIcon"
 										onClick={() => onClickHandler(id)}
 									/>
-								)}
+								)} */}
 							</AgendaItems>
 
-							{dropDown.isOpen && dropDown.id === id && (
+							{/* {dropDown.isOpen && dropDown.id === id && (
+										
 								<List>
 									<ListContent key={id}>
 										{f.docs.map((item) => (
@@ -85,7 +90,7 @@ const UserMeeting = () => {
 										))}
 									</ListContent>
 								</List>
-							)}
+							)} */}
 							<Comment onClick={() => commentHandler(id)}>
 								<AddCommentIcon className="commentIcon" />
 								<CommentText>Add Comment</CommentText>
@@ -104,8 +109,8 @@ const UserMeeting = () => {
 										label="Comment"
 										multiline
 										rows={4}
-                                        value={addComment}
-                                        onChange={handleComment}
+										value={addComment}
+										onChange={handleComment}
 									/>
 									<div
 										style={{
@@ -120,7 +125,7 @@ const UserMeeting = () => {
 											color="primary"
 											style={{ marginLeft: "58%", width: "20%" }}
 											disabled={true && addComment.length === 0}
-                                            onClick = {() => createComment(f.agenda._id, id)}
+											onClick={() => createComment(f.agenda._id, id)}
 										>
 											Submit
 										</Button>

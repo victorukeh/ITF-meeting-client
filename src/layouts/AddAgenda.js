@@ -31,10 +31,6 @@ const AddMeeting = () => {
 			return [...x, { name: agenda, id: agendas.length + 1, selectedFiles }];
 		});
 		const docs = files;
-		console.log(docs)
-		// for (const file of selectedFiles) {
-		// 	docs.push(file);
-		// }
 		const file = {
 			agenda: agenda,
 			docs: docs,

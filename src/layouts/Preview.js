@@ -10,7 +10,6 @@ import axios from "axios";
 const Preview = () => {
 	const [{ addMeeting, fullAgenda, notification }, dispatch] =
 		useDataLayerValue();
-		console.log(fullAgenda)
 	const [dropDown, setDropDown] = useState({
 		id: "",
 		isOpen: false,
@@ -40,8 +39,8 @@ const Preview = () => {
 		}
 
 		if (response.data.success === true) {
-			const formData = new FormData();
 			for (const item of fullAgenda) {
+				const formData = new FormData();
 				const agenda = await axios.post(
 					`http://localhost:2000/api/v1/meeting/agenda/add?meeting=${response.data.meeting._id}`,
 					{
@@ -120,7 +119,7 @@ const Preview = () => {
 								<List>
 									<ListContent>
 										{f.docs.map((item) => (
-											<ListItem key={id}>{item.name}</ListItem>
+											<ListItem key={item.name}>{item.name}</ListItem>
 										))}
 									</ListContent>
 								</List>
