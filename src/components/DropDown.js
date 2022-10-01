@@ -51,7 +51,6 @@ const StyledMenu = styled((props) => (
 function DropDown({ button, items }) {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
-	console.log(items);
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -83,7 +82,6 @@ function DropDown({ button, items }) {
 				onClose={handleClose}
 			>
 				{items.map((item) => {
-                    console.log(item)
                     const url = `http://localhost:2000/${item.name}`
 					return (
 						<a href={url} style={{textDecoration: "none", color: "#333"}} without rel="noopener noreferrer" target="_blank">

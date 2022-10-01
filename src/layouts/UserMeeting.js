@@ -13,23 +13,15 @@ import axios from "axios";
 import "../styles/css/dropDown.css";
 
 const UserMeeting = () => {
-	const [{ addMeeting, viewMeeting, notification, agendaAndDocs }, dispatch] =
-		useDataLayerValue();
+	const [
+		{ addMeeting, viewMeeting, notification, agendaAndDocs, token, user },
+		dispatch,
+	] = useDataLayerValue();
 	const [addComment, setAddComment] = useState("");
-	const [dropDown, setDropDown] = useState({
-		id: "",
-		isOpen: false,
-	});
 	const [comment, setComment] = useState({
 		id: "",
 		isOpen: false,
 	});
-	const onClickHandler = (id) => {
-		setDropDown({
-			id: id,
-			isOpen: !dropDown.isOpen,
-		});
-	};
 
 	const handleComment = (event) => {
 		setAddComment(event.target.value);
@@ -48,10 +40,40 @@ const UserMeeting = () => {
 			`http://localhost:2000/api/v1/meeting/comment/add?meeting=${viewMeeting._id}&agenda=${id}`,
 			{
 				text: addComment,
+			},
+			{
+				headers: { Authorization: `Bearer ${token}` },
 			}
 		);
 		await commentHandler(index);
 	};
+
+	const getComments = async () => {
+		const response = await axios.get(
+			`http://localhost:2000/api/v1/meeting/comments?meeting=${viewMeeting._id}`,
+			{
+				headers: { Authorization: `Bearer ${token}` },
+			}
+		);
+		dispatch({ type: "SET_COMMENTS", comments: response.data.comments });
+	};
+
+	const getAdminComments = async () => {
+		const response = await axios.get(
+			`http://localhost:2000/api/v1/meeting/comments/admin?meeting=${viewMeeting._id}`,
+			{
+				headers: { Authorization: `Bearer ${token}` },
+			}
+		);
+		dispatch({ type: "SET_COMMENTS", comments: response.data.comments });
+	};
+	// http://localhost:2000/api/v1/meeting/comments
+	const setMeeting = async() => {
+		await dispatch({
+			type: "SET_CHECKMEETING",
+			checkMeeting: false
+		})
+	}
 	return (
 		<Container>
 			<MeetingBox>
@@ -60,41 +82,18 @@ const UserMeeting = () => {
 
 			<MeetingView>
 				{agendaAndDocs.map((f, id) => {
-					console.log(f.docs)
 					return (
 						<AgendaView key={id}>
 							<AgendaItems>
 								<Agenda>
 									{id + 1}. {f.agenda.name}
 								</Agenda>
-								<DropDown key={id} button="Documents" items={f.docs}/>
-								{/* {dropDown.isOpen && dropDown.id === id ? (
-									<ArrowDropDownIcon
-										className="dropDownIcon"
-										onClick={() => onClickHandler(id)}
-									/>
-								) : (
-									<ArrowLeftIcon
-										className="leftIcon"
-										onClick={() => onClickHandler(id)}
-									/>
-								)} */}
+								<DropDown button="Documents" items={f.docs} />
 							</AgendaItems>
-
-							{/* {dropDown.isOpen && dropDown.id === id && (
-										
-								<List>
-									<ListContent key={id}>
-										{f.docs.map((item) => (
-											<ListItem>{item.name}</ListItem>
-										))}
-									</ListContent>
-								</List>
-							)} */}
-							<Comment onClick={() => commentHandler(id)}>
+							{user.role === "user" && <Comment onClick={() => commentHandler(id)}>
 								<AddCommentIcon className="commentIcon" />
 								<CommentText>Add Comment</CommentText>
-							</Comment>
+							</Comment>}
 							{comment.isOpen && comment.id === id && (
 								<Box
 									component="form"
@@ -142,14 +141,18 @@ const UserMeeting = () => {
 							)}
 							<ButtonBox>
 								<Link style={{ textDecoration: "none" }} to="/meeting/comments">
-									<Button variant="contained" color="success">
+									{user.role === "user" && <Button variant="contained" color="success" onClick={getComments}>
 										View Comments
-									</Button>
+									</Button>}
+									{user.role === "admin" && <Button variant="contained" color="success" onClick={getAdminComments}>
+										View Comments
+									</Button>}
 								</Link>
 
 								<Link
 									style={{ textDecoration: "none", marginLeft: "2%" }}
 									to="/"
+									onClick={() => setMeeting()}
 								>
 									<Button variant="contained" color="error">
 										Leave Meeting

@@ -83,8 +83,7 @@ const SetMeeting = () => {
 							<TableCell>Meeting Name</TableCell>
 							<TableCell>Description</TableCell>
 							<TableCell>Date</TableCell>
-							<TableCell align="right"></TableCell>
-							<TableCell align="right"></TableCell>
+							<TableCell align="right">Actions</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -100,7 +99,6 @@ const SetMeeting = () => {
 									</TableCell>
 									<TableCell>{row.description}</TableCell>
 									<TableCell>{date}</TableCell>
-									<TableCell align="right"></TableCell>
 									<TableCell align="right">
 										<Action>
 											<Edit onClick={handleClickOpen}>

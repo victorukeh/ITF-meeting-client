@@ -12,7 +12,9 @@ import { Link } from "react-router-dom";
 import "../styles/css/login.css";
 
 const Login = () => {
-	const [{ email, password, user }, dispatch] = useDataLayerValue();
+	const [{ email, password, user, token }, dispatch] = useDataLayerValue();
+	// const [token, setToken] = useState(null);
+
 	const handleSubmit = async () => {
 		const response = await axios.post(
 			"http://localhost:2000/api/v1/auth/login",
@@ -25,6 +27,8 @@ const Login = () => {
 			type: "SET_TOKEN",
 			token: response.data.token,
 		});
+		// setToken(response.data.token)
+		// window.localStorage.setItem('token', JSON.stringify(token))
 		await dispatch({
 			type: "SET_USER",
 			user: response.data.user,

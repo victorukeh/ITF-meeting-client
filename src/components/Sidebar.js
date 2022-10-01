@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Navigation from "./Navigation";
 import ViewAgendaIcon from "@material-ui/icons/ViewAgenda";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
@@ -9,6 +9,7 @@ import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";
 import ArticleIcon from "@mui/icons-material/Article";
+import LockIcon from '@mui/icons-material/Lock';
 import { useDataLayerValue } from "../reducer/DataLayer";
 
 import { NavLink } from "react-router-dom";
@@ -17,6 +18,11 @@ const Sidebar = () => {
 	
 	const [{ checkMeeting, user }, dispatch] =
 		useDataLayerValue();
+
+	const signOut = () => {
+		window.localStorage.removeItem('token') 
+		window.localStorage.removeItem('user') ;
+	}
 	return (
 		<Container>
 			<Header>
@@ -36,11 +42,14 @@ const Sidebar = () => {
 				Menu
 			</SubHeader>
 			<NavLink style={{textDecoration: "none"}} to="/" ><Navigation Logo={ViewAgendaIcon} text="Dashboard" /></NavLink>
-			{checkMeeting && user.role === "user" && <NavLink style={{textDecoration: "none"}} to="/meeting" ><Navigation Logo={ArticleIcon} text="Meeting" /></NavLink>
-			}<Navigation Logo={HowToVoteIcon} text="Vote" />
-			<Navigation Logo={PeopleIcon} text="Users" />
-			<NavLink style={{textDecoration: "none"}} to="/meeting/admin"><Navigation Logo={MeetingRoomIcon} text="Set Meetings" /></NavLink>
-			<Navigation Logo={LogoutIcon} text="Sign out" />
+			{checkMeeting && <NavLink style={{textDecoration: "none"}} to="/meeting" ><Navigation Logo={ArticleIcon} text="Meeting" /></NavLink>
+			}
+			<Navigation Logo={HowToVoteIcon} text="Vote" />
+			
+			{user.role === "admin" && <Navigation Logo={PeopleIcon} text="Users" />}
+			{user.role === "admin" && <NavLink style={{textDecoration: "none"}} to="/meeting/admin"><Navigation Logo={MeetingRoomIcon} text="Set Meetings" /></NavLink>}
+			<Navigation Logo={LockIcon} text="Change Password" />
+			<a style={{textDecoration: "none"}} href="http://localhost:3000/" onClick={() => signOut()}><Navigation Logo={LogoutIcon} text="Sign out" /></a>
 		</Container>
 	);
 };

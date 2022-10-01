@@ -34,7 +34,6 @@ const LoginField = ({ Label, Logo }) => {
 			type: 'SET_EMAIL',
 			email: event.target.value
 		  })
-		console.log(email)
 	}
 	return (
 		<>

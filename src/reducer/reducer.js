@@ -1,8 +1,8 @@
 export const initialState = {
 	email: "",
 	password: "",
-	token: null,
-	user: null,
+	token: JSON.parse(localStorage.getItem("token")) || null,
+	user: JSON.parse(localStorage.getItem("user")) || null,
 	events: [],
 	dropDepth: 0,
 	inDropZone: false,
@@ -15,13 +15,21 @@ export const initialState = {
 	notification: "",
 	viewMeeting: null,
 	agendaAndDocs: [],
-	checkMeeting: false
+	checkMeeting: false,
+	comments: []
 };
 
 // The reducer's primary job is to listen to actions
 const reducer = (state, action) => {
 	// Action has a type and a payload
 	switch (action.type) {
+		// SET_COMMENTS
+		case "SET_COMMENTS":
+			return {
+				...state,
+				comments: action.comments,
+			};
+
 		case "SET_CHECKMEETING":
 			return {
 				...state,
