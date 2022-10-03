@@ -21,7 +21,9 @@ const Preview = () => {
 		});
 	};
 
-	const createMeeting = async () => {
+	const createMeeting = (newState) => async () =>  {
+		try{
+			
 		const response = await axios.post(
 			"http://localhost:2000/api/v1/meeting/create-meeting",
 			{
@@ -56,8 +58,12 @@ const Preview = () => {
 				);
 			}
 			await dispatch({
-				type: "SET_NOTIFICATION",
-				notification: notification,
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					notification: "Meeting Creeated Successfully",
+					...newState,
+				},
 			});
 			await dispatch({
 				type: "SET_FULLAGENDA",
@@ -66,6 +72,17 @@ const Preview = () => {
 			await dispatch({
 				type: "SET_ADDMEETING",
 				addMeeting: "",
+			});
+		}
+		}catch(err){
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					error: true,
+					notification: "Something went wrong",
+					...newState,
+				},
 			});
 		}
 	};
@@ -129,7 +146,10 @@ const Preview = () => {
 									<Button
 										variant="contained"
 										color="success"
-										onClick={createMeeting}
+										onClick={createMeeting({
+											vertical: "top",
+											horizontal: "right",
+										})}
 									>
 										Create
 									</Button>

@@ -16,7 +16,14 @@ export const initialState = {
 	viewMeeting: null,
 	agendaAndDocs: [],
 	checkMeeting: false,
-	comments: []
+	comments: [],
+	snackbar: {
+		open: false,
+		vertical: "top",
+		horizontal: "right",
+		notification: "",
+		error: false
+	},
 };
 
 // The reducer's primary job is to listen to actions
@@ -24,6 +31,11 @@ const reducer = (state, action) => {
 	// Action has a type and a payload
 	switch (action.type) {
 		// SET_COMMENTS
+		case "SET_SNACKBAR":
+			return {
+				...state,
+				snackbar: action.snackbar,
+			};
 		case "SET_COMMENTS":
 			return {
 				...state,

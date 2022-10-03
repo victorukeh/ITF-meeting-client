@@ -1,28 +1,36 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Navigation from "./Navigation";
 import ViewAgendaIcon from "@material-ui/icons/ViewAgenda";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Logo from "../styles/img/itf-logo.jpg";
-import PeopleIcon from '@mui/icons-material/People';
-import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import PeopleIcon from "@mui/icons-material/People";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";
 import ArticleIcon from "@mui/icons-material/Article";
-import LockIcon from '@mui/icons-material/Lock';
+import LockIcon from "@mui/icons-material/Lock";
 import { useDataLayerValue } from "../reducer/DataLayer";
 
-import { NavLink } from "react-router-dom";
-			
-const Sidebar = () => {
-	
-	const [{ checkMeeting, user }, dispatch] =
-		useDataLayerValue();
+import { NavLink, Link } from "react-router-dom";
 
-	const signOut = () => {
-		window.localStorage.removeItem('token') 
-		window.localStorage.removeItem('user') ;
-	}
+const Sidebar = () => {
+	const [{ checkMeeting, user }, dispatch] = useDataLayerValue();
+
+	const signOut = (newState) => async () => {
+		window.localStorage.removeItem("token");
+		window.localStorage.removeItem("user");
+		await window.location.reload()
+		await dispatch({
+			type: "SET_SNACKBAR",
+			snackbar: {
+				open: true,
+				notification: "You are now logged out",
+				...newState,
+			},
+		});
+		
+	};
 	return (
 		<Container>
 			<Header>
@@ -38,18 +46,36 @@ const Sidebar = () => {
 				/>
 				<HeaderText>Management Meeting</HeaderText>
 			</Header>
-			<SubHeader>
-				Menu
-			</SubHeader>
-			<NavLink style={{textDecoration: "none"}} to="/" ><Navigation Logo={ViewAgendaIcon} text="Dashboard" /></NavLink>
-			{checkMeeting && <NavLink style={{textDecoration: "none"}} to="/meeting" ><Navigation Logo={ArticleIcon} text="Meeting" /></NavLink>
-			}
+			<SubHeader>Menu</SubHeader>
+			<NavLink style={{ textDecoration: "none" }} to="/">
+				<Navigation Logo={ViewAgendaIcon} text="Dashboard" />
+			</NavLink>
+			{checkMeeting && (
+				<NavLink style={{ textDecoration: "none" }} to="/meeting">
+					<Navigation Logo={ArticleIcon} text="Meeting" />
+				</NavLink>
+			)}
 			<Navigation Logo={HowToVoteIcon} text="Vote" />
-			
-			{user.role === "admin" && <Navigation Logo={PeopleIcon} text="Users" />}
-			{user.role === "admin" && <NavLink style={{textDecoration: "none"}} to="/meeting/admin"><Navigation Logo={MeetingRoomIcon} text="Set Meetings" /></NavLink>}
+
+			<NavLink style={{ textDecoration: "none" }} to="/users">
+				{user.role === "admin" && <Navigation Logo={PeopleIcon} text="Users" />}
+			</NavLink>
+			{user.role === "admin" && (
+				<NavLink style={{ textDecoration: "none" }} to="/meeting/admin">
+					<Navigation Logo={MeetingRoomIcon} text="Set Meetings" />
+				</NavLink>
+			)}
 			<Navigation Logo={LockIcon} text="Change Password" />
-			<a style={{textDecoration: "none"}} href="http://localhost:3000/" onClick={() => signOut()}><Navigation Logo={LogoutIcon} text="Sign out" /></a>
+			<Link
+				style={{ textDecoration: "none" }}
+				to="/"
+				onClick={signOut({
+					vertical: "top",
+					horizontal: "right",
+				})}
+			>
+				<Navigation Logo={LogoutIcon} text="Sign out" />
+			</Link>
 		</Container>
 	);
 };
@@ -66,14 +92,15 @@ const Container = styled.div`
 	flex: 0.2;
 	background-color: #fff;
 	height: 100vh;
-	margin-left: 2%;
+	padding-left: 2%;
 	border-right: 2px solid #c5c7c9;
+	/* background: linear-gradient(360deg, rgba(63, 63, 253, 0.8) 0%, rgba(255, 255, 255, 0) 25%); */
 `;
 
 const Header = styled.div`
 	display: flex;
 	flex-direction: row;
-    margin-top: -4%;
+	margin-top: -4%;
 	width: 100%;
 `;
 

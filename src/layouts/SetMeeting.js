@@ -8,7 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import { useDataLayerValue } from "../reducer/DataLayer";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
@@ -22,30 +21,49 @@ const SetMeeting = () => {
 	const [{ meetings }, dispatch] = useDataLayerValue();
 	const [open, setOpen] = useState(false);
 
-	const deleteMeeting = async (id, index) => {
-		const deleted = meetings.filter((o, i) => index !== i);
-		dispatch({
-			type: "SET_MEETINGS",
-			meetings: deleted,
-		});
-		const docs = await axios.get(
-			`http://localhost:2000/api/v1/meeting/docs?meeting=${id}`
-		);
-		for (const doc of docs.data.docs) {
-			await axios.delete(
-				`http://localhost:2000/api/v1/meeting/document/delete?document=${doc._id}`
+	const deleteMeeting = (id, index, newState) => async () => {
+		try{
+			const docs = await axios.get(
+				`http://localhost:2000/api/v1/meeting/docs?meeting=${id}`
 			);
+			for (const doc of docs.data.docs) {
+				await axios.delete(
+					`http://localhost:2000/api/v1/meeting/document/delete?document=${doc._id}`
+				);
+			}
+			await axios.delete(
+				`http://localhost:2000/api/v1/meeting/agenda/delete?meeting=${id}`
+			);
+			const message = await axios.delete(
+				`http://localhost:2000/api/v1/meeting/delete?meeting=${id}`
+			);
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					notification: message.data.message,
+					...newState,
+				},
+			});
+			
+			const deleted = meetings.filter((o, i) => index !== i);
+			dispatch({
+				type: "SET_MEETINGS",
+				meetings: deleted,
+			});
+		}catch(err){
+			console.log(err)
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					error: true,
+					notification: err.message,
+					...newState,
+				},
+			});
 		}
-		await axios.delete(
-			`http://localhost:2000/api/v1/meeting/agendas/delete?meeting=${id}`
-		);
-		const message = await axios.delete(
-			`http://localhost:2000/api/v1/meeting/delete?meeting=${id}`
-		);
-		await dispatch({
-			type: "SET_NOTIFICATION",
-			notification: message.data.message,
-		});
+		
 	};
 
 	const handleClickOpen = () => {
@@ -110,7 +128,10 @@ const SetMeeting = () => {
 											<Delete>
 												<DeleteIcon
 													className="logoField"
-													onClick={() => deleteMeeting(row._id, id + 1)}
+													onClick={deleteMeeting(row._id, id + 1, {
+										vertical: "top",
+										horizontal: "right",
+									})}
 												/>
 											</Delete>
 										</Action>
@@ -121,71 +142,7 @@ const SetMeeting = () => {
 					</TableBody>
 				</Table>
 			</TableContainer>
-			{/* <TableContainer component={Paper}>
-				<Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-					<TableHead>
-						<TableRow>
-							<TableCell>S/N</TableCell>
-							<TableCell>Name</TableCell>
-							<TableCell>Start Time</TableCell>
-							<TableCell align="right">Actions</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{meetings.map((row, id) => {
-							const date = row.start;
-							const check = new Date(date).toUTCString();
-							return (
-								<TableRow
-									key={id}
-									sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-								>
-									<TableCell>{id + 1}</TableCell>
-									<TableCell component="th" scope="row">
-										<Link style={{ textDecoration: "none", color: "black" }}>
-											{row.title}
-										</Link>
-									</TableCell>
-									<TableCell>{check}</TableCell>
-									<TableCell align="right">
-										<Action>
-											<Edit>
-												<AddCommentIcon className="logo" />
-											</Edit>
-											<Edit>
-												<EditIcon className="logo" />
-											</Edit>
-											<Delete>
-												<DeleteIcon
-													className="logoField"
-													onClick={() => deleteMeeting(row._id, id + 1)}
-												/>
-											</Delete>
-										</Action>
-									</TableCell>
-								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
-			</TableContainer>
-			<div
-				style={{
-					width: "100%",
-					display: "flex",
-					marginTop: "4%",
-					justifyContent: "flex-end",
-				}}
-			>
-				<Button variant="contained" color="primary" style={{ marginLeft: "" }}>
-					<Link
-						style={{ textDecoration: "none", color: "white" }}
-						to="/meeting/create"
-					>
-						Create New Meeting
-					</Link>
-				</Button>
-			</div> */}
+			
 		</>
 	);
 };

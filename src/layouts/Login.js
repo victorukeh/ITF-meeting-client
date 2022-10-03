@@ -9,31 +9,55 @@ import Logo from "../styles/img/itf-logo.jpg";
 import Button from "@mui/material/Button";
 import { useDataLayerValue } from "../reducer/DataLayer";
 import { Link } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import { Notification } from "../components/Notification";
+
+import Slide from "@mui/material/Slide";
 import "../styles/css/login.css";
 
 const Login = () => {
-	const [{ email, password, user, token }, dispatch] = useDataLayerValue();
-	// const [token, setToken] = useState(null);
-
-	const handleSubmit = async () => {
-		const response = await axios.post(
-			"http://localhost:2000/api/v1/auth/login",
-			{
-				email: email,
-				password: password,
-			}
-		);
-		await dispatch({
-			type: "SET_TOKEN",
-			token: response.data.token,
-		});
-		// setToken(response.data.token)
-		// window.localStorage.setItem('token', JSON.stringify(token))
-		await dispatch({
-			type: "SET_USER",
-			user: response.data.user,
-		});
+	const [{ email, password, user, token, snackbar }, dispatch] =
+		useDataLayerValue();
+	const handleClick = (newState) => async () => {
+		try {
+			const response = await axios.post(
+				"http://localhost:2000/api/v1/auth/login",
+				{
+					email: email,
+					password: password,
+				}
+			);
+			await dispatch({
+				type: "SET_TOKEN",
+				token: response.data.token,
+			});
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					notification: "You are now logged in",
+					...newState,
+				},
+			});
+			window.localStorage.setItem("token", JSON.stringify(token));
+			await dispatch({
+				type: "SET_USER",
+				user: response.data.user,
+			});
+		} catch (err) {
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					error: true,
+					notification: err.response.data.error,
+					...newState,
+				},
+			});
+		}
 	};
+
 	return (
 		<>
 			<LoginPage>
@@ -48,7 +72,10 @@ const Login = () => {
 							<Link style={{ textDecoration: "none", color: "white" }} to="/">
 								<Button
 									style={{ marginTop: "10%", width: "77%" }}
-									onClick={handleSubmit}
+									onClick={handleClick({
+										vertical: "top",
+										horizontal: "right",
+									})}
 									className="button"
 									variant="contained"
 									color="success"

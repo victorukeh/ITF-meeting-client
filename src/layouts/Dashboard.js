@@ -7,7 +7,26 @@ import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { useDataLayerValue } from "../reducer/DataLayer";
 const Dashboard = () => {
-	const [{ token, user, meetings }, dispatch] = useDataLayerValue();
+	const [{ token, user, meetings, snackbar }, dispatch] = useDataLayerValue();
+	const vert = snackbar.vertical
+	const horiz = snackbar.vertical
+	
+	const handleClick = async (newState) => {
+		await dispatch({
+			type: "SET_SNACKBAR",
+			snackbar: { ...newState, open: true, notification: "Whats up" },
+		});
+		// setState({ open: true, ...newState });
+	};
+
+	const handleClose = async () => {
+		await dispatch({
+			type: "SET_SNACKBAR",
+			snackbar: { ...snackbar, open: false },
+		});
+		// setState({ ...state, open: false });
+	};
+
 	const handleMouseEnter = (arg) => {
 		tippy(arg.el, {
 			content: `<strong>${arg.event._def.title}</strong>
