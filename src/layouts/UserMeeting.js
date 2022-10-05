@@ -35,17 +35,37 @@ const UserMeeting = () => {
 		});
 	};
 
-	const createComment = async (id, index) => {
-		const response = await axios.post(
-			`http://localhost:2000/api/v1/meeting/comment/add?meeting=${viewMeeting._id}&agenda=${id}`,
-			{
-				text: addComment,
-			},
-			{
-				headers: { Authorization: `Bearer ${token}` },
-			}
-		);
-		await commentHandler(index);
+	const createComment = (id, index, newState) => async () => {
+		try {
+			const response = await axios.post(
+				`http://localhost:2000/api/v1/meeting/comment/add?meeting=${viewMeeting._id}&agenda=${id}`,
+				{
+					text: addComment,
+				},
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+			await commentHandler(index);
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					notification: response.data.message,
+					...newState,
+				},
+			});
+		} catch (err) {
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					error: true,
+					notification: err.message,
+					...newState,
+				},
+			});
+		}
 	};
 
 	const getComments = async () => {
@@ -68,12 +88,12 @@ const UserMeeting = () => {
 		dispatch({ type: "SET_COMMENTS", comments: response.data.comments });
 	};
 	// http://localhost:2000/api/v1/meeting/comments
-	const setMeeting = async() => {
+	const setMeeting = async () => {
 		await dispatch({
 			type: "SET_CHECKMEETING",
-			checkMeeting: false
-		})
-	}
+			checkMeeting: false,
+		});
+	};
 	return (
 		<Container>
 			<MeetingBox>
@@ -90,10 +110,12 @@ const UserMeeting = () => {
 								</Agenda>
 								<DropDown button="Documents" items={f.docs} />
 							</AgendaItems>
-							{user.role === "user" && <Comment onClick={() => commentHandler(id)}>
-								<AddCommentIcon className="commentIcon" />
-								<CommentText>Add Comment</CommentText>
-							</Comment>}
+							{user.role === "user" && (
+								<Comment onClick={() => commentHandler(id)}>
+									<AddCommentIcon className="commentIcon" />
+									<CommentText>Add Comment</CommentText>
+								</Comment>
+							)}
 							{comment.isOpen && comment.id === id && (
 								<Box
 									component="form"
@@ -124,7 +146,10 @@ const UserMeeting = () => {
 											color="primary"
 											style={{ marginLeft: "58%", width: "20%" }}
 											disabled={true && addComment.length === 0}
-											onClick={() => createComment(f.agenda._id, id)}
+											onClick={createComment(f.agenda._id, id, {
+												vertical: "top",
+												horizontal: "right",
+											})}
 										>
 											Submit
 										</Button>
@@ -141,12 +166,24 @@ const UserMeeting = () => {
 							)}
 							<ButtonBox>
 								<Link style={{ textDecoration: "none" }} to="/meeting/comments">
-									{user.role === "user" && <Button variant="contained" color="success" onClick={getComments}>
-										View Comments
-									</Button>}
-									{user.role === "admin" && <Button variant="contained" color="success" onClick={getAdminComments}>
-										View Comments
-									</Button>}
+									{user.role === "user" && (
+										<Button
+											variant="contained"
+											color="success"
+											onClick={getComments}
+										>
+											View Comments
+										</Button>
+									)}
+									{user.role === "admin" && (
+										<Button
+											variant="contained"
+											color="success"
+											onClick={getAdminComments}
+										>
+											View Comments
+										</Button>
+									)}
 								</Link>
 
 								<Link

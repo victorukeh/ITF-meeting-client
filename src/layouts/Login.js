@@ -46,15 +46,27 @@ const Login = () => {
 				user: response.data.user,
 			});
 		} catch (err) {
-			await dispatch({
-				type: "SET_SNACKBAR",
-				snackbar: {
-					open: true,
-					error: true,
-					notification: err.response.data.error,
-					...newState,
-				},
-			});
+			if (err.message) {
+				await dispatch({
+					type: "SET_SNACKBAR",
+					snackbar: {
+						open: true,
+						error: true,
+						notification: err.message,
+						...newState,
+					},
+				});
+			} else {
+				await dispatch({
+					type: "SET_SNACKBAR",
+					snackbar: {
+						open: true,
+						error: true,
+						notification: err.response.data.error,
+						...newState,
+					},
+				});
+			}
 		}
 	};
 

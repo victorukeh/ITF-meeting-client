@@ -11,6 +11,7 @@ import Preview from "../layouts/Preview";
 import SetMeeting from "../layouts/SetMeeting";
 import UserMeeting from "../layouts/UserMeeting";
 import ViewComments from "../layouts/ViewComments";
+import Vote from "../layouts/Vote"
 import AddUser from "./AddUser";
 import Alert from "@material-ui/lab/Alert";
 import Users from "../layouts/Users";
@@ -32,6 +33,7 @@ function Main() {
 						<Header />
 						<Routes>
 							<Route path="/" element={<Dashboard />} />
+							<Route path="/vote" element={<Vote />} />
 							<Route path="/users" element={<Users />} />
 							<Route path="/users/create" element={<AddUser />} />
 							<Route path="/meeting/admin" element={<Meeting />} />

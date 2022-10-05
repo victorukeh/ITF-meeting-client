@@ -52,7 +52,6 @@ const SetMeeting = () => {
 				meetings: deleted,
 			});
 		}catch(err){
-			console.log(err)
 			await dispatch({
 				type: "SET_SNACKBAR",
 				snackbar: {

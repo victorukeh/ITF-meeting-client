@@ -20,7 +20,7 @@ const Sidebar = () => {
 	const signOut = (newState) => async () => {
 		window.localStorage.removeItem("token");
 		window.localStorage.removeItem("user");
-		await window.location.reload()
+		await window.location.reload();
 		await dispatch({
 			type: "SET_SNACKBAR",
 			snackbar: {
@@ -29,7 +29,6 @@ const Sidebar = () => {
 				...newState,
 			},
 		});
-		
 	};
 	return (
 		<Container>
@@ -55,7 +54,9 @@ const Sidebar = () => {
 					<Navigation Logo={ArticleIcon} text="Meeting" />
 				</NavLink>
 			)}
-			<Navigation Logo={HowToVoteIcon} text="Vote" />
+			<NavLink style={{ textDecoration: "none" }} to="/vote">
+				<Navigation Logo={HowToVoteIcon} text="Vote" />
+			</NavLink>
 
 			<NavLink style={{ textDecoration: "none" }} to="/users">
 				{user.role === "admin" && <Navigation Logo={PeopleIcon} text="Users" />}

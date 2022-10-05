@@ -47,11 +47,11 @@ const Container = styled.div`
 
 	&:hover {
 		.logoField {
-			color: #f2a5ac;
+			color: #b20505;
       /* #de596a */
 		}
 		.logoText {
-			color: #f2a5ac;
+			color: #b20505;
 		}
 		/* color: red; */
 	}
