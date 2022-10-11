@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Divider, Avatar, Grid, Paper } from "@material-ui/core";
 import Card from "../components/Card";
+import Back from "../components/Back";
 import Time from "../components/Time";
 import axios from "axios";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -25,7 +26,7 @@ const ViewComments = () => {
 				type: "SET_SNACKBAR",
 				snackbar: {
 					open: true,
-					notification: "Comment Deleted!npm",
+					notification: "Comment Deleted!",
 					...newState,
 				},
 			});
@@ -52,6 +53,7 @@ const ViewComments = () => {
 
 	return (
 		<div style={{ width: "100%", overflowY: "auto" }}>
+			<Back to="/meeting" color="primary"/>
 			<div style={{ padding: 3, height: "78vh", width: "95%" }}>
 				<h5>Comments</h5>
 				{comments.map((comment, id) => {

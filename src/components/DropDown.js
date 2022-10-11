@@ -69,6 +69,7 @@ function DropDown({ button, items }) {
 				onClick={handleClick}
 				endIcon={<KeyboardArrowDownIcon />}
 				style={{ marginTop: "9%" }}
+				disabled={items.length < 1 ? true : false}
 			>
 				{button}
 			</Button>
@@ -82,9 +83,16 @@ function DropDown({ button, items }) {
 				onClose={handleClose}
 			>
 				{items.map((item) => {
-                    const url = `http://localhost:2000/${item.name}`
+					const url = `http://localhost:2000/${item.name}`;
 					return (
-						<a href={url} style={{textDecoration: "none", color: "#333"}} without rel="noopener noreferrer" target="_blank">
+						<a
+							key={item}
+							href={url}
+							style={{ textDecoration: "none", color: "#333" }}
+							without
+							rel="noopener noreferrer"
+							target="_blank"
+						>
 							<MenuItem
 								trailingIcon="picture_as_pdf"
 								onClick={handleClose}

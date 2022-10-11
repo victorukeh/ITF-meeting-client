@@ -20,7 +20,7 @@ const Calender = ({content, handleMouseEnter}) => {
 export default Calender;
 
 const Container = styled.div`
-	flex: 0.7;
+	flex: 0.5;
 	/* margin-left: 3%; */
 	margin-top: 2%;
 `;

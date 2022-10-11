@@ -26,6 +26,7 @@ const Meeting = () => {
 			type: "SET_VIEWMEETING",
 			viewMeeting: f,
 		});
+		window.localStorage.setItem("viewMeeting", JSON.stringify(f));
 		await dispatch({
 			type: "SET_AGENDAANDDOCS",
 			agendaAndDocs: [],
@@ -52,14 +53,17 @@ const Meeting = () => {
 			type: "SET_AGENDAANDDOCS",
 			agendaAndDocs: array,
 		});
+		window.localStorage.setItem("agendaAndDocs", JSON.stringify(array))
 	};
 
 	const getmeetings = async () => {
-		const response = await axios.get("http://localhost:2000/api/v1/meeting");
+		const response = await axios.get("http://localhost:2000/api/v1/meeting?limit=10");
 		await dispatch({
 			type: "SET_MEETINGS",
 			meetings: response.data.meetings,
 		});
+		
+		window.localStorage.setItem("meetings", JSON.stringify(response.data.meetings));
 	};
 	return (
 		// <Container>
@@ -80,7 +84,7 @@ const Meeting = () => {
 		<List
 			sx={{
 				width: "100%",
-				maxWidth: 360,
+				maxWidth: 400,
 				flex: "0.5",
 				mr: 1,
 			}}

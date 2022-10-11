@@ -7,34 +7,46 @@ export const initialState = {
 	dropDepth: 0,
 	inDropZone: false,
 	fileList: [],
-	meetings: [],
+	meetings: JSON.parse(localStorage.getItem("meetings")) || [],
 	addMeeting: { title: "", description: "", start: "", end: "" },
 	agenda: "",
 	docs: [],
 	fullAgenda: [],
 	notification: "",
-	viewMeeting: null,
-	agendaAndDocs: [],
+	viewMeeting: JSON.parse(localStorage.getItem("viewMeeting")) || null,
+	agendaAndDocs: JSON.parse(localStorage.getItem("agendaAndDocs")) || [],
 	checkMeeting: false,
-	comments: [],
+	comments: JSON.parse(localStorage.getItem("comments")) || [],
 	snackbar: {
 		open: false,
 		vertical: "top",
 		horizontal: "right",
 		notification: "",
-		error: false
+		error: false,
 	},
+	viewMeetings: JSON.parse(localStorage.getItem("viewMeetings")) || [],
+	polls: [],
 };
 
 // The reducer's primary job is to listen to actions
 const reducer = (state, action) => {
 	// Action has a type and a payload
+	
 	switch (action.type) {
-		// SET_COMMENTS
+		case "SET_VIEWMEETINGS":
+			return {
+				...state,
+				viewMeetings: action.viewMeetings,
+			};
 		case "SET_SNACKBAR":
 			return {
 				...state,
 				snackbar: action.snackbar,
+			};
+		case "SET_POLLS":
+			return {
+				...state,
+				polls: action.polls,
 			};
 		case "SET_COMMENTS":
 			return {

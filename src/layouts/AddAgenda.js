@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Back from "../components/Back";
 
 const AddMeeting = () => {
 	const [{ fileList, agenda, addMeeting, meeting, fullAgenda }, dispatch] =
@@ -35,8 +36,8 @@ const AddMeeting = () => {
 			agenda: agenda,
 			docs: docs,
 		};
-		console.log(file)
-		setFiles([])
+		console.log(file);
+		setFiles([]);
 		fullAgenda.push(file);
 		await dispatch({
 			type: "SET_FULLAGENDA",
@@ -72,6 +73,7 @@ const AddMeeting = () => {
 	};
 	return (
 		<>
+			<Back color="Primary" to="/meeting/create" />
 			<div style={{ marginRight: "5%", marginTop: "2%" }}>
 				<Box
 					component="form"
@@ -135,11 +137,11 @@ const AddMeeting = () => {
 								type="file"
 								multiple
 								onChange={(e) => {
-									let hold = []
-									for(const file of e.target.files){
-										hold.push(file)
+									let hold = [];
+									for (const file of e.target.files) {
+										hold.push(file);
 									}
-									setFiles(hold)
+									setFiles(hold);
 									setSelectedFiles(e.target.files);
 								}}
 							/>

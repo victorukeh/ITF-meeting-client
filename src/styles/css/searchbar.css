@@ -1,0 +1,15 @@
+.data__field {
+    padding: 5;
+    justify-content: normal;
+    font-size: 20;
+    color: blue;
+    margin: 1;
+    width: 248px;
+    border-color: green;
+    border-width: 10px;
+    cursor: pointer;
+}
+
+.data__field:hover {
+    color: rgb(250, 17, 250);
+  }

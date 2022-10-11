@@ -11,6 +11,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Link } from "react-router-dom";
+import Back from "../components/Back";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { useDataLayerValue } from "../reducer/DataLayer";
 
@@ -79,6 +80,7 @@ const AddMeeting = () => {
 					</Grid>
 				</Box>
 			</div> */}
+				<Back color="Primary" to="/meeting/admin"/>
 			<Container>
 				<Box
 					component="form"

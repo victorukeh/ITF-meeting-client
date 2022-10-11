@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Body from "../components/Body";
 import Dashboard from "./Dashboard";
@@ -15,6 +15,9 @@ import Vote from "../layouts/Vote"
 import AddUser from "./AddUser";
 import Alert from "@material-ui/lab/Alert";
 import Users from "../layouts/Users";
+import PollView from "../layouts/PollView"
+import ViewPoll from "../layouts/ViewPoll"
+import Meetings from "./Meetings";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import { Notification } from "../components/Notification";
 import { Routes, Route } from "react-router-dom";
@@ -22,8 +25,15 @@ import { Routes, Route } from "react-router-dom";
 import { useDataLayerValue } from "../reducer/DataLayer";
 
 function Main() {
-	const [{ token, snackbar }, dispatch] = useDataLayerValue();
+	const [{ token, viewMeeting, snackbar }, dispatch] = useDataLayerValue();
 
+	useEffect(() => {
+		const meeting = window.localStorage.getItem('viewMeeting');
+		console.log(meeting)
+		const docs= window.localStorage.getItem('agendaAndDocs');
+		if ( meeting !== null ) dispatch({type: "SET_VIEWMEETING", viewMeeting: JSON.parse(meeting)});
+		if ( docs !== null ) dispatch({type: "SET_AGENDAANDDOCS", agendaAndDocs: JSON.parse(docs)});
+	  }, []);
 	return (
 		<>
 			<MainContainer>
@@ -34,8 +44,11 @@ function Main() {
 						<Routes>
 							<Route path="/" element={<Dashboard />} />
 							<Route path="/vote" element={<Vote />} />
+							<Route path="/poll/create" element={<PollView />} />
+							<Route path="/poll/view" element={<ViewPoll />} />
 							<Route path="/users" element={<Users />} />
 							<Route path="/users/create" element={<AddUser />} />
+							<Route path="/meetings" element={<Meetings />} />
 							<Route path="/meeting/admin" element={<Meeting />} />
 							<Route path="/meeting" element={<UserMeeting />} />
 							<Route path="/meeting/agenda" element={<AddAgenda />} />
