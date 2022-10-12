@@ -97,14 +97,14 @@ const Vote = () => {
 					<TableBody>
 						{polls.map((row, id) => {
 							console.log(row);
-							const date = new Date(row.question.createdAt).toUTCString();
+							const date = new Date(row.createdAt).toUTCString();
 							return (
 								<TableRow
 									key={id}
 									sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
 								>
 									<TableCell component="th" scope="row">
-										{row.question.question}
+										{row.question}
 									</TableCell>
 									<TableCell>{date}</TableCell>
 									<TableCell align="right">

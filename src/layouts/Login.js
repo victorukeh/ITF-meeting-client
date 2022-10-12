@@ -81,7 +81,7 @@ const Login = () => {
 						<Form>
 							<LoginField Label="Username" Logo={AccountCircle} />
 							<LoginField Label="Password" Logo={LockIcon} />
-							<Link style={{ textDecoration: "none", color: "white" }} to="/">
+							<Link style={{ textDecoration: "none", color: "white" }} to="/dashboard">
 								<Button
 									style={{ marginTop: "10%", width: "77%" }}
 									onClick={handleClick({

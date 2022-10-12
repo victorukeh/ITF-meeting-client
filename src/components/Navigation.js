@@ -2,20 +2,13 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-function Navigation({ Logo, text }) {
-	// const onClickChange = () => {
-	// 	let MyDiv = document.getElementById('myDIV')
-	// 	setActive({
-	// 	   active: MyDiv.style.display === 'none' 
-	// 	})
-	// }
-	// const [active, setActive] = useState("")
+function Navigation({ Logo, text, color }) {
 	return (
 		<Container>
-			<LogoField className="logoField">
+			<LogoField style={{color: color}} className="logoField">
 				<Logo />
 			</LogoField>
-			<LogoText className="logoText">{text}</LogoText>
+			<LogoText style={{color: color}} className="logoText">{text}</LogoText>
 		</Container>
 	);
 }

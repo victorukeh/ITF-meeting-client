@@ -86,7 +86,7 @@ const UserMeeting = () => {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 		);
-		console.log(response);
+		console.log('polls', response);
 		await dispatch({
 			type: "SET_POLLS",
 			polls: response.data.polls,
@@ -259,7 +259,7 @@ const MeetingBox = styled.div`
 
 const MeetingView = styled.div`
 	margin-left: 5%;
-	overflow-y: scroll;
+	overflow-y: auto;
 	height: 79vh;
 `;
 

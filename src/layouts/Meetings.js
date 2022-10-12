@@ -43,9 +43,11 @@ const Meetings = () => {
 		}
 	};
 
-    const onClickHandler = async (d) => {
-        const fetchMeeting = await axios.get(`http://localhost:2000/api/v1/meeting/find?title=${d}`)
-        const f = fetchMeeting.data.meeting
+	const onClickHandler = async (d) => {
+		const fetchMeeting = await axios.get(
+			`http://localhost:2000/api/v1/meeting/find?title=${d}`
+		);
+		const f = fetchMeeting.data.meeting;
 		await dispatch({
 			type: "SET_VIEWMEETING",
 			viewMeeting: f,
@@ -77,7 +79,7 @@ const Meetings = () => {
 			type: "SET_AGENDAANDDOCS",
 			agendaAndDocs: array,
 		});
-		window.localStorage.setItem("agendaAndDocs", JSON.stringify(array))
+		window.localStorage.setItem("agendaAndDocs", JSON.stringify(array));
 	};
 
 	const dataFiltered = filterData(searchQuery, meetingTitles);
@@ -107,6 +109,50 @@ const Meetings = () => {
 		const result = meetings.slice(first, last);
 		setMappedMeetings(result);
 	};
+
+	const deleteMeeting = (id, index, newState) => async () => {
+		try {
+			const docs = await axios.get(
+				`http://localhost:2000/api/v1/meeting/docs?meeting=${id}`
+			);
+			for (const doc of docs.data.docs) {
+				await axios.delete(
+					`http://localhost:2000/api/v1/meeting/document/delete?document=${doc._id}`
+				);
+			}
+			await axios.delete(
+				`http://localhost:2000/api/v1/meeting/agenda/delete?meeting=${id}`
+			);
+			const message = await axios.delete(
+				`http://localhost:2000/api/v1/meeting/delete?meeting=${id}`
+			);
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					notification: message.data.message,
+					...newState,
+				},
+			});
+
+			const deleted = meetings.filter((o, i) => index !== i);
+			await dispatch({
+                type: "SET_VIEWMEETINGS",
+                viewMeetings: deleted,
+            });
+            setMappedMeetings(deleted)
+		} catch (err) {
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					error: true,
+					notification: err.message,
+					...newState,
+				},
+			});
+		}
+	};
 	return (
 		<>
 			<div
@@ -121,6 +167,7 @@ const Meetings = () => {
 			>
 				<div style={{ width: "80%", paddingLeft: "30%" }}>
 					<SearchBar
+                        title="Enter title of a meeting"
 						searchQuery={searchQuery}
 						setSearchQuery={setSearchQuery}
 					/>
@@ -138,7 +185,7 @@ const Meetings = () => {
 							}}
 						>
 							{dataFiltered.map((d) => (
-								<Link style={{textDecoration: "none"}} to="/meeting">
+								<Link style={{ textDecoration: "none" }} to="/meeting">
 									<div
 										className="data__field"
 										style={{
@@ -147,7 +194,7 @@ const Meetings = () => {
 											margin: 1,
 										}}
 										key={d.id}
-                                        onClick={() => onClickHandler(d)}
+										onClick={() => onClickHandler(d)}
 									>
 										{d}
 									</div>
@@ -202,10 +249,10 @@ const Meetings = () => {
 											<Delete>
 												<DeleteIcon
 													className="logoField"
-													// 				onClick={deleteMeeting(row._id, id + 1, {
-													// 	vertical: "top",
-													// 	horizontal: "right",
-													// })}
+													onClick={deleteMeeting(row._id, id + 1, {
+														vertical: "top",
+														horizontal: "right",
+													})}
 												/>
 											</Delete>
 										</Action>

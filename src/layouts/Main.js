@@ -18,6 +18,7 @@ import Users from "../layouts/Users";
 import PollView from "../layouts/PollView"
 import ViewPoll from "../layouts/ViewPoll"
 import Meetings from "./Meetings";
+import Polls from "./Polls";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import { Notification } from "../components/Notification";
 import { Routes, Route } from "react-router-dom";
@@ -42,7 +43,8 @@ function Main() {
 					<MainContent>
 						<Header />
 						<Routes>
-							<Route path="/" element={<Dashboard />} />
+							<Route path="/dashboard" element={<Dashboard />} />
+							<Route path="/polls" element={<Polls />} />
 							<Route path="/vote" element={<Vote />} />
 							<Route path="/poll/create" element={<PollView />} />
 							<Route path="/poll/view" element={<ViewPoll />} />

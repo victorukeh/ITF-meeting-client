@@ -105,31 +105,35 @@ const Preview = () => {
 
 			<MeetingView>
 				{fullAgenda.map((f, id) => {
+					console.log(f.docs.length)
 					return (
 						<AgendaView key={id}>
 							<AgendaItems>
 								<Agenda>
 									{id + 1}. {f.agenda}
 								</Agenda>
+								{f.docs.length > 0 && <div>
 								{dropDown.isOpen && dropDown.id === id ? (
 									<ArrowDropDownIcon
-										style={{
-											fontSize: "2.3rem",
-											marginTop: "2%",
-											cursor: "pointer",
-										}}
-										onClick={() => onClickHandler(id)}
-									/>
-								) : (
-									<ArrowLeftIcon
-										style={{
-											fontSize: "2.3rem",
-											marginTop: "2%",
-											cursor: "pointer",
-										}}
-										onClick={() => onClickHandler(id)}
-									/>
-								)}
+									style={{
+										fontSize: "2.3rem",
+										marginTop: "2%",
+										cursor: "pointer",
+									}}
+									onClick={() => onClickHandler(id)}
+								/>
+							) : (
+								<ArrowLeftIcon
+									style={{
+										fontSize: "2.3rem",
+										marginTop: "2%",
+										cursor: "pointer",
+									}}
+									onClick={() => onClickHandler(id)}
+								/>
+							)}
+								</div>}
+								
 							</AgendaItems>
 
 							{dropDown.isOpen && dropDown.id === id && (
@@ -214,7 +218,7 @@ const MeetingBox = styled.div`
 
 const MeetingView = styled.div`
 	margin-left: 5%;
-	overflow-y: scroll;
+	overflow-y: auto;
 	height: 79vh;
 `;
 

@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 
-const SearchBar = ({ setSearchQuery }) => {
+const SearchBar = ({ title, setSearchQuery }) => {
 	return (
 		<form>
 			<TextField
@@ -12,7 +12,7 @@ const SearchBar = ({ setSearchQuery }) => {
 				onInput={(e) => {
 					setSearchQuery(e.target.value);
 				}}
-				label="Enter title of a meeting"
+				label={title}
 				variant="outlined"
 				placeholder="Search..."
 				size="small"

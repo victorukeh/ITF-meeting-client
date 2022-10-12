@@ -25,6 +25,7 @@ export const initialState = {
 		error: false,
 	},
 	viewMeetings: JSON.parse(localStorage.getItem("viewMeetings")) || [],
+	allPolls: [],
 	polls: [],
 };
 
@@ -33,6 +34,11 @@ const reducer = (state, action) => {
 	// Action has a type and a payload
 	
 	switch (action.type) {
+		case "SET_ALLPOLLS":
+			return {
+				...state,
+				allPolls: action.allPolls,
+			};
 		case "SET_VIEWMEETINGS":
 			return {
 				...state,
