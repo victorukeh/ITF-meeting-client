@@ -27,6 +27,8 @@ export const initialState = {
 	viewMeetings: JSON.parse(localStorage.getItem("viewMeetings")) || [],
 	allPolls: [],
 	polls: [],
+	poll: JSON.parse(localStorage.getItem("poll")) || null,
+	options: JSON.parse(localStorage.getItem("options")) || null
 };
 
 // The reducer's primary job is to listen to actions
@@ -34,6 +36,16 @@ const reducer = (state, action) => {
 	// Action has a type and a payload
 	
 	switch (action.type) {
+		case "SET_OPTIONS":
+			return {
+				...state,
+				options: action.options,
+			};
+		case "SET_POLL":
+			return {
+				...state,
+				poll: action.poll,
+			};
 		case "SET_ALLPOLLS":
 			return {
 				...state,

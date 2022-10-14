@@ -27,7 +27,7 @@ import "../styles/css/searchbar.css";
 const Polls = () => {
 	const [{ fileList, agenda, addMeeting, allPolls, fullAgenda }, dispatch] =
 		useDataLayerValue();
-		console.log(allPolls)
+	console.log(allPolls);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [meetingTitles, setMeetingTitles] = useState([]);
 	const [mappedMeetings, setMappedMeetings] = useState([]);
@@ -105,6 +105,21 @@ const Polls = () => {
 		);
 	};
 
+	const getPoll = async(id) => {
+		let response = await axios.get(`http://localhost:2000/api/v1/meeting/poll?poll=${id}`)
+		await dispatch({
+			type: "SET_POLL",
+			poll: response.data.poll
+		})
+		window.localStorage.setItem("poll", JSON.stringify(response.data.poll))
+		response = await axios.get(`http://localhost:2000/api/v1/meeting/options?poll=${id}`)
+		console.log(response)
+		await dispatch({
+			type: "SET_OPTIONS",
+			options: response.data.options
+		})
+		window.localStorage.setItem("options", JSON.stringify(response.data.options))
+	}
 	const setPageMeetings = async (value) => {
 		const last = value * 5;
 		const first = last - 5;
@@ -187,7 +202,7 @@ const Polls = () => {
 							}}
 						>
 							{dataFiltered.map((d) => (
-								<Link style={{ textDecoration: "none" }} to="/meeting">
+								<Link style={{ textDecoration: "none" }} to="/poll/view">
 									<div
 										className="data__field"
 										style={{
@@ -219,8 +234,8 @@ const Polls = () => {
 				<Table sx={{ minWidth: 650 }} aria-label="simple table">
 					<TableHead>
 						<TableRow>
-							<TableCell>S/N </TableCell>
 							<TableCell>Question</TableCell>
+							<TableCell>Meeting</TableCell>
 							<TableCell>Date</TableCell>
 							<TableCell align="right">Actions</TableCell>
 						</TableRow>
@@ -234,16 +249,23 @@ const Polls = () => {
 									sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
 								>
 									<TableCell component="th" scope="row">
-										{id + 1}
+									{row.question}
 									</TableCell>
-									<TableCell>{row.question}</TableCell>
+									<TableCell>
+										{row.meeting}
+									</TableCell>
 									<TableCell>{date}</TableCell>
 									<TableCell align="right">
 										<Action>
 											<Edit
-											// onClick={handleClickOpen}
+											onClick={() => getPoll(row._id)}
 											>
-												<PreviewIcon className="logo" />
+												<Link
+													style={{ textDecoration: "none" }}
+													to="/poll/view"
+												>
+													<PreviewIcon className="logo" />
+												</Link>
 											</Edit>
 											<Edit>
 												<EditIcon className="logo" />

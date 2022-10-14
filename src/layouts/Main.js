@@ -30,7 +30,6 @@ function Main() {
 
 	useEffect(() => {
 		const meeting = window.localStorage.getItem('viewMeeting');
-		console.log(meeting)
 		const docs= window.localStorage.getItem('agendaAndDocs');
 		if ( meeting !== null ) dispatch({type: "SET_VIEWMEETING", viewMeeting: JSON.parse(meeting)});
 		if ( docs !== null ) dispatch({type: "SET_AGENDAANDDOCS", agendaAndDocs: JSON.parse(docs)});
@@ -43,6 +42,7 @@ function Main() {
 					<MainContent>
 						<Header />
 						<Routes>
+							<Route path="/" element={<Dashboard />} />
 							<Route path="/dashboard" element={<Dashboard />} />
 							<Route path="/polls" element={<Polls />} />
 							<Route path="/vote" element={<Vote />} />
