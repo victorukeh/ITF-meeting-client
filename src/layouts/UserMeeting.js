@@ -81,16 +81,15 @@ const UserMeeting = () => {
 
 	const getPolls = async () => {
 		const response = await axios.get(
-			`http://localhost:2000/api/v1/meeting/polls?meeting=${viewMeeting._id}`,
+			`http://localhost:2000/api/v1/meeting/poll-meet?meeting=${viewMeeting._id}`,
 			{
 				headers: { Authorization: `Bearer ${token}` },
 			}
 		);
-		console.log('polls', response);
 		await dispatch({
-			type: "SET_POLLS",
-			polls: response.data.polls,
-		});
+			type: "SET_POLLSFORMEETING",
+			pollsForMeeting: response.data.polls
+		})
 	};
 	const getAdminComments = async () => {
 		const response = await axios.get(
@@ -110,6 +109,7 @@ const UserMeeting = () => {
 			checkMeeting: false,
 		});
 	};
+
 	return (
 		<Container>
 			<MeetingBox>

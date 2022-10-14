@@ -19,7 +19,7 @@ import MeetingPreview from "../components/MeetingPreview";
 import axios from "axios";
 
 const Vote = () => {
-	const [{ polls }, dispatch] = useDataLayerValue();
+	const [{ polls, user, pollsForMeeting }, dispatch] = useDataLayerValue();
 	const [open, setOpen] = useState(false);
 	const deletePoll = (id, index, newState) => async () => {
 		try {
@@ -35,10 +35,10 @@ const Vote = () => {
 				},
 			});
 
-			const deleted = polls.filter((o, i) => index !== i);
+			const deleted = pollsForMeeting.filter((o, i) => index !== i);
 			await dispatch({
-				type: "SET_POLLS",
-				polls: deleted,
+				type: "SET_POLLSFORMEETING",
+				pollsForMeeting: deleted,
 			});
 		} catch (err) {
 			await dispatch({
@@ -78,9 +78,9 @@ const Vote = () => {
 					margin: "20px 0",
 				}}
 			>
-				<Link style={{ textDecoration: "none" }} to="/poll/create">
+				{user.role === "admin" && <Link style={{ textDecoration: "none" }} to="/poll/create">
 					<Button variant="contained">+ NEW POLL</Button>
-				</Link>
+				</Link>}
 			</div>
 			<TableContainer
 				component={Paper}
@@ -95,8 +95,7 @@ const Vote = () => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{polls.map((row, id) => {
-							console.log(row);
+						{pollsForMeeting.map((row, id) => {
 							const date = new Date(row.createdAt).toUTCString();
 							return (
 								<TableRow
