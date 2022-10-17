@@ -7,6 +7,10 @@ import { useDataLayerValue } from "./reducer/DataLayer";
 function App() {
 	const [{ token, user, snackbar }, dispatch] = useDataLayerValue();
 	const { vertical, horizontal, open, notification } = snackbar;
+	useEffect(() => {
+		window.localStorage.setItem("token", JSON.stringify(token));
+		window.localStorage.setItem("user", JSON.stringify(user));
+	}, [token])
 	const handleClose = () => {
 		dispatch({
 			type: "SET_SNACKBAR",

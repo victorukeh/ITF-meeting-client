@@ -53,17 +53,22 @@ const Meeting = () => {
 			type: "SET_AGENDAANDDOCS",
 			agendaAndDocs: array,
 		});
-		window.localStorage.setItem("agendaAndDocs", JSON.stringify(array))
+		window.localStorage.setItem("agendaAndDocs", JSON.stringify(array));
 	};
 
 	const getmeetings = async () => {
-		const response = await axios.get("http://localhost:2000/api/v1/meeting?limit=10");
+		const response = await axios.get(
+			"http://localhost:2000/api/v1/meeting?limit=10"
+		);
 		await dispatch({
 			type: "SET_MEETINGS",
 			meetings: response.data.meetings,
 		});
-		
-		window.localStorage.setItem("meetings", JSON.stringify(response.data.meetings));
+
+		window.localStorage.setItem(
+			"meetings",
+			JSON.stringify(response.data.meetings)
+		);
 	};
 	return (
 		// <Container>
@@ -98,13 +103,18 @@ const Meeting = () => {
 			// style={{overflowY: "hidden", height: "70vh"}}
 		>
 			{meetings.slice(0, 5).map((f, id) => {
-				const date = new Date(f.start).toUTCString()
+				const date = new Date(f.start).toUTCString();
 				return (
 					<ListItemButton key={id}>
 						<ListItemIcon>
 							<Groups2Icon />
 						</ListItemIcon>
-						<Link style={{textDecoration: "none", color: "#333"}} key={id} to="/meeting" onClick={() => onClickHandler(f)}>
+						<Link
+							style={{ textDecoration: "none", color: "#333" }}
+							key={id}
+							to="/meetings/meeting"
+							onClick={() => onClickHandler(f)}
+						>
 							<ListItemText primary={f.title} secondary={date} />
 						</Link>
 					</ListItemButton>

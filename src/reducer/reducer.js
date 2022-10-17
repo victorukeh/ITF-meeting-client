@@ -27,6 +27,7 @@ export const initialState = {
 	viewMeetings: JSON.parse(localStorage.getItem("viewMeetings")) || [],
 	allPolls: [],
 	polls: [],
+	users: JSON.parse(localStorage.getItem("users")) || [],
 	pollsForMeeting: [],
 	poll: JSON.parse(localStorage.getItem("poll")) || null,
 	options: JSON.parse(localStorage.getItem("options")) || null,
@@ -41,6 +42,11 @@ const reducer = (state, action) => {
 			return {
 				...state,
 				options: action.options,
+			};
+		case "SET_USERS":
+			return {
+				...state,
+				users: action.users,
 			};
 		case "SET_POLLSFORMEETING":
 			return {

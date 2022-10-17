@@ -24,7 +24,7 @@ const Vote = () => {
 	const deletePoll = (id, index, newState) => async () => {
 		try {
 			const response = await axios.delete(
-				`http://localhost:2000/api/v1/meeting/polls/delete?poll=${id}`
+				`http://localhost:2000/api/v1/meetings/meeting/polls/delete?poll=${id}`
 			);
 			await dispatch({
 				type: "SET_SNACKBAR",
@@ -62,7 +62,7 @@ const Vote = () => {
 	};
 	return (
 		<>
-			<Back color="Primary" to="/meeting" />
+			<Back color="Primary" to="/meetings/meeting" />
 			<MeetingPreview
 				handleClose={handleClose}
 				handleClickOpen={handleClickOpen}
@@ -78,9 +78,14 @@ const Vote = () => {
 					margin: "20px 0",
 				}}
 			>
-				{user.role === "admin" && <Link style={{ textDecoration: "none" }} to="/poll/create">
-					<Button variant="contained">+ NEW POLL</Button>
-				</Link>}
+				{user.role === "admin" && (
+					<Link
+						style={{ textDecoration: "none" }}
+						to="/meetings/meeting/poll/create"
+					>
+						<Button variant="contained">+ NEW POLL</Button>
+					</Link>
+				)}
 			</div>
 			<TableContainer
 				component={Paper}

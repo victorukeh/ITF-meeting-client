@@ -80,7 +80,7 @@ const AddMeeting = () => {
 					</Grid>
 				</Box>
 			</div> */}
-				<Back color="Primary" to="/meeting/admin"/>
+			<Back color="Primary" to="/set-meetings/meeting/admin" />
 			<Container>
 				<Box
 					component="form"
@@ -133,7 +133,7 @@ const AddMeeting = () => {
 				</Box>
 				<Link
 					style={{ textDecoration: "none", color: "white" }}
-					to="/meeting/agenda"
+					to="/meetings/meeting/agenda"
 					onClick={() => handleMeetingChange()}
 				>
 					<Button

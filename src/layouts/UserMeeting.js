@@ -76,7 +76,10 @@ const UserMeeting = () => {
 			}
 		);
 		dispatch({ type: "SET_COMMENTS", comments: response.data.comments });
-		window.localStorage.setItem("comments", JSON.stringify(response.data.comments));
+		window.localStorage.setItem(
+			"comments",
+			JSON.stringify(response.data.comments)
+		);
 	};
 
 	const getPolls = async () => {
@@ -88,8 +91,8 @@ const UserMeeting = () => {
 		);
 		await dispatch({
 			type: "SET_POLLSFORMEETING",
-			pollsForMeeting: response.data.polls
-		})
+			pollsForMeeting: response.data.polls,
+		});
 	};
 	const getAdminComments = async () => {
 		const response = await axios.get(
@@ -99,8 +102,11 @@ const UserMeeting = () => {
 			}
 		);
 		dispatch({ type: "SET_COMMENTS", comments: response.data.comments });
-		
-		window.localStorage.setItem("comments", JSON.stringify(response.data.comments));
+
+		window.localStorage.setItem(
+			"comments",
+			JSON.stringify(response.data.comments)
+		);
 	};
 	// http://localhost:2000/api/v1/meeting/comments
 	const setMeeting = async () => {
@@ -123,7 +129,7 @@ const UserMeeting = () => {
 							<Agenda>
 								{id + 1}. {f.agenda.name}
 							</Agenda>
-							<DropDown button="Documents" items={f.docs} key={id}/>
+							<DropDown button="Documents" items={f.docs} key={id} />
 						</AgendaItems>
 						{user.role === "user" && (
 							<Comment onClick={() => commentHandler(id)}>
@@ -180,7 +186,10 @@ const UserMeeting = () => {
 							</Box>
 						)}
 						<ButtonBox>
-							<Link style={{ textDecoration: "none" }} to="/meeting/comments">
+							<Link
+								style={{ textDecoration: "none" }}
+								to="/meetings/meeting/comments"
+							>
 								{user.role === "user" && (
 									<Button
 										variant="contained"
@@ -202,7 +211,7 @@ const UserMeeting = () => {
 							</Link>
 							<Link
 								style={{ textDecoration: "none", marginLeft: "2%" }}
-								to="/vote"
+								to="/meetings/meeting/vote"
 								onClick={() => getPolls()}
 							>
 								{user.role === "admin" && (

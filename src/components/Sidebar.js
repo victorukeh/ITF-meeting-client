@@ -86,13 +86,17 @@ const Sidebar = () => {
 				}
 			</NavLink>
 			{user.role === "admin" && (
-				<NavLink style={{ textDecoration: "none" }} to="/meeting/admin">
+				<NavLink
+					style={{ textDecoration: "none" }}
+					to="/set-meetings/meeting/admin"
+				>
 					{({ isActive }) => (
-					<Navigation
-						color={isActive ? "#b20505" : undefined}
-						Logo={MeetingRoomIcon} text="Set Meetings"
-					/>
-				)}
+						<Navigation
+							color={isActive ? "#b20505" : undefined}
+							Logo={MeetingRoomIcon}
+							text="Set Meetings"
+						/>
+					)}
 				</NavLink>
 			)}
 			<Navigation Logo={LockIcon} text="Change Password" />

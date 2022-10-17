@@ -11,12 +11,12 @@ import Preview from "../layouts/Preview";
 import SetMeeting from "../layouts/SetMeeting";
 import UserMeeting from "../layouts/UserMeeting";
 import ViewComments from "../layouts/ViewComments";
-import Vote from "../layouts/Vote"
+import Vote from "../layouts/Vote";
 import AddUser from "./AddUser";
 import Alert from "@material-ui/lab/Alert";
 import Users from "../layouts/Users";
-import PollView from "../layouts/PollView"
-import ViewPoll from "../layouts/ViewPoll"
+import PollView from "../layouts/PollView";
+import ViewPoll from "../layouts/ViewPoll";
 import Meetings from "./Meetings";
 import Polls from "./Polls";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
@@ -29,11 +29,13 @@ function Main() {
 	const [{ token, viewMeeting, snackbar }, dispatch] = useDataLayerValue();
 
 	useEffect(() => {
-		const meeting = window.localStorage.getItem('viewMeeting');
-		const docs= window.localStorage.getItem('agendaAndDocs');
-		if ( meeting !== null ) dispatch({type: "SET_VIEWMEETING", viewMeeting: JSON.parse(meeting)});
-		if ( docs !== null ) dispatch({type: "SET_AGENDAANDDOCS", agendaAndDocs: JSON.parse(docs)});
-	  }, []);
+		const meeting = window.localStorage.getItem("viewMeeting");
+		const docs = window.localStorage.getItem("agendaAndDocs");
+		if (meeting !== null)
+			dispatch({ type: "SET_VIEWMEETING", viewMeeting: JSON.parse(meeting) });
+		if (docs !== null)
+			dispatch({ type: "SET_AGENDAANDDOCS", agendaAndDocs: JSON.parse(docs) });
+	}, []);
 	return (
 		<>
 			<MainContainer>
@@ -45,18 +47,30 @@ function Main() {
 							<Route path="/" element={<Dashboard />} />
 							<Route path="/dashboard" element={<Dashboard />} />
 							<Route path="/polls" element={<Polls />} />
-							<Route path="/vote" element={<Vote />} />
-							<Route path="/poll/create" element={<PollView />} />
-							<Route path="/poll/view" element={<ViewPoll />} />
+							<Route path="/meetings/meeting/vote" element={<Vote />} />
+							<Route
+								path="/meetings/meeting/poll/create"
+								element={<PollView />}
+							/>
+							<Route path="/polls/view" element={<ViewPoll />} />
 							<Route path="/users" element={<Users />} />
 							<Route path="/users/create" element={<AddUser />} />
 							<Route path="/meetings" element={<Meetings />} />
-							<Route path="/meeting/admin" element={<Meeting />} />
-							<Route path="/meeting" element={<UserMeeting />} />
-							<Route path="/meeting/agenda" element={<AddAgenda />} />
-							<Route path="/meeting/create" element={<AddMeeting />} />
-							<Route path="/meeting/agenda/preview" element={<Preview />} />
-							<Route path="/meeting/comments" element={<ViewComments />} />
+							<Route path="/set-meetings/meeting/admin" element={<Meeting />} />
+							<Route path="/meetings/meeting" element={<UserMeeting />} />
+							<Route path="/meetings/meeting/agenda" element={<AddAgenda />} />
+							<Route
+								path="/set-meetings/meeting/create"
+								element={<AddMeeting />}
+							/>
+							<Route
+								path="/set-meetings/meeting/preview"
+								element={<Preview />}
+							/>
+							<Route
+								path="/meetings/meeting/comments"
+								element={<ViewComments />}
+							/>
 						</Routes>
 					</MainContent>
 				</Container>

@@ -48,6 +48,7 @@ const Meetings = () => {
 			`http://localhost:2000/api/v1/meeting/find?title=${d}`
 		);
 		const f = fetchMeeting.data.meeting;
+		console.log(f);
 		await dispatch({
 			type: "SET_VIEWMEETING",
 			viewMeeting: f,
@@ -137,10 +138,10 @@ const Meetings = () => {
 
 			const deleted = meetings.filter((o, i) => index !== i);
 			await dispatch({
-                type: "SET_VIEWMEETINGS",
-                viewMeetings: deleted,
-            });
-            setMappedMeetings(deleted)
+				type: "SET_VIEWMEETINGS",
+				viewMeetings: deleted,
+			});
+			setMappedMeetings(deleted);
 		} catch (err) {
 			await dispatch({
 				type: "SET_SNACKBAR",
@@ -167,7 +168,7 @@ const Meetings = () => {
 			>
 				<div style={{ width: "80%", paddingLeft: "30%" }}>
 					<SearchBar
-                        title="Enter title of a meeting"
+						title="Enter title of a meeting"
 						searchQuery={searchQuery}
 						setSearchQuery={setSearchQuery}
 					/>
@@ -185,7 +186,7 @@ const Meetings = () => {
 							}}
 						>
 							{dataFiltered.map((d) => (
-								<Link style={{ textDecoration: "none" }} to="/meeting">
+								<Link style={{ textDecoration: "none" }} to="/meetings/meeting">
 									<div
 										className="data__field"
 										style={{
@@ -238,10 +239,13 @@ const Meetings = () => {
 									<TableCell>{date}</TableCell>
 									<TableCell align="right">
 										<Action>
-											<Edit
-											// onClick={handleClickOpen}
-											>
-												<PreviewIcon className="logo" />
+											<Edit onClick={() => onClickHandler(row._id)}>
+												<Link
+													style={{ textDecoration: "none" }}
+													to="/meetings/meeting"
+												>
+													<PreviewIcon className="logo" />
+												</Link>
 											</Edit>
 											<Edit>
 												<EditIcon className="logo" />

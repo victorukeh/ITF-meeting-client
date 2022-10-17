@@ -105,21 +105,28 @@ const Polls = () => {
 		);
 	};
 
-	const getPoll = async(id) => {
-		let response = await axios.get(`http://localhost:2000/api/v1/meeting/poll?poll=${id}`)
+	const getPoll = async (id) => {
+		let response = await axios.get(
+			`http://localhost:2000/api/v1/meeting/poll?poll=${id}`
+		);
 		await dispatch({
 			type: "SET_POLL",
-			poll: response.data.poll
-		})
-		window.localStorage.setItem("poll", JSON.stringify(response.data.poll))
-		response = await axios.get(`http://localhost:2000/api/v1/meeting/options?poll=${id}`)
-		console.log(response)
+			poll: response.data.poll,
+		});
+		window.localStorage.setItem("poll", JSON.stringify(response.data.poll));
+		response = await axios.get(
+			`http://localhost:2000/api/v1/meeting/options?poll=${id}`
+		);
+		console.log(response);
 		await dispatch({
 			type: "SET_OPTIONS",
-			options: response.data.options
-		})
-		window.localStorage.setItem("options", JSON.stringify(response.data.options))
-	}
+			options: response.data.options,
+		});
+		window.localStorage.setItem(
+			"options",
+			JSON.stringify(response.data.options)
+		);
+	};
 	const setPageMeetings = async (value) => {
 		const last = value * 5;
 		const first = last - 5;
@@ -202,7 +209,7 @@ const Polls = () => {
 							}}
 						>
 							{dataFiltered.map((d) => (
-								<Link style={{ textDecoration: "none" }} to="/poll/view">
+								<Link style={{ textDecoration: "none" }} to="/polls/view">
 									<div
 										className="data__field"
 										style={{
@@ -249,20 +256,16 @@ const Polls = () => {
 									sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
 								>
 									<TableCell component="th" scope="row">
-									{row.question}
+										{row.question}
 									</TableCell>
-									<TableCell>
-										{row.meeting}
-									</TableCell>
+									<TableCell>{row.meeting}</TableCell>
 									<TableCell>{date}</TableCell>
 									<TableCell align="right">
 										<Action>
-											<Edit
-											onClick={() => getPoll(row._id)}
-											>
+											<Edit onClick={() => getPoll(row._id)}>
 												<Link
 													style={{ textDecoration: "none" }}
-													to="/poll/view"
+													to="/polls/view"
 												>
 													<PreviewIcon className="logo" />
 												</Link>

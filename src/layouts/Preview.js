@@ -21,60 +21,59 @@ const Preview = () => {
 		});
 	};
 
-	const createMeeting = (newState) => async () =>  {
-		try{
-			
-		const response = await axios.post(
-			"http://localhost:2000/api/v1/meeting/create-meeting",
-			{
-				title: addMeeting.title,
-				description: addMeeting.description,
-				start: addMeeting.start,
-				end: addMeeting.end,
-			}
-		);
-		if (response.data.success !== true) {
-			await dispatch({
-				type: "SET_NOTIFICATION",
-				notification: "problems",
-			});
-		}
-
-		if (response.data.success === true) {
-			for (const item of fullAgenda) {
-				const formData = new FormData();
-				const agenda = await axios.post(
-					`http://localhost:2000/api/v1/meeting/agenda/add?meeting=${response.data.meeting._id}`,
-					{
-						agenda: item.agenda,
-					}
-				);
-				for (const doc of item.docs) {
-					formData.append("files", doc);
+	const createMeeting = (newState) => async () => {
+		try {
+			const response = await axios.post(
+				"http://localhost:2000/api/v1/meeting/create-meeting",
+				{
+					title: addMeeting.title,
+					description: addMeeting.description,
+					start: addMeeting.start,
+					end: addMeeting.end,
 				}
-				const docs = await axios.post(
-					`http://localhost:2000/api/v1/meeting/files?agenda=${agenda.data.agenda._id}&meeting=${response.data.meeting._id}`,
-					formData
-				);
+			);
+			if (response.data.success !== true) {
+				await dispatch({
+					type: "SET_NOTIFICATION",
+					notification: "problems",
+				});
 			}
-			await dispatch({
-				type: "SET_SNACKBAR",
-				snackbar: {
-					open: true,
-					notification: "Meeting Creeated Successfully",
-					...newState,
-				},
-			});
-			await dispatch({
-				type: "SET_FULLAGENDA",
-				fullAgenda: [],
-			});
-			await dispatch({
-				type: "SET_ADDMEETING",
-				addMeeting: "",
-			});
-		}
-		}catch(err){
+
+			if (response.data.success === true) {
+				for (const item of fullAgenda) {
+					const formData = new FormData();
+					const agenda = await axios.post(
+						`http://localhost:2000/api/v1/meeting/agenda/add?meeting=${response.data.meeting._id}`,
+						{
+							agenda: item.agenda,
+						}
+					);
+					for (const doc of item.docs) {
+						formData.append("files", doc);
+					}
+					const docs = await axios.post(
+						`http://localhost:2000/api/v1/meeting/files?agenda=${agenda.data.agenda._id}&meeting=${response.data.meeting._id}`,
+						formData
+					);
+				}
+				await dispatch({
+					type: "SET_SNACKBAR",
+					snackbar: {
+						open: true,
+						notification: "Meeting Creeated Successfully",
+						...newState,
+					},
+				});
+				await dispatch({
+					type: "SET_FULLAGENDA",
+					fullAgenda: [],
+				});
+				await dispatch({
+					type: "SET_ADDMEETING",
+					addMeeting: "",
+				});
+			}
+		} catch (err) {
 			await dispatch({
 				type: "SET_SNACKBAR",
 				snackbar: {
@@ -105,35 +104,36 @@ const Preview = () => {
 
 			<MeetingView>
 				{fullAgenda.map((f, id) => {
-					console.log(f.docs.length)
+					console.log(f.docs.length);
 					return (
 						<AgendaView key={id}>
 							<AgendaItems>
 								<Agenda>
 									{id + 1}. {f.agenda}
 								</Agenda>
-								{f.docs.length > 0 && <div>
-								{dropDown.isOpen && dropDown.id === id ? (
-									<ArrowDropDownIcon
-									style={{
-										fontSize: "2.3rem",
-										marginTop: "2%",
-										cursor: "pointer",
-									}}
-									onClick={() => onClickHandler(id)}
-								/>
-							) : (
-								<ArrowLeftIcon
-									style={{
-										fontSize: "2.3rem",
-										marginTop: "2%",
-										cursor: "pointer",
-									}}
-									onClick={() => onClickHandler(id)}
-								/>
-							)}
-								</div>}
-								
+								{f.docs.length > 0 && (
+									<div>
+										{dropDown.isOpen && dropDown.id === id ? (
+											<ArrowDropDownIcon
+												style={{
+													fontSize: "2.3rem",
+													marginTop: "2%",
+													cursor: "pointer",
+												}}
+												onClick={() => onClickHandler(id)}
+											/>
+										) : (
+											<ArrowLeftIcon
+												style={{
+													fontSize: "2.3rem",
+													marginTop: "2%",
+													cursor: "pointer",
+												}}
+												onClick={() => onClickHandler(id)}
+											/>
+										)}
+									</div>
+								)}
 							</AgendaItems>
 
 							{dropDown.isOpen && dropDown.id === id && (
@@ -164,7 +164,7 @@ const Preview = () => {
 										marginLeft: "2%",
 										marginRight: "2%",
 									}}
-									to="/meeting/create"
+									to="/set-meetings/meeting/create"
 								>
 									<Button
 										variant="contained"

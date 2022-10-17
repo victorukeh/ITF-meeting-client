@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-const PollButton = ({ option, sumValue, color, onClickHandler}) => {
+const PollButton = ({ option, sumValue, color, onClickHandler, max}) => {
 	   
 	var percent = 0
 	if(sumValue !== 0){
@@ -41,7 +42,11 @@ const PollButton = ({ option, sumValue, color, onClickHandler}) => {
 					}}
 				></div>
 			</div>
-			<p style={{ color: "gray" }}>{option.votes} votes</p>
+			<div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+				<p style={{ color: "gray" }}>{option.votes} votes</p>
+				{max !== 0 && max === option.votes && <CheckCircleIcon style={{marginTop: "3%", color: "green"}}/>}
+			</div>
+			
 		</Container>
 	);
 };

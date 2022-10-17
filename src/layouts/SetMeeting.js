@@ -11,7 +11,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import { useDataLayerValue } from "../reducer/DataLayer";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
-import PreviewIcon from '@mui/icons-material/Preview';
+import PreviewIcon from "@mui/icons-material/Preview";
 import { Link } from "react-router-dom";
 import AddCommentIcon from "@material-ui/icons/AddComment";
 import MeetingPreview from "../components/MeetingPreview";
@@ -22,7 +22,7 @@ const SetMeeting = () => {
 	const [open, setOpen] = useState(false);
 
 	const deleteMeeting = (id, index, newState) => async () => {
-		try{
+		try {
 			const docs = await axios.get(
 				`http://localhost:2000/api/v1/meeting/docs?meeting=${id}`
 			);
@@ -45,13 +45,13 @@ const SetMeeting = () => {
 					...newState,
 				},
 			});
-			
+
 			const deleted = meetings.filter((o, i) => index !== i);
 			dispatch({
 				type: "SET_MEETINGS",
 				meetings: deleted,
 			});
-		}catch(err){
+		} catch (err) {
 			await dispatch({
 				type: "SET_SNACKBAR",
 				snackbar: {
@@ -62,7 +62,6 @@ const SetMeeting = () => {
 				},
 			});
 		}
-		
 	};
 
 	const handleClickOpen = () => {
@@ -89,7 +88,10 @@ const SetMeeting = () => {
 					margin: "20px 0",
 				}}
 			>
-				<Link style={{ textDecoration: "none" }} to="/meeting/create">
+				<Link
+					style={{ textDecoration: "none" }}
+					to="/set-meetings/meeting/create"
+				>
 					<Button variant="contained">ADD NEW MEETING</Button>
 				</Link>
 			</div>
@@ -128,9 +130,9 @@ const SetMeeting = () => {
 												<DeleteIcon
 													className="logoField"
 													onClick={deleteMeeting(row._id, id + 1, {
-										vertical: "top",
-										horizontal: "right",
-									})}
+														vertical: "top",
+														horizontal: "right",
+													})}
 												/>
 											</Delete>
 										</Action>
@@ -141,7 +143,6 @@ const SetMeeting = () => {
 					</TableBody>
 				</Table>
 			</TableContainer>
-			
 		</>
 	);
 };

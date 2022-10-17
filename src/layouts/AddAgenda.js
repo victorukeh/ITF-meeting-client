@@ -73,7 +73,7 @@ const AddMeeting = () => {
 	};
 	return (
 		<>
-			<Back color="Primary" to="/meeting/create" />
+			<Back color="Primary" to="/set-meetings/meeting/create" />
 			<div style={{ marginRight: "5%", marginTop: "2%" }}>
 				<Box
 					component="form"
@@ -94,7 +94,7 @@ const AddMeeting = () => {
 					>
 						<h3>Agendas - {agendas.length}</h3>
 						<Link
-							to="/meeting/agenda/preview"
+							to="/set-meetings/meeting/preview"
 							style={{ color: "white", textDecoration: "none" }}
 						>
 							<Button variant="contained" color="success">

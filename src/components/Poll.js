@@ -8,6 +8,7 @@ import { useDataLayerValue } from "../reducer/DataLayer";
 import axios from "axios";
 const Poll = () => {
 	const [{ poll, options, user, token }, dispatch] = useDataLayerValue();
+    const [max, setMax] = useState(0)
 	const [sumValue, setSumValue] = useState(0);
 	console.log(sumValue);
 	const [active, setActive] = useState({
@@ -18,17 +19,26 @@ const Poll = () => {
 
 	useEffect(() => {
 		let value = 0;
+        let arr = []
 		for (const option of options) {
 			value = option.votes + value;
+            arr.push(option.votes)
 		}
+        const max = arr.reduce((a, b) => Math.max(a, b), -Infinity);
+        console.log(max)
+        setMax(max)
 		setSumValue(value);
 	}, []);
 
 	useEffect(() => {
 		let value = 0;
+        let arr = []
 		for (const option of options) {
 			value = option.votes + value;
+            arr.push(option.votes)
 		}
+        const max = arr.reduce((a, b) => Math.max(a, b), -Infinity);
+        setMax(max)
 		setSumValue(value);
 		setActive({
 			id: "",
@@ -133,6 +143,7 @@ const Poll = () => {
 									sumValue={sumValue}
 									option={option}
 									key={id}
+                                    max={max}
 									onClickHandler={() => onClickHandler(id, option._id)}
 									color={
 										user.role === "user" &&

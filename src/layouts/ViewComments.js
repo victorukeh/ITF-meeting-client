@@ -53,11 +53,11 @@ const ViewComments = () => {
 
 	return (
 		<div style={{ width: "100%", overflowY: "auto" }}>
-			<Back to="/meeting" color="primary"/>
+			<Back to="/meetings/meeting" color="primary" />
 			<div style={{ padding: 3, height: "78vh", width: "95%" }}>
 				<h5>Comments</h5>
 				{comments.map((comment, id) => {
-					console.log(comment.text.length)
+					console.log(comment.text.length);
 					return (
 						<Paper style={{ padding: "5px 20px", marginTop: "10px" }} key={id}>
 							<Grid container wrap="nowrap" spacing={2}>
@@ -89,7 +89,11 @@ const ViewComments = () => {
 										</Delete>
 									</div>
 									<h4 style={{ fontWeight: "lighter", textAlign: "left" }}>
-										{comment.text.length > 124 ? <ReadMore>{comment.text}</ReadMore> : <p>{comment.text}</p>}
+										{comment.text.length > 124 ? (
+											<ReadMore>{comment.text}</ReadMore>
+										) : (
+											<p>{comment.text}</p>
+										)}
 									</h4>
 									<Time date={comment.createdAt} />
 								</Grid>

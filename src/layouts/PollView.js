@@ -27,7 +27,7 @@ const PollView = () => {
 		{
 			value: "",
 		},
-	]);	
+	]);
 	const handleChange = (prop) => (event) => {
 		setValues({ ...values, [prop]: event.target.value });
 	};
@@ -71,6 +71,14 @@ const PollView = () => {
 			);
 			console.log(response);
 			await dispatch({
+				type: "SET_POLL",
+				poll: response.data.poll,
+			});
+			await dispatch({
+				type: "SET_OPTIONS",
+				options: response.data.options,
+			});
+			await dispatch({
 				type: "SET_SNACKBAR",
 				snackbar: {
 					open: true,
@@ -92,7 +100,7 @@ const PollView = () => {
 	};
 	return (
 		<div>
-			<Back color="Primary" to="/vote" />
+			<Back color="Primary" to="/meetings/meeting/vote" />
 			<div
 				style={{
 					width: "100%",
@@ -136,7 +144,7 @@ const PollView = () => {
 						disabled={arr.length < 2 || values.question === "" ? true : false}
 					>
 						<Link
-							to="/poll/view"
+							to="/polls/view"
 							style={{ textDecoration: "none", color: "white" }}
 						>
 							Create Poll
