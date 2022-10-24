@@ -190,7 +190,7 @@ const UserMeeting = () => {
 								style={{ textDecoration: "none" }}
 								to="/meetings/meeting/comments"
 							>
-								{user.role === "user" && (
+								{/* {user.role === "user" && (
 									<Button
 										variant="contained"
 										color="success"
@@ -198,8 +198,8 @@ const UserMeeting = () => {
 									>
 										View Comments
 									</Button>
-								)}
-								{user.role === "admin" && (
+								)} */}
+								
 									<Button
 										variant="contained"
 										color="success"
@@ -207,7 +207,7 @@ const UserMeeting = () => {
 									>
 										View Comments
 									</Button>
-								)}
+								
 							</Link>
 							<Link
 								style={{ textDecoration: "none", marginLeft: "2%" }}

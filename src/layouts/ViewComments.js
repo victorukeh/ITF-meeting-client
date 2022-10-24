@@ -9,7 +9,7 @@ import ReadMore from "../components/ReadMore";
 import styled from "styled-components";
 import { useDataLayerValue } from "../reducer/DataLayer";
 const ViewComments = () => {
-	const [{ addMeeting, fullAgenda, notification, token, comments }, dispatch] =
+	const [{ addMeeting, fullAgenda, notification, token, comments, user }, dispatch] =
 		useDataLayerValue();
 
 	const deleteComment = (id, index, newState) => async () => {
@@ -79,13 +79,15 @@ const ViewComments = () => {
 											{comment.fullName}
 										</h4>
 										<Delete>
+											{/* {(comment.user === user._id || user.role === "admin") &&  */}
 											<DeleteIcon
-												className="logoField"
+												className={comment.user === user._id || user.role === "admin" ? "logoField" : "seize"}
 												onClick={deleteComment(comment._id, id + 1, {
 													vertical: "top",
 													horizontal: "right",
 												})}
 											/>
+											{/* } */}
 										</Delete>
 									</div>
 									<h4 style={{ fontWeight: "lighter", textAlign: "left" }}>
@@ -118,5 +120,11 @@ const Delete = styled.div`
 		.logoField {
 			color: #f2a5ac;
 		}
+	}
+
+	.seize{
+		color: brown;
+		margin-right: 21%;
+		pointer-events: none;
 	}
 `;

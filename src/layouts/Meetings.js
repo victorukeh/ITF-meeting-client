@@ -11,15 +11,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
 import { useDataLayerValue } from "../reducer/DataLayer";
-import Button from "@mui/material/Button";
 import styled from "styled-components";
 import PreviewIcon from "@mui/icons-material/Preview";
 import { Link } from "react-router-dom";
-import AddCommentIcon from "@material-ui/icons/AddComment";
-import MeetingPreview from "../components/MeetingPreview";
-
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
@@ -247,9 +242,9 @@ const Meetings = () => {
 													<PreviewIcon className="logo" />
 												</Link>
 											</Edit>
-											<Edit>
-												<EditIcon className="logo" />
-											</Edit>
+												{/* <Edit>
+													<EditIcon className="logo" />
+												</Edit> */}
 											<Delete>
 												<DeleteIcon
 													className="logoField"

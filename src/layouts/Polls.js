@@ -270,9 +270,6 @@ const Polls = () => {
 													<PreviewIcon className="logo" />
 												</Link>
 											</Edit>
-											<Edit>
-												<EditIcon className="logo" />
-											</Edit>
 											<Delete>
 												<DeleteIcon
 													className="logoField"

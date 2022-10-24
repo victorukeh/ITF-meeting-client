@@ -11,7 +11,7 @@ const SelectDropDown = ({ label, values, handleChange, value}) => {
 	// };
 	return (
 		<>
-			<FormControl style={{ width: "50ch" }}>
+			<FormControl style={{ width: "25ch" }}>
 				<InputLabel id="demo-simple-select-label">{label}</InputLabel>
 				<Select
 					labelId="demo-simple-select-label"

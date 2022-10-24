@@ -1,0 +1,10 @@
+.seize {
+	pointer-events: none;
+	text-decoration: none;
+	color: white;
+}
+
+.normal {
+	text-decoration: none;
+	color: white;
+}

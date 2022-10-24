@@ -19,8 +19,10 @@ import PollView from "../layouts/PollView";
 import ViewPoll from "../layouts/ViewPoll";
 import Meetings from "./Meetings";
 import Polls from "./Polls";
-import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
-import { Notification } from "../components/Notification";
+import ViewUser from "./ViewUser";
+import EditMeeting from "./EditMeeting";
+import EditUser from "./EditUser"
+import ChangePassword from "./ChangePassword";
 import { Routes, Route } from "react-router-dom";
 
 import { useDataLayerValue } from "../reducer/DataLayer";
@@ -48,15 +50,19 @@ function Main() {
 							<Route path="/dashboard" element={<Dashboard />} />
 							<Route path="/polls" element={<Polls />} />
 							<Route path="/meetings/meeting/vote" element={<Vote />} />
+							<Route path="/change-password" element={<ChangePassword />} />
 							<Route
 								path="/meetings/meeting/poll/create"
 								element={<PollView />}
 							/>
+							<Route path="/users/edit" element={<EditUser />} />
 							<Route path="/polls/view" element={<ViewPoll />} />
+							<Route path="/users/view" element={<ViewUser />} />
 							<Route path="/users" element={<Users />} />
 							<Route path="/users/create" element={<AddUser />} />
 							<Route path="/meetings" element={<Meetings />} />
 							<Route path="/set-meetings/meeting/admin" element={<Meeting />} />
+							<Route path="/set-meetings/meeting/admin/edit" element={<EditMeeting />} />
 							<Route path="/meetings/meeting" element={<UserMeeting />} />
 							<Route path="/meetings/meeting/agenda" element={<AddAgenda />} />
 							<Route

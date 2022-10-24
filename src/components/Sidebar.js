@@ -29,89 +29,99 @@ const Sidebar = () => {
 		});
 	};
 
-	let activeStyle = {
-		textDecoration: "underline",
-		borderLeft: "2px solid red",
-		background: "red",
-	};
-
-	let notActiveStyle = {
-		textDecoration: "none",
-		background: "red",
-	};
 	return (
-		<Container>
-			<Header>
-				<ItfLogo src={Logo} />
-				<HeaderText>Management Meeting</HeaderText>
-			</Header>
-			<SubHeader>Menu</SubHeader>
-			<NavLink style={{ textDecoration: "none" }} to="/dashboard">
-				{({ isActive }) => (
-					<Navigation
-						color={isActive ? "#b20505" : undefined}
-						Logo={ViewAgendaIcon}
-						text="Dashboard"
-					/>
-				)}
-			</NavLink>
-			<NavLink style={{ textDecoration: "none" }} to="/meetings">
-				{({ isActive }) => (
-					<Navigation
-						color={isActive ? "#b20505" : undefined}
-						Logo={ArticleIcon}
-						text="Meetings"
-					/>
-				)}
-			</NavLink>
-			<NavLink style={{ textDecoration: "none" }} to="/polls">
-				{({ isActive }) => (
-					<Navigation
-						color={isActive ? "#b20505" : undefined}
-						Logo={HowToVoteIcon}
-						text="Polls"
-					/>
-				)}
-			</NavLink>
-
-			<NavLink style={{ textDecoration: "none" }} to="/users">
-				{({ isActive }) =>
-					user.role === "admin" && (
-						<Navigation
-							color={isActive ? "#b20505" : undefined}
-							Logo={PeopleIcon}
-							text="Users"
-						/>
-					)
-				}
-			</NavLink>
-			{user.role === "admin" && (
-				<NavLink
-					style={{ textDecoration: "none" }}
-					to="/set-meetings/meeting/admin"
+		<>
+			<Container>
+				<Header>
+					<ItfLogo src={Logo} />
+					<HeaderText>Management Meeting</HeaderText>
+				</Header>
+				<SubHeader>Menu</SubHeader>
+				<div
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						justifyContent: "space-around",
+					}}
+					className={user.role === "user" ? "user" : "admin"}
 				>
-					{({ isActive }) => (
-						<Navigation
-							color={isActive ? "#b20505" : undefined}
-							Logo={MeetingRoomIcon}
-							text="Set Meetings"
-						/>
+					<NavLink style={{ textDecoration: "none" }} to="/dashboard">
+						{({ isActive }) => (
+							<Navigation
+								color={isActive ? "#b20505" : undefined}
+								Logo={ViewAgendaIcon}
+								text="Dashboard"
+							/>
+						)}
+					</NavLink>
+					<NavLink style={{ textDecoration: "none" }} to="/meetings">
+						{({ isActive }) => (
+							<Navigation
+								color={isActive ? "#b20505" : undefined}
+								Logo={ArticleIcon}
+								text="Meetings"
+							/>
+						)}
+					</NavLink>
+					<NavLink style={{ textDecoration: "none" }} to="/polls">
+						{({ isActive }) => (
+							<Navigation
+								color={isActive ? "#b20505" : undefined}
+								Logo={HowToVoteIcon}
+								text="Polls"
+							/>
+						)}
+					</NavLink>
+
+					{user.role === "admin" && (
+						<NavLink style={{ textDecoration: "none" }} to="/users">
+							{({ isActive }) =>
+								user.role === "admin" && (
+									<Navigation
+										color={isActive ? "#b20505" : undefined}
+										Logo={PeopleIcon}
+										text="Users"
+									/>
+								)
+							}
+						</NavLink>
 					)}
-				</NavLink>
-			)}
-			<Navigation Logo={LockIcon} text="Change Password" />
-			<Link
-				style={{ textDecoration: "none" }}
-				to="/"
-				onClick={signOut({
-					vertical: "top",
-					horizontal: "right",
-				})}
-			>
-				<Navigation Logo={LogoutIcon} text="Sign out" />
-			</Link>
-			{/* </div> */}
-		</Container>
+					{user.role === "admin" && (
+						<NavLink
+							style={{ textDecoration: "none" }}
+							to="/set-meetings/meeting/admin"
+						>
+							{({ isActive }) => (
+								<Navigation
+									color={isActive ? "#b20505" : undefined}
+									Logo={MeetingRoomIcon}
+									text="Set Meetings"
+								/>
+							)}
+						</NavLink>
+					)}
+					<NavLink style={{ textDecoration: "none" }} to="/change-password">
+						{({ isActive }) => (
+							<Navigation
+								color={isActive ? "#b20505" : undefined}
+								Logo={LockIcon}
+								text="Change Password"
+							/>
+						)}
+					</NavLink>
+					<Link
+						style={{ textDecoration: "none" }}
+						to="/"
+						onClick={signOut({
+							vertical: "top",
+							horizontal: "right",
+						})}
+					>
+						<Navigation Logo={LogoutIcon} text="Sign out" />
+					</Link>
+				</div>
+			</Container>
+		</>
 	);
 };
 
@@ -134,7 +144,6 @@ const Container = styled.div`
 	height: 100vh;
 	padding-left: 2%;
 	border-right: 2px solid #c5c7c9;
-	/* background: linear-gradient(360deg, rgba(63, 63, 253, 0.8) 0%, rgba(255, 255, 255, 0) 25%); */
 `;
 
 const Header = styled.div`
@@ -158,4 +167,11 @@ const SubHeader = styled.p`
 	font-weight: bold;
 	font-family: "Segoe UI", Arial, sans-serif;
 	font-size: 12px;
+`;
+
+const SubContainer = styled.div`
+	height: 60vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: "space-around";
 `;

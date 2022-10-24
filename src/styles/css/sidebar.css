@@ -2,3 +2,11 @@
     background: red;
     border: 5px solid red
 } */
+
+.admin{
+    height: 75vh;
+}
+
+.user{
+    height: 55vh;
+}

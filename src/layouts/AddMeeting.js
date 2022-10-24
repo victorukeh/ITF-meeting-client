@@ -62,24 +62,6 @@ const AddMeeting = () => {
 	};
 	return (
 		<>
-			{/* <div style={{ marginRight: "5%", marginTop: "5%" }}>
-					<Grid container spacing={2}>
-						<Grid item xs={4}>
-							<h3 style={{ color: "#0e2345" }}>End: </h3>
-						</Grid>
-						<Grid item xs={7}>
-							<LocalizationProvider dateAdapter={AdapterDayjs}>
-								<DateTimePicker
-									label="Set Date & Time"
-									value={end}
-									onChange={handleChange2}
-									renderInput={(params) => <TextField {...params} />}
-								/>
-							</LocalizationProvider>
-						</Grid>
-					</Grid>
-				</Box>
-			</div> */}
 			<Back color="Primary" to="/set-meetings/meeting/admin" />
 			<Container>
 				<Box
@@ -90,8 +72,8 @@ const AddMeeting = () => {
 					noValidate
 					autoComplete="off"
 				>
-					<h3>New Meeting Information</h3>
-					<div style={{ maxWidth: "500px" }}>
+					<Header>New Meeting Information</Header>
+					<MeetingContent style={{ maxWidth: "500px" }}>
 						<TextField
 							id="outlined-basic"
 							label="Enter new meeting name"
@@ -129,7 +111,7 @@ const AddMeeting = () => {
 								marginBottom: 10,
 							}}
 						/>
-					</div>
+					</MeetingContent>
 				</Box>
 				<Link
 					style={{ textDecoration: "none", color: "white" }}
@@ -162,3 +144,6 @@ const MainContent = styled.div`
 	margin-right: 5%;
 	/* background: white; */
 `;
+
+const Header =styled.h3``
+const MeetingContent = styled.div``

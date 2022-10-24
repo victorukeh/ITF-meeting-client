@@ -44,7 +44,7 @@ function Users() {
 			type: "SET_USERS",
 			users: response.data.users,
 		});
-		setMappedUsers(response.data.users.slice(0, 5));
+		setMappedUsers(response.data.users.slice(0, 4));
 		let array = [];
 		for (const user of response.data.users) {
 			array.push(user.fullName);
@@ -87,51 +87,21 @@ function Users() {
 			});
 		}
 	};
-	// const onClickHandler = async (d) => {
-	// 	const fetchMeeting = await axios.get(
-	// 		`http://localhost:2000/api/v1/meeting/find?title=${d}`
-	// 	);
-	// 	const f = fetchMeeting.data.meeting;
-	// 	await dispatch({
-	// 		type: "SET_VIEWMEETING",
-	// 		viewMeeting: f,
-	// 	});
-	// 	window.localStorage.setItem("viewMeeting", JSON.stringify(f));
-	// 	await dispatch({
-	// 		type: "SET_AGENDAANDDOCS",
-	// 		agendaAndDocs: [],
-	// 	});
-	// 	await dispatch({
-	// 		type: "SET_CHECKMEETING",
-	// 		checkMeeting: true,
-	// 	});
-	// 	const response = await axios.get(
-	// 		`http://localhost:2000/api/v1/meeting/agendas?meeting=${f._id}`
-	// 	);
-	// 	let array = [];
-	// 	for (const agenda of response.data.agendas) {
-	// 		const docs = await axios.get(
-	// 			`http://localhost:2000/api/v1/meeting/agenda/docs?meeting=${f._id}&agenda=${agenda._id}`
-	// 		);
-	// 		const file = {
-	// 			agenda: agenda,
-	// 			docs: docs.data.docs,
-	// 		};
-	// 		array.push(file);
-	// 	}
-	// 	await dispatch({
-	// 		type: "SET_AGENDAANDDOCS",
-	// 		agendaAndDocs: array,
-	// 	});
-	// 	window.localStorage.setItem("agendaAndDocs", JSON.stringify(array));
-	// };
 
 	const setPageUsers = async (value) => {
-		const last = value * 5;
-		const first = last - 5;
+		const last = value * 4;
+		const first = last - 4;
 		const result = users.slice(first, last);
 		setMappedUsers(result);
 	};
+
+	const setUser = (user) => {
+		dispatch({
+			type: "VIEW_USER",
+			viewUser: user
+		})
+		window.localStorage.setItem("viewUser", JSON.stringify(user));
+	}
 	return (
 		<>
 			<div
@@ -148,11 +118,13 @@ function Users() {
 				</Link>
 			</div>
 			<div style={{ width: "80%", paddingLeft: "25%" }}>
-				<SearchBar
-					title="Enter name of a user"
-					searchQuery={searchQuery}
-					setSearchQuery={setSearchQuery}
-				/>
+				<div style={{ marginBottom: "3%" }}>
+					<SearchBar
+						title="Enter name of a user"
+						searchQuery={searchQuery}
+						setSearchQuery={setSearchQuery}
+					/>
+				</div>
 				{searchQuery !== "" && userTitles.length > 0 && (
 					<div
 						style={{
@@ -227,13 +199,20 @@ function Users() {
 											>
 												<Link
 													style={{ textDecoration: "none" }}
-													to="/polls/view"
+													to="/users/view"
+													onClick={() => setUser(row)}
 												>
 													<PreviewIcon className="logo" />
 												</Link>
 											</Edit>
 											<Edit>
-												<EditIcon className="logo" />
+												<Link
+													style={{ textDecoration: "none" }}
+													to="/users/edit"
+													onClick={() => setUser(row)}
+												>
+													<EditIcon className="logo" />
+												</Link>
 											</Edit>
 											<Delete>
 												<DeleteIcon
@@ -253,7 +232,7 @@ function Users() {
 				</Table>
 				<Stack spacing={2} style={{ marginTop: "0.4%" }}>
 					<Pagination
-						count={Math.ceil(users.length / 5)}
+						count={Math.ceil(users.length / 4)}
 						color="primary"
 						onChange={(e, value) => setPageUsers(value)}
 					/>

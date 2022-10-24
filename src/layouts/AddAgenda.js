@@ -1,22 +1,20 @@
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { useDataLayerValue } from "../reducer/DataLayer";
-// import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import IconButton from "@mui/material/IconButton";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import styled from "styled-components";
 import Back from "../components/Back";
 
 const AddMeeting = () => {
-	const [{ fileList, agenda, addMeeting, meeting, fullAgenda }, dispatch] =
-		useDataLayerValue();
+	const [{ agenda, fullAgenda }, dispatch] = useDataLayerValue();
 	const handleAgendaChange = async (event) => {
 		await dispatch({
 			type: "SET_AGENDA",
@@ -25,8 +23,8 @@ const AddMeeting = () => {
 	};
 	const [agendas, setagendas] = React.useState([]);
 	const [files, setFiles] = useState([]);
-	// const [agendaName, setagendaName] = useState("");
 	const [selectedFiles, setSelectedFiles] = useState(null);
+
 	const addnewAgenda = async () => {
 		setagendas((x) => {
 			return [...x, { name: agenda, id: agendas.length + 1, selectedFiles }];
@@ -36,7 +34,6 @@ const AddMeeting = () => {
 			agenda: agenda,
 			docs: docs,
 		};
-		console.log(file);
 		setFiles([]);
 		fullAgenda.push(file);
 		await dispatch({
@@ -74,7 +71,7 @@ const AddMeeting = () => {
 	return (
 		<>
 			<Back color="Primary" to="/set-meetings/meeting/create" />
-			<div style={{ marginRight: "5%", marginTop: "2%" }}>
+			<Container>
 				<Box
 					component="form"
 					sx={{
@@ -83,34 +80,16 @@ const AddMeeting = () => {
 					noValidate
 					autoComplete="off"
 				>
-					<div
-						style={{
-							width: "100%",
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "space-between",
-							margin: "20px 0",
-						}}
-					>
-						<h3>Agendas - {agendas.length}</h3>
-						<Link
-							to="/set-meetings/meeting/preview"
-							style={{ color: "white", textDecoration: "none" }}
-						>
+					<MainContent>
+						<Agenda>Agendas - {agendas.length}</Agenda>
+						<Link to="/set-meetings/meeting/preview" style={link}>
 							<Button variant="contained" color="success">
 								Preview
 							</Button>
 						</Link>
-					</div>
+					</MainContent>
 
-					<div
-						style={{
-							width: "100%",
-							display: "flex",
-							alignItems: "center",
-							margin: "20px 0",
-						}}
-					>
+					<Form>
 						<TextField
 							id="outlined-basic"
 							label="Agenda info"
@@ -147,9 +126,9 @@ const AddMeeting = () => {
 							/>
 							<UploadFileIcon />
 						</IconButton>
-					</div>
+					</Form>
 
-					<div>
+					<AgendaList>
 						<Button
 							variant="contained"
 							component="label"
@@ -158,7 +137,7 @@ const AddMeeting = () => {
 						>
 							Add Agenda
 						</Button>
-					</div>
+					</AgendaList>
 
 					{agendas.map((m, id) => {
 						const txts = getFilesName(m);
@@ -172,7 +151,7 @@ const AddMeeting = () => {
 						);
 					})}
 				</Box>
-			</div>
+			</Container>
 		</>
 	);
 };
@@ -180,16 +159,28 @@ const AddMeeting = () => {
 export default AddMeeting;
 
 const Container = styled.div`
-	flex: 0.8;
-	background-color: white;
-	display: flex;
-	flex-direction: row;
+	margin-right: 5%;
+	margin-top: 2%;
 `;
 
 const MainContent = styled.div`
-	padding-left: 5%;
 	width: 100%;
-	height: 15%;
-	margin-right: 5%;
-	/* background: white; */
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 20px 0;
 `;
+
+const Form = styled.div`
+	width: 100%;
+	display: flex;
+	align-items: center;
+	margin: 20px 0;
+`;
+const link = {
+	color: "white",
+	textDecoration: "none",
+};
+
+const AgendaList = styled.div``;
+const Agenda = styled.h3``;
