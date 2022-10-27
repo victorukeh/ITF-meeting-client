@@ -85,7 +85,7 @@ const EditMeeting = () => {
 			<div
 				style={{
 					width: "100%",
-					marginTop: "-4%",
+					// marginTop: "-4%",
 					display: "flex",
 					justifyContent: "center",
 					borderRadius: "3px 0px 0px 0px",
@@ -94,7 +94,7 @@ const EditMeeting = () => {
 				<h4>Edit Meeting</h4>
 			</div>
 			<div style={{ height: "265px", width: "100%" }}>
-				<div
+				{/* <div
 					style={{
 						height: "100%",
 						width: "100%",
@@ -103,156 +103,155 @@ const EditMeeting = () => {
 						marginTop: "2%",
 						paddingBottom: "3%",
 					}}
-				>
-					<Grid container spacing={2}>
-						<Grid
-							item
-							xs={2}
-							style={{
-								background: "#b20505",
-								marginLeft: "1.6%",
-								// paddingLeft: "3%",
-								borderRadius: "3px",
-								color: "white",
-								display: "flex",
-								justifyContent: "center",
-							}}
-						>
-							<p style={{ fontFamily: "Open Sans" }}>MEETING</p>
-						</Grid>
-						<Grid item xs={5}>
-							<p style={{ fontFamily: "Roboto" }}>{setMeeting.title}</p>
-						</Grid>
-						<Grid item xs={4}>
-							<TextField
-								id="standard-basic"
-								label="Update Meeting Name"
-								variant="standard"
-								style={{ marginTop: "-4%" }}
-								value={values.title}
-								onChange={handleChange("title")}
-								fullWidth
-							/>
-						</Grid>
+				> */}
+				<Grid container spacing={2}>
+					<Grid
+						item
+						xs={2}
+						style={{
+							background: "#b20505",
+							marginLeft: "1.6%",
+							// paddingLeft: "3%",
+							borderRadius: "3px",
+							color: "white",
+							display: "flex",
+							justifyContent: "center",
+						}}
+					>
+						<p style={{ fontFamily: "Open Sans" }}>MEETING</p>
 					</Grid>
-					<Grid container spacing={2}>
-						<Grid
-							item
-							xs={2}
-							style={{
-								background: "#b20505",
-								marginLeft: "1.6%",
-								borderRadius: "3px",
-								color: "white",
-								display: "flex",
-								justifyContent: "center",
-							}}
-						>
-							<p style={{ fontFamily: "Open Sans" }}>DESCRIPTION </p>
-						</Grid>
-						<Grid item xs={5}>
-							<p style={{ fontFamily: "Roboto" }}>{setMeeting.description}</p>
-						</Grid>
-						<Grid item xs={4}>
-							<TextField
-								id="standard-basic"
-								label="Update Department"
-								variant="standard"
-								style={{ marginTop: "-4%" }}
-								value={values.description}
-								onChange={handleChange("description")}
-								fullWidth
-							/>
-						</Grid>
+					<Grid item xs={5}>
+						<p style={{ fontFamily: "Roboto" }}>{setMeeting.title}</p>
 					</Grid>
-					<Grid container spacing={2}>
-						<Grid
-							item
-							xs={2}
-							style={{
-								background: "#b20505",
-								marginLeft: "1.6%",
-								borderRadius: "3px",
-								color: "white",
-								display: "flex",
-								justifyContent: "center",
-								paddingBottom: "93px",
-								marginBottom: "0px",
-								overflowY: "hidden",
-							}}
-						>
-							<p style={{ fontFamily: "Open Sans" }}>DATE</p>
-						</Grid>
-						<Grid item xs={5}>
-							<p style={{ fontFamily: "Roboto" }}>{start}</p>
-						</Grid>
-						<Grid item xs={4}>
-							<TextField
-								id="datetime-local"
-								type="datetime-local"
-								defaultValue={setMeeting.start.split(".")[0]}
-								InputLabelProps={{
-									shrink: true,
-								}}
-								onChange={handleChangeDate("start")}
-								variant="standard"
-								fullWidth
-							/>
-						</Grid>
+					<Grid item xs={4}>
+						<TextField
+							id="standard-basic"
+							label="Update Meeting Name"
+							variant="standard"
+							// style={{ marginTop: "-4%" }}
+							value={values.title}
+							onChange={handleChange("title")}
+							fullWidth
+						/>
 					</Grid>
-					<Grid container spacing={2}>
-						<Grid
-							item
-							xs={2}
-							style={{
-								background: "#b20505",
-								marginLeft: "1.6%",
-								paddingLeft: "3%",
-								borderRadius: "3px",
-								color: "white",
-								// paddingBottom: "3%"
+				</Grid>
+				<Grid container spacing={2}>
+					<Grid
+						item
+						xs={2}
+						style={{
+							background: "#b20505",
+							marginLeft: "1.6%",
+							borderRadius: "3px",
+							color: "white",
+							display: "flex",
+							justifyContent: "center",
+						}}
+					>
+						<p style={{ fontFamily: "Open Sans" }}>DESCRIPTION </p>
+					</Grid>
+					<Grid item xs={5}>
+						<p style={{ fontFamily: "Roboto" }}>{setMeeting.description}</p>
+					</Grid>
+					<Grid item xs={4}>
+						<TextField
+							id="standard-basic"
+							label="Update Description"
+							variant="standard"
+							value={values.description}
+							onChange={handleChange("description")}
+							fullWidth
+						/>
+					</Grid>
+				</Grid>
+				<Grid container spacing={2}>
+					<Grid
+						item
+						xs={2}
+						style={{
+							background: "#b20505",
+							marginLeft: "1.6%",
+							borderRadius: "3px",
+							color: "white",
+							display: "flex",
+							justifyContent: "center",
+							paddingBottom: "93px",
+							marginBottom: "0px",
+							overflowY: "hidden",
+						}}
+					>
+						<p style={{ fontFamily: "Open Sans" }}>DATE</p>
+					</Grid>
+					<Grid item xs={5}>
+						<p style={{ fontFamily: "Roboto" }}>{start}</p>
+					</Grid>
+					<Grid item xs={4}>
+						<TextField
+							id="datetime-local"
+							type="datetime-local"
+							defaultValue={setMeeting.start.split(".")[0]}
+							InputLabelProps={{
+								shrink: true,
 							}}
-						></Grid>
-						<Grid item xs={5}></Grid>
-						<Grid
-							item
-							xs={4}
+							onChange={handleChangeDate("start")}
+							variant="standard"
+							fullWidth
+						/>
+					</Grid>
+				</Grid>
+				<Grid container spacing={2}>
+					<Grid
+						item
+						xs={2}
+						style={{
+							background: "#b20505",
+							marginLeft: "1.6%",
+							paddingLeft: "3%",
+							borderRadius: "3px",
+							color: "white",
+							// paddingBottom: "3%"
+						}}
+					></Grid>
+					<Grid item xs={5}></Grid>
+					<Grid
+						item
+						xs={4}
+						style={{
+							display: "flex",
+							flexDirection: "row",
+							justifyContent: "space-between",
+						}}
+					>
+						<Link
+							to="/set-meetings/meeting/admin"
 							style={{
-								display: "flex",
-								flexDirection: "row",
-								justifyContent: "space-between",
+								textDecoration: "none",
+								color: "blue",
+								fontFamily: "Roboto",
+								marginLeft: "61%",
 							}}
 						>
-							<Link
-								to="/set-meetings/meeting/admin"
-								style={{
-									textDecoration: "none",
-									color: "blue",
-									fontFamily: "Roboto",
-									marginLeft: "61%",
-								}}
-							>
-								<Button
-									variant="text"
-									onClick={updateMeeting(setMeeting._id, {
-										vertical: "top",
-										horizontal: "right",
-									})}
-								>
-									Update
-								</Button>
-							</Link>
 							<Button
 								variant="text"
-								style={{ fontFamily: "Roboto" }}
-								onClick={() => cancel()}
+								onClick={updateMeeting(setMeeting._id, {
+									vertical: "top",
+									horizontal: "right",
+								})}
 							>
-								Reset
+								Update
 							</Button>
-						</Grid>
+						</Link>
+						<Button
+							variant="text"
+							style={{ fontFamily: "Roboto" }}
+							onClick={() => cancel()}
+						>
+							Reset
+						</Button>
 					</Grid>
-				</div>
+				</Grid>
 			</div>
+			{/* </div> */}
 		</>
 	);
 };
