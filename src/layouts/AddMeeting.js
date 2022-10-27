@@ -1,25 +1,17 @@
 import styled from "styled-components";
 import { useState } from "react";
-import axios from "axios";
-import * as React from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import AddAgenda from "./AddAgenda";
 import dayjs, { Dayjs } from "dayjs";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Link } from "react-router-dom";
 import Back from "../components/Back";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { useDataLayerValue } from "../reducer/DataLayer";
 
 const AddMeeting = () => {
-	const [{ fileList, addMeeting, meeting }, dispatch] = useDataLayerValue();
+	const [{ token }, dispatch] = useDataLayerValue();
 	const datetime = new Date().toISOString();
 	const [start, setStart] = useState(dayjs(datetime));
-	const [end, setEnd] = useState(dayjs(datetime));
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const handleChange = (event) => {
@@ -27,16 +19,11 @@ const AddMeeting = () => {
 		setStart(date);
 	};
 
-	const handleChange2 = (newValue) => {
-		const date = new Date(newValue).toISOString();
-		setEnd(date);
-	};
 	const handleMeetingChange = async () => {
 		const meeting = {
 			title: title,
 			description: description,
 			start: start,
-			// end: end,
 		};
 		await dispatch({
 			type: "SET_ADDMEETING",
@@ -44,7 +31,6 @@ const AddMeeting = () => {
 				title: meeting.title,
 				description: meeting.description,
 				start: meeting.start,
-				// end: meeting.end,
 			},
 		});
 		await dispatch({
@@ -145,5 +131,5 @@ const MainContent = styled.div`
 	/* background: white; */
 `;
 
-const Header =styled.h3``
+const Header = styled.h3``
 const MeetingContent = styled.div``

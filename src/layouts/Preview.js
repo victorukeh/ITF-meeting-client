@@ -8,7 +8,7 @@ import { useDataLayerValue } from "../reducer/DataLayer";
 import axios from "axios";
 
 const Preview = () => {
-	const [{ addMeeting, fullAgenda, notification }, dispatch] =
+	const [{ addMeeting, fullAgenda, token }, dispatch] =
 		useDataLayerValue();
 	const [dropDown, setDropDown] = useState({
 		id: "",
@@ -30,6 +30,9 @@ const Preview = () => {
 					description: addMeeting.description,
 					start: addMeeting.start,
 					end: addMeeting.end,
+				},
+				{
+					headers: { Authorization: `Bearer ${token}` },
 				}
 			);
 			if (response.data.success !== true) {
@@ -46,14 +49,18 @@ const Preview = () => {
 						`http://localhost:2000/api/v1/meeting/agenda/add?meeting=${response.data.meeting._id}`,
 						{
 							agenda: item.agenda,
-						}
+						}, {
+						headers: { Authorization: `Bearer ${token}` },
+					}
 					);
 					for (const doc of item.docs) {
 						formData.append("files", doc);
 					}
 					const docs = await axios.post(
 						`http://localhost:2000/api/v1/meeting/files?agenda=${agenda.data.agenda._id}&meeting=${response.data.meeting._id}`,
-						formData
+						formData, {
+						headers: { Authorization: `Bearer ${token}` },
+					}
 					);
 				}
 				await dispatch({

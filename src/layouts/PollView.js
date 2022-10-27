@@ -18,7 +18,7 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const PollView = () => {
-	const [{ email, password, user, token, snackbar, viewMeeting }, dispatch] =
+	const [{ token, viewMeeting }, dispatch] =
 		useDataLayerValue();
 	const [values, setValues] = useState({
 		question: "",

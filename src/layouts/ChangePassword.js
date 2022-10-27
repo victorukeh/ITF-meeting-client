@@ -102,7 +102,10 @@ const ChangePassword = () => {
 					...newState,
 				},
 			});
-			window.localStorage.removeItem("token");
+			if (err.response.status === 401) {
+				window.localStorage.removeItem("token")
+				window.location.reload(false)
+			}
 		}
 	};
 	return (
@@ -110,7 +113,7 @@ const ChangePassword = () => {
 			<Container>
 				<h4>Change Password</h4>
 				<Form>
-					<FormControl sx={{ m: 1, width: "50ch" }} variant="outlined">
+					<FormControl sx={{ m: 1, width: "90%" }} variant="outlined">
 						<InputLabel htmlFor="outlined-adornment-password">
 							Current Password
 						</InputLabel>
@@ -134,7 +137,7 @@ const ChangePassword = () => {
 							label="Current Password"
 						/>
 					</FormControl>
-					<FormControl sx={{ m: 1, width: "50ch" }} variant="outlined">
+					<FormControl sx={{ m: 1, width: "90%" }} variant="outlined">
 						<InputLabel htmlFor="outlined-adornment-password">
 							New Password
 						</InputLabel>
@@ -158,7 +161,7 @@ const ChangePassword = () => {
 							label="New Password"
 						/>
 					</FormControl>
-					<FormControl sx={{ m: 1, width: "50ch" }} variant="outlined">
+					<FormControl sx={{ m: 1, width: "90%" }} variant="outlined">
 						<InputLabel htmlFor="outlined-adornment-password">
 							Confirm New Password
 						</InputLabel>

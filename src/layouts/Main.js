@@ -57,6 +57,7 @@ function Main() {
 							/>
 							<Route path="/users/edit" element={<EditUser />} />
 							<Route path="/polls/view" element={<ViewPoll />} />
+							<Route path="/meetings/polls/view" element={<ViewPoll />} />
 							<Route path="/users/view" element={<ViewUser />} />
 							<Route path="/users" element={<Users />} />
 							<Route path="/users/create" element={<AddUser />} />

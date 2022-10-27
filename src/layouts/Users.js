@@ -14,14 +14,13 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
-import AddUsers from "../components/AddUsers";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import Loading from "../components/Loading";
 import { useDataLayerValue } from "../reducer/DataLayer";
 
 function Users() {
-	const [{ users }, dispatch] = useDataLayerValue();
-	console.log(users);
+	const [{ users, loading, token }, dispatch] = useDataLayerValue();
 	const [searchQuery, setSearchQuery] = useState("");
 	const [userTitles, setUserTitles] = useState([]);
 	const [mappedUsers, setMappedUsers] = useState([]);
@@ -39,24 +38,43 @@ function Users() {
 		getUsers();
 	}, []);
 	const getUsers = async () => {
-		const response = await axios.get("http://localhost:2000/api/v1/users");
-		dispatch({
-			type: "SET_USERS",
-			users: response.data.users,
-		});
-		setMappedUsers(response.data.users.slice(0, 4));
-		let array = [];
-		for (const user of response.data.users) {
-			array.push(user.fullName);
+		try {
+			dispatch({
+				type: "SET_LOADING",
+				loading: true
+			})
+			const response = await axios.get("http://localhost:2000/api/v1/users", {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+			dispatch({
+				type: "SET_USERS",
+				users: response.data.users,
+			});
+			setMappedUsers(response.data.users.slice(0, 4));
+			let array = [];
+			for (const user of response.data.users) {
+				array.push(user.fullName);
+			}
+			setUserTitles(array);
+			window.localStorage.setItem("users", JSON.stringify(response.data.users))
+			dispatch({
+				type: "SET_LOADING",
+				loading: false
+			})
+		} catch (err) {
+			if (err.response.status === 401) {
+				window.localStorage.removeItem("token")
+				window.location.reload(false)
+			}
 		}
-		setUserTitles(array);
-		window.localStorage.setItem("users", JSON.stringify(response.data.users));
 	};
 
 	const deleteUser = (id, index, newState) => async () => {
 		try {
 			const response = await axios.delete(
-				`http://localhost:2000/api/v1/users/delete?user=${id}`
+				`http://localhost:2000/api/v1/users/delete?user=${id}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			}
 			);
 
 			await dispatch({
@@ -104,145 +122,159 @@ function Users() {
 	}
 	return (
 		<>
-			<div
-				style={{
-					width: "100%",
-					display: "flex",
-					alignItems: "flex-end",
-					justifyContent: "flex-end",
-					margin: "20px 0",
-				}}
-			>
-				<Link style={{ textDecoration: "none" }} to="/users/create">
-					<Button variant="contained">ADD USER</Button>
-				</Link>
-			</div>
-			<div style={{ width: "80%", paddingLeft: "25%" }}>
-				<div style={{ marginBottom: "3%" }}>
-					<SearchBar
-						title="Enter name of a user"
-						searchQuery={searchQuery}
-						setSearchQuery={setSearchQuery}
-					/>
+			{!loading ? <>
+				<div
+					style={{
+						width: "100%",
+						display: "flex",
+						alignItems: "flex-end",
+						justifyContent: "flex-end",
+						margin: "20px 0",
+					}}
+				>
+					<Link style={{ textDecoration: "none" }} to="/users/create">
+						<Button variant="contained">ADD USER</Button>
+					</Link>
 				</div>
-				{searchQuery !== "" && userTitles.length > 0 && (
-					<div
-						style={{
-							padding: 3,
-							zIndex: "1000",
-							position: "absolute",
-							perspective: "100",
-							background: "white",
-							width: "33.3%",
-							boxShadow: "0.2px 2px 8px 3px #dedfe0",
-						}}
-					>
-						{dataFiltered.map((d) => (
-							<Link style={{ textDecoration: "none" }} to="/meetings/meeting">
-								<div
-									className="data__field"
-									style={{
-										padding: 5,
-										fontSize: 15,
-										margin: 1,
-									}}
-									key={d.id}
-									// onClick={() => onClickHandler(d)}
-								>
-									{d}
-								</div>
-							</Link>
-						))}
+				<div style={{ width: "80%", paddingLeft: "25%" }}>
+					<div>
+						<SearchBar
+							title="Enter name of a user"
+							searchQuery={searchQuery}
+							setSearchQuery={setSearchQuery}
+						/>
 					</div>
-				)}
-			</div>
-			<TableContainer
-				component={Paper}
-				style={{
-					paddingBottom: "0.4%",
-					display: "flex",
-					flexDirection: "column",
-					justifyContent: "center",
-					alignItems: "center",
-				}}
-			>
-				<Table sx={{ minWidth: 650 }} aria-label="simple table">
-					<TableHead>
-						<TableRow>
-							<TableCell>Title</TableCell>
-							<TableCell>Name</TableCell>
-							<TableCell>Email</TableCell>
-							<TableCell>Position</TableCell>
-							<TableCell>Department</TableCell>
-							<TableCell align="right">Actions</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{mappedUsers.map((row, id) => {
-							const date = new Date(row.start).toUTCString();
-							return (
-								<TableRow
-									key={id}
-									sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-								>
-									<TableCell component="th" scope="row">
-										{row.title}
-									</TableCell>
-									<TableCell>{row.fullName}</TableCell>
-									<TableCell>{row.email}</TableCell>
-									<TableCell>{row.position}</TableCell>
-									<TableCell>{row.department}</TableCell>
-									<TableCell align="right">
-										<Action>
-											<Edit
-											// onClick={() => getPoll(row._id)}
-											>
-												<Link
-													style={{ textDecoration: "none" }}
-													to="/users/view"
-													onClick={() => setUser(row)}
+					{searchQuery !== "" && userTitles.length > 0 && (
+						<div
+							style={{
+								padding: 3,
+								zIndex: "1000",
+								position: "absolute",
+								perspective: "100",
+								background: "white",
+								width: "33.3%",
+								boxShadow: "0.2px 2px 8px 3px #dedfe0",
+							}}
+						>
+							{dataFiltered.map((d) => (
+								<Link style={{ textDecoration: "none" }} to="/meetings/meeting">
+									<div
+										className="data__field"
+										style={{
+											padding: 5,
+											fontSize: 15,
+											margin: 1,
+										}}
+										key={d.id}
+									// onClick={() => onClickHandler(d)}
+									>
+										{d}
+									</div>
+								</Link>
+							))}
+						</div>
+					)}
+				</div>
+				<TableContainer
+					component={Paper}
+					style={{
+						paddingBottom: "0.4%",
+						display: "flex",
+						flexDirection: "column",
+						justifyContent: "center",
+						alignItems: "center",
+					}}
+				>
+					<Table sx={{ minWidth: 650 }} aria-label="simple table">
+						<TableHead>
+							<TableRow>
+								<TableCell>Title</TableCell>
+								<TableCell>Name</TableCell>
+								<TableCell>Email</TableCell>
+								<TableCell>Position</TableCell>
+								<TableCell>Department</TableCell>
+								<TableCell align="right">Actions</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{mappedUsers.map((row, id) => {
+								const date = new Date(row.start).toUTCString();
+								return (
+									<TableRow
+										key={id}
+										sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+									>
+										<TableCell component="th" scope="row">
+											{row.title}
+										</TableCell>
+										<TableCell>{row.fullName}</TableCell>
+										<TableCell>{row.email}</TableCell>
+										<TableCell>{row.position}</TableCell>
+										<TableCell>{row.department}</TableCell>
+										<TableCell align="right">
+											<Action>
+												<Edit
+												// onClick={() => getPoll(row._id)}
 												>
-													<PreviewIcon className="logo" />
-												</Link>
-											</Edit>
-											<Edit>
-												<Link
-													style={{ textDecoration: "none" }}
-													to="/users/edit"
-													onClick={() => setUser(row)}
-												>
-													<EditIcon className="logo" />
-												</Link>
-											</Edit>
-											<Delete>
-												<DeleteIcon
-													className="logoField"
-													onClick={deleteUser(row._id, id + 1, {
-														vertical: "top",
-														horizontal: "right",
-													})}
-												/>
-											</Delete>
-										</Action>
-									</TableCell>
-								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
-				<Stack spacing={2} style={{ marginTop: "0.4%" }}>
-					<Pagination
-						count={Math.ceil(users.length / 4)}
-						color="primary"
-						onChange={(e, value) => setPageUsers(value)}
-					/>
-				</Stack>
-			</TableContainer>
+													<Link
+														style={{ textDecoration: "none" }}
+														to="/users/view"
+														onClick={() => setUser(row)}
+													>
+														<PreviewIcon className="logo" />
+													</Link>
+												</Edit>
+												<Edit>
+													<Link
+														style={{ textDecoration: "none" }}
+														to="/users/edit"
+														onClick={() => setUser(row)}
+													>
+														<EditIcon className="logo" />
+													</Link>
+												</Edit>
+												<Delete>
+													<DeleteIcon
+														className="logoField"
+														onClick={deleteUser(row._id, id + 1, {
+															vertical: "top",
+															horizontal: "right",
+														})}
+													/>
+												</Delete>
+											</Action>
+										</TableCell>
+									</TableRow>
+								);
+							})}
+						</TableBody>
+					</Table>
+					<Stack spacing={2} style={{ marginTop: "0.4%" }}>
+						<Pagination
+							count={Math.ceil(users.length / 4)}
+							color="primary"
+							onChange={(e, value) => setPageUsers(value)}
+						/>
+					</Stack>
+				</TableContainer>
+			</> : <Loader>
+				<Loading type="spin" color="#7485e8" />
+			</Loader>}
+
 		</>
 	);
 }
 
 export default Users;
+
+const Loader = styled.div`
+	width: 100%;
+ 	height: 70vh; 
+ 	display: flex;
+  	align-items: center;
+	flex-direction: column;
+ 	justify-content: center
+`
 
 const Action = styled.div`
 	width: 100%;

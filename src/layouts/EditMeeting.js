@@ -4,7 +4,6 @@ import Back from "../components/Back";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
-import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 import { useDataLayerValue } from "../reducer/DataLayer";
 
@@ -66,7 +65,10 @@ const EditMeeting = () => {
 					...newState,
 				},
 			});
-			window.localStorage.removeItem("token");
+			if (err.response.status === 401) {
+				window.localStorage.removeItem("token")
+				window.location.reload(false)
+			}
 		}
 	};
 	const cancel = () => {

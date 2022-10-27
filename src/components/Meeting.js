@@ -7,21 +7,21 @@ import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-
 import Groups2Icon from "@mui/icons-material/Groups2";
-import styled from "styled-components";
 
 const Meeting = () => {
-	const [{ token, user, meetings, agendaAndDocs }, dispatch] =
+	const [{ meetings, token }, dispatch] =
 		useDataLayerValue();
-
-	const [open, setOpen] = useState(true);
 
 	useEffect(() => {
 		getmeetings();
 	}, []);
 
 	const onClickHandler = async (f) => {
+		await dispatch({
+			type: "SET_LOADING",
+			loading: true
+		})
 		await dispatch({
 			type: "SET_VIEWMEETING",
 			viewMeeting: f,
@@ -36,12 +36,16 @@ const Meeting = () => {
 			checkMeeting: true,
 		});
 		const response = await axios.get(
-			`http://localhost:2000/api/v1/meeting/agendas?meeting=${f._id}`
+			`http://localhost:2000/api/v1/meeting/agendas?meeting=${f._id}`, {
+			headers: { Authorization: `Bearer ${token}` },
+		}
 		);
 		let array = [];
 		for (const agenda of response.data.agendas) {
 			const docs = await axios.get(
-				`http://localhost:2000/api/v1/meeting/agenda/docs?meeting=${f._id}&agenda=${agenda._id}`
+				`http://localhost:2000/api/v1/meeting/agenda/docs?meeting=${f._id}&agenda=${agenda._id}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			}
 			);
 			const file = {
 				agenda: agenda,
@@ -54,38 +58,37 @@ const Meeting = () => {
 			agendaAndDocs: array,
 		});
 		window.localStorage.setItem("agendaAndDocs", JSON.stringify(array));
+		await dispatch({
+			type: "SET_LOADING",
+			loading: false
+		})
 	};
 
 	const getmeetings = async () => {
-		const response = await axios.get(
-			"http://localhost:2000/api/v1/meeting?limit=10"
-		);
-		await dispatch({
-			type: "SET_MEETINGS",
-			meetings: response.data.meetings,
-		});
+		try {
+			const response = await axios.get(
+				"http://localhost:2000/api/v1/meeting?limit=10", {
+				headers: { Authorization: `Bearer ${token}` },
+			}
+			);
+			await dispatch({
+				type: "SET_MEETINGS",
+				meetings: response.data.meetings,
+			});
 
-		window.localStorage.setItem(
-			"meetings",
-			JSON.stringify(response.data.meetings)
-		);
+			window.localStorage.setItem(
+				"meetings",
+				JSON.stringify(response.data.meetings)
+			)
+		} catch (err) {
+			console.log(err)
+			if (err.response.status === 401) {
+				window.localStorage.removeItem("token")
+				window.location.reload(false)
+			}
+		}
 	};
 	return (
-		// <Container>
-		// 	<HeaderText>Recent Meetings</HeaderText>
-		// 	{meetings.map((f, id) => {
-		// 		return (
-		// 			<Links key={id} onClick={() => onClickHandler(f)}>
-		// 				{user.role === "admin" && (
-		// 					<Link to="/meeting" style={{ textDecoration: "none" }}>
-		// 						{id + 1}. {f.title}
-		// 					</Link>
-		// 				)}
-		// 				{/* {user.role === "admin" && <Link style={{textDecoration: "none"}}>{id + 1}. {f.title}</Link>} */}
-		// 			</Links>
-		// 		);
-		// 	})}
-		// </Container>
 		<List
 			sx={{
 				width: "100%",
@@ -100,9 +103,8 @@ const Meeting = () => {
 					Management Meetings
 				</ListSubheader>
 			}
-			// style={{overflowY: "hidden", height: "70vh"}}
 		>
-			{meetings.slice(0, 5).map((f, id) => {
+			{meetings.slice(0, 6).map((f, id) => {
 				const date = new Date(f.start).toUTCString();
 				return (
 					<ListItemButton key={id}>
@@ -125,18 +127,3 @@ const Meeting = () => {
 };
 
 export default Meeting;
-
-const Container = styled.div`
-	flex: 0.5;
-	padding-top: 1%;
-	margin-right: 5%;
-`;
-
-const HeaderText = styled.h3`
-	font-family: Helvetica;
-	font-size: 1.4rem;
-`;
-
-const Links = styled.p`
-	cursor: pointer;
-`;

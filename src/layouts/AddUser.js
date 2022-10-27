@@ -88,6 +88,10 @@ const AddUser = () => {
 					...newState,
 				},
 			});
+			if (err.response.status === 401) {
+				window.localStorage.removeItem("token")
+				window.location.reload(false)
+			}
 		}
 	};
 	return (
@@ -226,13 +230,13 @@ const AddUser = () => {
 					to="/users"
 					className={
 						values.name === "" ||
-						values.title === "" ||
-						values.email === "" ||
-						values.country === "" ||
-						values.positon === "" ||
-						values.role === "" ||
-						values.department === "" ||
-						values.password === ""
+							values.title === "" ||
+							values.email === "" ||
+							values.country === "" ||
+							values.positon === "" ||
+							values.role === "" ||
+							values.department === "" ||
+							values.password === ""
 							? "seize"
 							: "normal"
 					}
@@ -248,13 +252,13 @@ const AddUser = () => {
 						}}
 						disabled={
 							values.name === "" ||
-							values.title === "" ||
-							values.email === "" ||
-							values.country === "" ||
-							values.positon === "" ||
-							values.role === "" ||
-							values.department === "" ||
-							values.password === ""
+								values.title === "" ||
+								values.email === "" ||
+								values.country === "" ||
+								values.positon === "" ||
+								values.role === "" ||
+								values.department === "" ||
+								values.password === ""
 								? true
 								: false
 						}

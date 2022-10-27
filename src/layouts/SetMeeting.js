@@ -17,10 +17,11 @@ import AddCommentIcon from "@material-ui/icons/AddComment";
 import MeetingPreview from "../components/MeetingPreview";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
+import Loading from "../components/Loading";
 import axios from "axios";
 
 const SetMeeting = () => {
-	const [{ meetings }, dispatch] = useDataLayerValue();
+	const [{ meetings, loading, token }, dispatch] = useDataLayerValue();
 	const [open, setOpen] = useState(false);
 	const [mappedMeetings, setMappedMeetings] = useState([]);
 	const [meetingTitles, setMeetingTitles] = useState([]);
@@ -38,23 +39,41 @@ const SetMeeting = () => {
 	}, []);
 
 	const getmeetings = async () => {
-		const response = await axios.get(
-			"http://localhost:2000/api/v1/meeting?limit=50"
-		);
-		await dispatch({
-			type: "SET_MEETINGS",
-			meetings: response.data.meetings,
-		});
-		setMappedMeetings(response.data.meetings.slice(0, 5));
-		let array = [];
-		for (const meeting of response.data.meetings) {
-			array.push(meeting.title);
+		try {
+			dispatch({
+				type: "SET_LOADING",
+				loading: true
+			})
+			const response = await axios.get(
+				"http://localhost:2000/api/v1/meeting?limit=50", {
+				headers: { Authorization: `Bearer ${token}` },
+			}
+			);
+			await dispatch({
+				type: "SET_MEETINGS",
+				meetings: response.data.meetings,
+			});
+			setMappedMeetings(response.data.meetings.slice(0, 5));
+			let array = [];
+			for (const meeting of response.data.meetings) {
+				array.push(meeting.title);
+			}
+			setMeetingTitles(array);
+			window.localStorage.setItem(
+				"meetings",
+				JSON.stringify(response.data.meetings)
+			);
+			dispatch({
+				type: "SET_LOADING",
+				loading: false
+			})
+		} catch (err) {
+			console.log(err)
+			if (err.response.status === 401) {
+				window.localStorage.removeItem("token")
+				window.location.reload(false)
+			}
 		}
-		setMeetingTitles(array);
-		window.localStorage.setItem(
-			"meetings",
-			JSON.stringify(response.data.meetings)
-		);
 	};
 
 	const setPageMeetings = async (value) => {
@@ -67,18 +86,26 @@ const SetMeeting = () => {
 	const deleteMeeting = (id, index, newState) => async () => {
 		try {
 			const docs = await axios.get(
-				`http://localhost:2000/api/v1/meeting/docs?meeting=${id}`
+				`http://localhost:2000/api/v1/meeting/docs?meeting=${id}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			}
 			);
 			for (const doc of docs.data.docs) {
 				await axios.delete(
-					`http://localhost:2000/api/v1/meeting/document/delete?document=${doc._id}`
+					`http://localhost:2000/api/v1/meeting/document/delete?document=${doc._id}`, {
+					headers: { Authorization: `Bearer ${token}` },
+				}
 				);
 			}
 			await axios.delete(
-				`http://localhost:2000/api/v1/meeting/agenda/delete?meeting=${id}`
+				`http://localhost:2000/api/v1/meeting/agenda/delete?meeting=${id}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			}
 			);
 			const message = await axios.delete(
-				`http://localhost:2000/api/v1/meeting/delete?meeting=${id}`
+				`http://localhost:2000/api/v1/meeting/delete?meeting=${id}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			}
 			);
 			await dispatch({
 				type: "SET_SNACKBAR",
@@ -126,10 +153,11 @@ const SetMeeting = () => {
 
 	const onClickHandler = async (d) => {
 		const fetchMeeting = await axios.get(
-			`http://localhost:2000/api/v1/meeting/find?title=${d}`
+			`http://localhost:2000/api/v1/meeting/find?title=${d}`, {
+			headers: { Authorization: `Bearer ${token}` },
+		}
 		);
 		const f = fetchMeeting.data.meeting;
-		console.log(f);
 		await dispatch({
 			type: "SET_VIEWMEETING",
 			viewMeeting: f,
@@ -144,12 +172,16 @@ const SetMeeting = () => {
 			checkMeeting: true,
 		});
 		const response = await axios.get(
-			`http://localhost:2000/api/v1/meeting/agendas?meeting=${f._id}`
+			`http://localhost:2000/api/v1/meeting/agendas?meeting=${f._id}`, {
+			headers: { Authorization: `Bearer ${token}` },
+		}
 		);
 		let array = [];
 		for (const agenda of response.data.agendas) {
 			const docs = await axios.get(
-				`http://localhost:2000/api/v1/meeting/agenda/docs?meeting=${f._id}&agenda=${agenda._id}`
+				`http://localhost:2000/api/v1/meeting/agenda/docs?meeting=${f._id}&agenda=${agenda._id}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			}
 			);
 			const file = {
 				agenda: agenda,
@@ -165,111 +197,124 @@ const SetMeeting = () => {
 	};
 	return (
 		<>
-			<MeetingPreview
-				handleClose={handleClose}
-				handleClickOpen={handleClickOpen}
-				open={open}
-				setOpen={setOpen}
-			/>
-			<div
-				style={{
-					width: "100%",
-					display: "flex",
-					alignItems: "flex-end",
-					justifyContent: "flex-end",
-					margin: "20px 0",
-				}}
-			>
-				<Link
-					style={{ textDecoration: "none" }}
-					to="/set-meetings/meeting/create"
+			{!loading ? <>
+				<MeetingPreview
+					handleClose={handleClose}
+					handleClickOpen={handleClickOpen}
+					open={open}
+					setOpen={setOpen}
+				/>
+				<div
+					style={{
+						width: "100%",
+						display: "flex",
+						alignItems: "flex-end",
+						justifyContent: "flex-end",
+						margin: "20px 0",
+					}}
 				>
-					<Button variant="contained">ADD NEW MEETING</Button>
-				</Link>
-			</div>
-			<TableContainer
-				component={Paper}
-				style={{
-					paddingBottom: "0.4%",
-					display: "flex",
-					flexDirection: "column",
-					justifyContent: "center",
-					alignItems: "center",
-				}}
-			>
-				<Table sx={{ minWidth: 650 }} aria-label="simple table">
-					<TableHead>
-						<TableRow>
-							<TableCell>Meeting Name</TableCell>
-							<TableCell>Description</TableCell>
-							<TableCell>Date</TableCell>
-							<TableCell align="right">Actions</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{mappedMeetings.map((row, id) => {
-							const date = new Date(row.start).toUTCString();
-							return (
-								<TableRow
-									key={id}
-									sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-								>
-									<TableCell component="th" scope="row">
-										{row.title}
-									</TableCell>
-									<TableCell>{row.description}</TableCell>
-									<TableCell>{date}</TableCell>
-									<TableCell align="right">
-										<Action>
-											<Edit onClick={() => onClickHandler(row._id)}>
-												<Link
-													style={{ textDecoration: "none" }}
-													to="/meetings/meeting"
-												>
-													<PreviewIcon className="logo" />
-												</Link>
-											</Edit>
-											<Edit>
-												<Link
-													style={{ textDecoration: "none" }}
-													to="/set-meetings/meeting/admin/edit"
-												>
-													<EditIcon
-														className="logo"
-														onClick={setMeeting(row, {
+					<Link
+						style={{ textDecoration: "none" }}
+						to="/set-meetings/meeting/create"
+					>
+						<Button variant="contained">ADD NEW MEETING</Button>
+					</Link>
+				</div>
+				<TableContainer
+					component={Paper}
+					style={{
+						paddingBottom: "0.4%",
+						display: "flex",
+						flexDirection: "column",
+						justifyContent: "center",
+						alignItems: "center",
+					}}
+				>
+					<Table sx={{ minWidth: 650 }} aria-label="simple table">
+						<TableHead>
+							<TableRow>
+								<TableCell>Meeting Name</TableCell>
+								<TableCell>Description</TableCell>
+								<TableCell>Date</TableCell>
+								<TableCell align="right">Actions</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{mappedMeetings.map((row, id) => {
+								const date = new Date(row.start).toUTCString();
+								return (
+									<TableRow
+										key={id}
+										sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+									>
+										<TableCell component="th" scope="row">
+											{row.title}
+										</TableCell>
+										<TableCell>{row.description}</TableCell>
+										<TableCell>{date}</TableCell>
+										<TableCell align="right">
+											<Action>
+												<Edit onClick={() => onClickHandler(row._id)}>
+													<Link
+														style={{ textDecoration: "none" }}
+														to="/meetings/meeting"
+													>
+														<PreviewIcon className="logo" />
+													</Link>
+												</Edit>
+												<Edit>
+													<Link
+														style={{ textDecoration: "none" }}
+														to="/set-meetings/meeting/admin/edit"
+													>
+														<EditIcon
+															className="logo"
+															onClick={setMeeting(row, {
+																vertical: "top",
+																horizontal: "right",
+															})}
+														/>
+													</Link>
+												</Edit>
+												<Delete>
+													<DeleteIcon
+														className="logoField"
+														onClick={deleteMeeting(row._id, id + 1, {
 															vertical: "top",
 															horizontal: "right",
 														})}
 													/>
-												</Link>
-											</Edit>
-											<Delete>
-												<DeleteIcon
-													className="logoField"
-													onClick={deleteMeeting(row._id, id + 1, {
-														vertical: "top",
-														horizontal: "right",
-													})}
-												/>
-											</Delete>
-										</Action>
-									</TableCell>
-								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
-				<Stack spacing={2} style={{ marginTop: "0.4%" }}>
-					<Pagination
-						count={Math.ceil(meetings.length / 5)}
-						color="primary"
-						onChange={(e, value) => setPageMeetings(value)}
-					/>
-				</Stack>
-			</TableContainer>
+												</Delete>
+											</Action>
+										</TableCell>
+									</TableRow>
+								);
+							})}
+						</TableBody>
+					</Table>
+					<Stack spacing={2} style={{ marginTop: "0.4%" }}>
+						<Pagination
+							count={Math.ceil(meetings.length / 5)}
+							color="primary"
+							onChange={(e, value) => setPageMeetings(value)}
+						/>
+					</Stack>
+				</TableContainer>
+			</> : <Loader>
+				<Loading type="spin" color="#7485e8" />
+			</Loader>}
 		</>
 	);
 };
+
+const Loader = styled.div`
+	width: 100%;
+ 	height: 70vh; 
+ 	display: flex;
+	align-items: center;
+	flex-direction: column;
+ 	justify-content: center
+`
 
 const Action = styled.div`
 	width: 100%;

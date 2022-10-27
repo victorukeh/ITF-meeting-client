@@ -5,12 +5,14 @@ import Grid from "@material-ui/core/Grid";
 import Time from "./Time";
 import Back from "./Back";
 import { useDataLayerValue } from "../reducer/DataLayer";
+import styled from "styled-components";
 import axios from "axios";
 const Poll = () => {
 	const [{ poll, options, user, token }, dispatch] = useDataLayerValue();
-    const [max, setMax] = useState(0)
+	const [max, setMax] = useState(0)
 	const [sumValue, setSumValue] = useState(0);
-	console.log(sumValue);
+	const currentURL = window.location.href
+	const use = currentURL.split("/")[3]
 	const [active, setActive] = useState({
 		id: "",
 		option: null,
@@ -19,26 +21,25 @@ const Poll = () => {
 
 	useEffect(() => {
 		let value = 0;
-        let arr = []
+		let arr = []
 		for (const option of options) {
 			value = option.votes + value;
-            arr.push(option.votes)
+			arr.push(option.votes)
 		}
-        const max = arr.reduce((a, b) => Math.max(a, b), -Infinity);
-        console.log(max)
-        setMax(max)
+		const max = arr.reduce((a, b) => Math.max(a, b), -Infinity);
+		setMax(max)
 		setSumValue(value);
 	}, []);
 
 	useEffect(() => {
 		let value = 0;
-        let arr = []
+		let arr = []
 		for (const option of options) {
 			value = option.votes + value;
-            arr.push(option.votes)
+			arr.push(option.votes)
 		}
-        const max = arr.reduce((a, b) => Math.max(a, b), -Infinity);
-        setMax(max)
+		const max = arr.reduce((a, b) => Math.max(a, b), -Infinity);
+		setMax(max)
 		setSumValue(value);
 		setActive({
 			id: "",
@@ -56,14 +57,14 @@ const Poll = () => {
 	};
 
 	const submitVote = (newState) => async () => {
-		const response = await axios.put(
-			`http://localhost:2000/api/v1/meeting/poll/vote?option=${active.option}`,
-			{},
-			{
-				headers: { Authorization: `Bearer ${token}` },
-			}
-		);
 		try {
+			const response = await axios.put(
+				`http://localhost:2000/api/v1/meeting/poll/vote?option=${active.option}`,
+				{},
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
 			if (response.data.success === false) {
 				await dispatch({
 					type: "SET_SNACKBAR",
@@ -75,9 +76,10 @@ const Poll = () => {
 				});
 			} else {
 				const option = await axios.get(
-					`http://localhost:2000/api/v1/meeting/options?poll=${response.data.vote.poll}`
+					`http://localhost:2000/api/v1/meeting/options?poll=${response.data.vote.poll}`, {
+					headers: { Authorization: `Bearer ${token}` },
+				}
 				);
-				console.log(option.data.options);
 				await dispatch({
 					type: "SET_OPTIONS",
 					options: option.data.options,
@@ -96,6 +98,36 @@ const Poll = () => {
 				type: "SET_SNACKBAR",
 				snackbar: {
 					open: true,
+					error: true,
+					notification: err.response.data.error || "Something went wrong",
+					...newState,
+				},
+			});
+		}
+	};
+
+	const endPoll = (newState) => async () => {
+		try {
+			const response = await axios.put(
+				`http://localhost:2000/api/v1/meeting/poll/edit?id=${poll._id}`,
+				{},
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				})
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					notification: response.data.message,
+					...newState,
+				},
+			});
+		} catch (err) {
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					error: true,
 					notification: "Something went wrong",
 					...newState,
 				},
@@ -104,7 +136,7 @@ const Poll = () => {
 	};
 	return (
 		<>
-			<Back to="/polls" color="primary"/>
+			{use === "polls" ? <Back to="/polls" color="primary" /> : <Back to="/meetings/meeting/vote" color="primary" />}
 			<div
 				style={{
 					display: "flex",
@@ -143,17 +175,18 @@ const Poll = () => {
 									sumValue={sumValue}
 									option={option}
 									key={id}
-                                    max={max}
+									max={max}
 									onClickHandler={() => onClickHandler(id, option._id)}
 									color={
 										user.role === "user" &&
-										active.isActive === true &&
-										active.id === id &&
-										active.option !== null
+											active.isActive === true &&
+											active.id === id &&
+											active.option !== null
 											? "2px solid #b20505"
 											: "2px solid whitesmoke"
 									}
 								/>
+
 							))}
 						</div>
 					</Grid>
@@ -172,6 +205,7 @@ const Poll = () => {
 										vertical: "top",
 										horizontal: "right",
 									})}
+									disabled={poll.end === true ? true : false}
 									variant="contained"
 									color="success"
 									fullWidth
@@ -179,7 +213,20 @@ const Poll = () => {
 									Submit your Vote
 								</Button>
 							)}
-
+							{user.role === "admin" && (
+								<Button
+									onClick={endPoll({
+										vertical: "top",
+										horizontal: "right",
+									})}
+									variant="contained"
+									color="success"
+									disabled={poll.end === true ? true : false}
+									fullWidth
+								>
+									End Poll
+								</Button>
+							)}
 							<div
 								style={{
 									border: "2px solid whitesmoke",
@@ -208,6 +255,12 @@ const Poll = () => {
 									{sumValue}
 								</h1>
 							</div>
+							{poll.closed === true && <div style={{ flexDirection: "column", color: "red", fontFamily: "Arial sans-serif", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+								<h3>Poll Has Ended</h3>
+								{/* <p>Poll ended at </p>
+								<p>{poll.endTime}</p> */}
+							</div>}
+
 						</div>
 					</Grid>
 				</Grid>

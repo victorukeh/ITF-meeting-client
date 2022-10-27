@@ -68,7 +68,10 @@ const EditUser = () => {
 					...newState,
 				},
 			});
-			window.localStorage.removeItem("token");
+			if (err.response.status === 401) {
+				window.localStorage.removeItem("token")
+				window.location.reload(false)
+			};
 		}
 	};
 	return (
@@ -348,7 +351,7 @@ const EditUser = () => {
 						>
 							<Link
 								to="/users"
-								style={{ textDecoration: "none", color: "blue", fontFamily: "Roboto"}}
+								style={{ textDecoration: "none", color: "blue", fontFamily: "Roboto" }}
 							>
 								<Button
 									variant="text"

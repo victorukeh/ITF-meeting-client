@@ -63,7 +63,7 @@ function DropDown({ button, items }) {
 				id="demo-customized-button"
 				aria-controls={open ? "demo-customized-menu" : undefined}
 				aria-haspopup="true"
-				aria-expanded={open ? "true" : undefined}
+				aria-expanded={open ? true : undefined}
 				variant="text"
 				disableElevation
 				onClick={handleClick}
@@ -84,12 +84,13 @@ function DropDown({ button, items }) {
 			>
 				{items.map((item) => {
 					const url = `http://localhost:2000/${item.name}`;
+					const use = item.name.split("-").slice(1).join("-")
 					return (
 						<a
-							key={item}
+							key={item._id}
 							href={url}
 							style={{ textDecoration: "none", color: "#333" }}
-							without
+							// without
 							rel="noopener noreferrer"
 							target="_blank"
 						>
@@ -97,9 +98,8 @@ function DropDown({ button, items }) {
 								trailingIcon="picture_as_pdf"
 								onClick={handleClose}
 								disableRipple
-								key={item}
 							>
-								{item.name}
+								{use}
 							</MenuItem>
 						</a>
 					);

@@ -7,24 +7,24 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
 import { useDataLayerValue } from "../reducer/DataLayer";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
 import PreviewIcon from "@mui/icons-material/Preview";
 import { Link } from "react-router-dom";
 import Back from "../components/Back";
-import AddCommentIcon from "@material-ui/icons/AddComment";
 import MeetingPreview from "../components/MeetingPreview";
 import axios from "axios";
 
 const Vote = () => {
-	const [{ polls, user, pollsForMeeting }, dispatch] = useDataLayerValue();
+	const [{ user, pollsForMeeting, token }, dispatch] = useDataLayerValue();
 	const [open, setOpen] = useState(false);
 	const deletePoll = (id, index, newState) => async () => {
 		try {
 			const response = await axios.delete(
-				`http://localhost:2000/api/v1/meetings/meeting/polls/delete?poll=${id}`
+				`http://localhost:2000/api/v1/meetings/meeting/polls/delete?poll=${id}`, {
+				headers: { Authorization: `Bearer ${token}` },
+			}
 			);
 			await dispatch({
 				type: "SET_SNACKBAR",
@@ -53,6 +53,32 @@ const Vote = () => {
 		}
 	};
 
+	const getPoll = async (id) => {
+		let response = await axios.get(
+			`http://localhost:2000/api/v1/meeting/poll?poll=${id}`, {
+			headers: { Authorization: `Bearer ${token}` },
+		}
+		);
+		await dispatch({
+			type: "SET_POLL",
+			poll: response.data.poll,
+		});
+		window.localStorage.setItem("poll", JSON.stringify(response.data.poll));
+		response = await axios.get(
+			`http://localhost:2000/api/v1/meeting/options?poll=${id}`, {
+			headers: { Authorization: `Bearer ${token}` },
+		}
+		);
+		console.log(response);
+		await dispatch({
+			type: "SET_OPTIONS",
+			options: response.data.options,
+		});
+		window.localStorage.setItem(
+			"options",
+			JSON.stringify(response.data.options)
+		);
+	};
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
@@ -62,7 +88,7 @@ const Vote = () => {
 	};
 	return (
 		<>
-			<Back color="Primary" to="/meetings/meeting" />
+			<Back to="/meetings/meeting" color="primary" />
 			<MeetingPreview
 				handleClose={handleClose}
 				handleClickOpen={handleClickOpen}
@@ -113,14 +139,17 @@ const Vote = () => {
 									<TableCell>{date}</TableCell>
 									<TableCell align="right">
 										<Action>
-											<Edit
-											//  onClick={handleClickOpen}
-											>
-												<PreviewIcon className="logo" />
+											<Edit onClick={() => getPoll(row._id)}>
+												<Link
+													style={{ textDecoration: "none" }}
+													to="/meetings/polls/view"
+												>
+													<PreviewIcon className="logo" />
+												</Link>
 											</Edit>
-											<Edit>
+											{/* <Edit>
 												<EditIcon className="logo" />
-											</Edit>
+											</Edit> */}
 											<Delete
 												onClick={deletePoll(row.question._id, id + 1, {
 													vertical: "top",

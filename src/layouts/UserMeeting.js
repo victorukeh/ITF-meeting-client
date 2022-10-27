@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDataLayerValue } from "../reducer/DataLayer";
 import AddCommentIcon from "@material-ui/icons/AddComment";
 import TextField from "@mui/material/TextField";
+import Loading from "../components/Loading";
 import Box from "@mui/material/Box";
 import DropDown from "../components/DropDown";
 import axios from "axios";
@@ -14,7 +13,7 @@ import "../styles/css/dropDown.css";
 
 const UserMeeting = () => {
 	const [
-		{ addMeeting, viewMeeting, notification, agendaAndDocs, token, user },
+		{ loading, viewMeeting, agendaAndDocs, token, user },
 		dispatch,
 	] = useDataLayerValue();
 	const [addComment, setAddComment] = useState("");
@@ -68,47 +67,54 @@ const UserMeeting = () => {
 		}
 	};
 
-	const getComments = async () => {
-		const response = await axios.get(
-			`http://localhost:2000/api/v1/meeting/comments?meeting=${viewMeeting._id}`,
-			{
-				headers: { Authorization: `Bearer ${token}` },
-			}
-		);
-		dispatch({ type: "SET_COMMENTS", comments: response.data.comments });
-		window.localStorage.setItem(
-			"comments",
-			JSON.stringify(response.data.comments)
-		);
-	};
-
 	const getPolls = async () => {
-		const response = await axios.get(
-			`http://localhost:2000/api/v1/meeting/poll-meet?meeting=${viewMeeting._id}`,
-			{
-				headers: { Authorization: `Bearer ${token}` },
+		try {
+			const response = await axios.get(
+				`http://localhost:2000/api/v1/meeting/poll-meet?meeting=${viewMeeting._id}`,
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+			await dispatch({
+				type: "SET_POLLSFORMEETING",
+				pollsForMeeting: response.data.polls,
+			});
+		} catch (err) {
+			if (err.response.status === 401) {
+				window.localStorage.removeItem("token")
+				window.location.reload(false)
 			}
-		);
-		await dispatch({
-			type: "SET_POLLSFORMEETING",
-			pollsForMeeting: response.data.polls,
-		});
+		}
 	};
 	const getAdminComments = async () => {
-		const response = await axios.get(
-			`http://localhost:2000/api/v1/meeting/comments/admin?meeting=${viewMeeting._id}`,
-			{
-				headers: { Authorization: `Bearer ${token}` },
-			}
-		);
-		dispatch({ type: "SET_COMMENTS", comments: response.data.comments });
+		try {
+			await dispatch({
+				type: "SET_LOADING",
+				loading: true
+			})
+			const response = await axios.get(
+				`http://localhost:2000/api/v1/meeting/comments/admin?meeting=${viewMeeting._id}`,
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+			dispatch({ type: "SET_COMMENTS", comments: response.data.comments });
 
-		window.localStorage.setItem(
-			"comments",
-			JSON.stringify(response.data.comments)
-		);
+			window.localStorage.setItem(
+				"comments",
+				JSON.stringify(response.data.comments)
+			);
+			await dispatch({
+				type: "SET_LOADING",
+				loading: false
+			})
+		} catch (err) {
+			if (err.response.status === 401) {
+				window.localStorage.removeItem("token")
+				window.location.reload(false)
+			}
+		}
 	};
-	// http://localhost:2000/api/v1/meeting/comments
 	const setMeeting = async () => {
 		await dispatch({
 			type: "SET_CHECKMEETING",
@@ -117,89 +123,83 @@ const UserMeeting = () => {
 	};
 
 	return (
-		<Container>
-			<MeetingBox>
-				<MeetingText>{viewMeeting.title}</MeetingText>
-			</MeetingBox>
+		<>
+			{!loading ? <Container>
+				<MeetingBox>
+					<MeetingText>{viewMeeting.title}</MeetingText>
+					<MeetingParagraph>
+						{viewMeeting.description}
+					</MeetingParagraph>
+				</MeetingBox>
 
-			<MeetingView>
-				{agendaAndDocs.map((f, id) => (
-					<AgendaView key={id}>
-						<AgendaItems>
-							<Agenda>
-								{id + 1}. {f.agenda.name}
-							</Agenda>
-							<DropDown button="Documents" items={f.docs} key={id} />
-						</AgendaItems>
-						{user.role === "user" && (
-							<Comment onClick={() => commentHandler(id)}>
-								<AddCommentIcon className="commentIcon" />
-								<CommentText>Add Comment</CommentText>
-							</Comment>
-						)}
-						{comment.isOpen && comment.id === id && (
-							<Box
-								component="form"
-								sx={{
-									"& .MuiTextField-root": { m: 1, width: "85%" },
-								}}
-								noValidate
-								autoComplete="off"
-							>
-								<TextField
-									id="outlined-multiline-static"
-									label="Comment"
-									multiline
-									rows={4}
-									value={addComment}
-									onChange={handleComment}
-								/>
-								<div
-									style={{
-										display: "flex",
-										flexDirection: "row",
-										width: "86%",
-										justifyContent: "space-between",
+				<MeetingView>
+					{agendaAndDocs.map((f, id) => (
+						<AgendaView key={id}>
+							<AgendaItems>
+								<Agenda>
+									{id + 1}. {f.agenda.name}
+								</Agenda>
+								<DropDown button="Documents" items={f.docs} />
+							</AgendaItems>
+							{user.role === "user" && (
+								<Comment onClick={() => commentHandler(id)}>
+									<AddCommentIcon className="commentIcon" />
+									<CommentText>Add Comment</CommentText>
+								</Comment>
+							)}
+							{comment.isOpen && comment.id === id && (
+								<Box
+									component="form"
+									sx={{
+										"& .MuiTextField-root": { m: 1, width: "85%" },
 									}}
+									noValidate
+									autoComplete="off"
 								>
-									<Button
-										variant="contained"
-										color="primary"
-										style={{ marginLeft: "58%", width: "20%" }}
-										disabled={true && addComment.length === 0}
-										onClick={createComment(f.agenda._id, id, {
-											vertical: "top",
-											horizontal: "right",
-										})}
+									<TextField
+										id="outlined-multiline-static"
+										label="Comment"
+										multiline
+										rows={4}
+										value={addComment}
+										onChange={handleComment}
+									/>
+									<div
+										style={{
+											display: "flex",
+											flexDirection: "row",
+											width: "86%",
+											justifyContent: "space-between",
+										}}
 									>
-										Submit
-									</Button>
-									<Button
-										variant="contained"
-										color="warning"
-										style={{ width: "20%" }}
-										onClick={() => commentHandler(id)}
-									>
-										Cancel
-									</Button>
-								</div>
-							</Box>
-						)}
-						<ButtonBox>
-							<Link
-								style={{ textDecoration: "none" }}
-								to="/meetings/meeting/comments"
-							>
-								{/* {user.role === "user" && (
-									<Button
-										variant="contained"
-										color="success"
-										onClick={getComments}
-									>
-										View Comments
-									</Button>
-								)} */}
-								
+										<Button
+											variant="contained"
+											color="primary"
+											style={{ marginLeft: "58%", width: "20%" }}
+											disabled={true && addComment.length === 0}
+											onClick={createComment(f.agenda._id, id, {
+												vertical: "top",
+												horizontal: "right",
+											})}
+										>
+											Submit
+										</Button>
+										<Button
+											variant="contained"
+											color="warning"
+											style={{ width: "20%" }}
+											onClick={() => commentHandler(id)}
+										>
+											Cancel
+										</Button>
+									</div>
+								</Box>
+							)}
+							<ButtonBox>
+								<Link
+									style={{ textDecoration: "none" }}
+									to="/meetings/meeting/comments"
+								>
 									<Button
 										variant="contained"
 										color="success"
@@ -207,42 +207,53 @@ const UserMeeting = () => {
 									>
 										View Comments
 									</Button>
-								
-							</Link>
-							<Link
-								style={{ textDecoration: "none", marginLeft: "2%" }}
-								to="/meetings/meeting/vote"
-								onClick={() => getPolls()}
-							>
-								{user.role === "admin" && (
-									<Button variant="contained" color="primary">
-										Add & View Polls
+								</Link>
+								<Link
+									style={{ textDecoration: "none", marginLeft: "2%" }}
+									to="/meetings/meeting/vote"
+									onClick={() => getPolls()}
+								>
+									{user.role === "admin" && (
+										<Button variant="contained" color="primary">
+											Add & View Polls
+										</Button>
+									)}
+									{user.role === "user" && (
+										<Button variant="contained" color="primary">
+											View Polls
+										</Button>
+									)}
+								</Link>
+								<Link
+									style={{ textDecoration: "none", marginLeft: "2%" }}
+									to="/"
+									onClick={() => setMeeting()}
+								>
+									<Button variant="contained" color="error">
+										Leave Meeting
 									</Button>
-								)}
-								{user.role === "user" && (
-									<Button variant="contained" color="primary">
-										View Polls
-									</Button>
-								)}
-							</Link>
-							<Link
-								style={{ textDecoration: "none", marginLeft: "2%" }}
-								to="/"
-								onClick={() => setMeeting()}
-							>
-								<Button variant="contained" color="error">
-									Leave Meeting
-								</Button>
-							</Link>
-						</ButtonBox>
-					</AgendaView>
-				))}
-			</MeetingView>
-		</Container>
+								</Link>
+							</ButtonBox>
+						</AgendaView>
+					))}
+				</MeetingView>
+			</Container> : <Loader>
+				<Loading type="spin" color="#7485e8" />
+			</Loader>}
+		</>
 	);
 };
 
 export default UserMeeting;
+
+const Loader = styled.div`
+width: 100%;
+ height: 70vh; 
+ display: flex;
+  align-items: center;
+flex-direction: column;
+ justify-content: center;
+`
 
 const Container = styled.div`
 	width: 80%;
@@ -264,8 +275,17 @@ const MeetingBox = styled.div`
 	align-items: center;
 	justify-content: center;
 	width: 100%;
+	flex-direction: column;
 `;
 
+const MeetingParagraph = styled.p`
+	font-family: Verdana, sans-serif;
+	margin-left: 5%;
+	margin-right: 5% ;
+	text-align: center;
+	font-size: 14px;
+	color: #333;
+`;
 const MeetingView = styled.div`
 	margin-left: 5%;
 	overflow-y: auto;
