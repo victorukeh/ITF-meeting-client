@@ -120,25 +120,26 @@ const LoginForm = styled.div`
 `;
 const Background = styled.div`
 	background: url(${backgroundImage}) no-repeat;
-	background-size: cover;
+	background-repeat: no-repeat;
+    background-size: 100% 100%;
 	height: 100vh;
 	flex: 0.6;
 `;
 
-const Info = styled.div`
-	width: 50%;
-	height: 40%;
-	margin-top: 57vh;
-	margin-left: 48%;
-	background-image: linear-gradient(
-		to bottom right,
-		rgba(255, 255, 255, 0.2),
-		rgba(255, 255, 255, 0)
-	);
-	box-shadow: 10px 10px 10px rgba(30, 30, 30, 0.5);
-	backdrop-filter: blur(10px);
-	border-radius: 4px;
-`;
+// const Info = styled.div`
+// 	width: 50%;
+// 	height: 40%;
+// 	margin-top: 57vh;
+// 	margin-left: 48%;
+// 	background-image: linear-gradient(
+// 		to bottom right,
+// 		rgba(255, 255, 255, 0.2),
+// 		rgba(255, 255, 255, 0)
+// 	);
+// 	box-shadow: 10px 10px 10px rgba(30, 30, 30, 0.5);
+// 	backdrop-filter: blur(10px);
+// 	border-radius: 4px;
+// `;
 const ItfLogo = styled.img`
 	width: 15%;
 	margin-left: 38%;

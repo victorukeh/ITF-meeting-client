@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@mui/material/Button";
 import Back from "../components/Back";
@@ -19,18 +19,33 @@ import { useDataLayerValue } from "../reducer/DataLayer";
 const AddUser = () => {
 	const [{ token, notification }, dispatch] = useDataLayerValue();
 	const titles = ["Dr", "admin", "Mr", "Mrs", "Miss", "Prof"];
-	const roles = ["admin", "user"];
+	const roles = ["admin", "user", "representative"];
+	const departments = ["Directorate", "Admin & Human Resource", "Finance & Account", "Information & Communication Technology", "Business Training Development", "Field Services", "Revenue Inspectorate & Compliance", "Technical Vocational Skills & Training", "Procurement", "Research & Curriculum Development Department", "Corporate Planning", "Internal Audit", "Public Affairs", "Legal and Council Affairs", "Standardization, Certification and Consultancy"]
+	const [availableUsers, setAvailableUsers] = useState([])
 	const [values, setValues] = useState({
 		showPassword: false,
 		password: "",
 		email: "",
 		name: "",
-		country: "",
+		representing: "",
 		position: "",
 		department: "",
 		role: "",
 		title: "",
 	});
+	useEffect(() => {
+		getUsers();
+	}, []);
+	const getUsers = async () => {
+		const response = await axios.get("http://localhost:2000/api/v1/users", {
+			headers: { Authorization: `Bearer ${token}` },
+		});
+		let users = []
+		for (const user of response.data.users) {
+			users.push(user.fullName)
+		}
+		setAvailableUsers(users)
+	};
 	const handleChange = (prop) => (event) => {
 		setValues({ ...values, [prop]: event.target.value });
 	};
@@ -52,7 +67,7 @@ const AddUser = () => {
 					password: values.password,
 					email: values.email,
 					fullName: values.name,
-					country: values.country,
+					representing: values.representing,
 					position: values.position,
 					department: values.department,
 					role: values.role,
@@ -79,6 +94,7 @@ const AddUser = () => {
 				},
 			});
 		} catch (err) {
+			console.log(err)
 			await dispatch({
 				type: "SET_SNACKBAR",
 				snackbar: {
@@ -143,15 +159,11 @@ const AddUser = () => {
 						onChange={handleChange("email")}
 						style={{ width: "25ch" }}
 					/>
-					<TextField
-						id="search-bar"
-						className="text"
-						label="country"
-						variant="outlined"
-						placeholder="Country..."
-						value={values.country}
-						onChange={handleChange("country")}
-						style={{ width: "25ch" }}
+					<SelectDropDown
+						values={roles}
+						label="role"
+						value={values.role}
+						handleChange={handleChange("role")}
 					/>
 					<SelectDropDown
 						values={titles}
@@ -182,21 +194,17 @@ const AddUser = () => {
 						onChange={handleChange("position")}
 						style={{ width: "25ch" }}
 					/>
+					{values.role === "representative" && <SelectDropDown
+						values={availableUsers || ""}
+						label="representing"
+						value={values.representing || ""}
+						handleChange={handleChange("representing")}
+					/>}
 					<SelectDropDown
-						values={roles}
-						label="role"
-						value={values.role}
-						handleChange={handleChange("role")}
-					/>
-					<TextField
-						id="search-bar"
-						className="text"
+						values={departments}
 						label="department"
-						variant="outlined"
-						placeholder="department..."
 						value={values.department}
-						onChange={handleChange("department")}
-						style={{ width: "25ch" }}
+						handleChange={handleChange("department")}
 					/>
 					<FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
 						<InputLabel htmlFor="outlined-adornment-password">
@@ -232,7 +240,7 @@ const AddUser = () => {
 						values.name === "" ||
 							values.title === "" ||
 							values.email === "" ||
-							values.country === "" ||
+							// values.representing === "" ||
 							values.positon === "" ||
 							values.role === "" ||
 							values.department === "" ||
@@ -254,7 +262,7 @@ const AddUser = () => {
 							values.name === "" ||
 								values.title === "" ||
 								values.email === "" ||
-								values.country === "" ||
+								// values.representing === "" ||
 								values.positon === "" ||
 								values.role === "" ||
 								values.department === "" ||

@@ -120,6 +120,27 @@ function Users() {
 		})
 		window.localStorage.setItem("viewUser", JSON.stringify(user));
 	}
+
+	const findUser = (user, newState) => async () => {
+		try {
+			const response = await axios.get(`http://localhost:2000/api/v1/users/find?name=${user}`)
+			dispatch({
+				type: "VIEW_USER",
+				viewUser: response.data.user
+			})
+			window.localStorage.setItem("viewUser", JSON.stringify(response.data.user));
+		} catch (err) {
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					error: true,
+					notification: err.message,
+					...newState,
+				},
+			});
+		}
+	}
 	return (
 		<>
 			{!loading ? <>
@@ -157,7 +178,11 @@ function Users() {
 							}}
 						>
 							{dataFiltered.map((d) => (
-								<Link style={{ textDecoration: "none" }} to="/meetings/meeting">
+								<Link style={{ textDecoration: "none" }} to="/users/view"
+									onClick={findUser(d, {
+										vertical: "top",
+										horizontal: "right",
+									})}>
 									<div
 										className="data__field"
 										style={{
@@ -165,9 +190,7 @@ function Users() {
 											fontSize: 15,
 											margin: 1,
 										}}
-										key={d.id}
-									// onClick={() => onClickHandler(d)}
-									>
+										key={d.id}>
 										{d}
 									</div>
 								</Link>
