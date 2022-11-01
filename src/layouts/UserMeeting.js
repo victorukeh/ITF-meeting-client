@@ -60,7 +60,7 @@ const UserMeeting = () => {
 				snackbar: {
 					open: true,
 					error: true,
-					notification: err.message,
+					notification: err.response.data.error,
 					...newState,
 				},
 			});
@@ -86,6 +86,45 @@ const UserMeeting = () => {
 			}
 		}
 	};
+
+	const endMeeting = (newState) => async () => {
+		try {
+			const response = await axios.put(
+				`http://localhost:2000/api/v1/meeting/end?id=${viewMeeting._id}`,
+				{},
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+			await dispatch({
+				type: "SET_VIEWMEETING",
+				viewMeeting: response.data.meeting
+			})
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					notification: response.data.message,
+					...newState,
+				},
+			});
+		} catch (err) {
+			if (err.response.status === 401) {
+				window.localStorage.removeItem("token")
+				window.location.reload(false)
+			}
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					error: true,
+					notification: err.message,
+					...newState,
+				},
+			});
+		}
+	}
+
 	const getAdminComments = async () => {
 		try {
 			await dispatch({
@@ -224,6 +263,29 @@ const UserMeeting = () => {
 										</Button>
 									)}
 								</Link>
+								{viewMeeting.ended === true && <Link
+									style={{ textDecoration: "none", marginLeft: "2%" }}
+									to="/meetings/meeting/minutes"
+								>
+									{user.role === "admin" && (
+										<Button variant="contained" color="secondary">
+											Add & View Minutes
+										</Button>
+									)}
+									{user.role === "user" && (
+										<Button variant="contained" color="secondary">
+											View Minutes
+										</Button>
+									)}
+								</Link>}
+								{user.role === "admin" && viewMeeting.ended === false && <Button
+									onClick={endMeeting({
+										vertical: "top",
+										horizontal: "right",
+									})}
+									style={{ marginLeft: "2%" }} variant="contained" color="warning">
+									End Meeting
+								</Button>}
 								<Link
 									style={{ textDecoration: "none", marginLeft: "2%" }}
 									to="/"
@@ -262,6 +324,8 @@ const Container = styled.div`
 	-moz-box-shadow: 0 0 3px #ccc;
 	-webkit-box-shadow: 0 0 3px #ccc;
 	box-shadow: 0 0 3px #ccc;
+	height: 70vh;
+	overflow-y: auto;
 `;
 
 const MeetingText = styled.div`

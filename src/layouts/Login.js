@@ -46,27 +46,15 @@ const Login = () => {
 				user: response.data.user,
 			});
 		} catch (err) {
-			if (err.message) {
-				await dispatch({
-					type: "SET_SNACKBAR",
-					snackbar: {
-						open: true,
-						error: true,
-						notification: err.message,
-						...newState,
-					},
-				});
-			} else {
-				await dispatch({
-					type: "SET_SNACKBAR",
-					snackbar: {
-						open: true,
-						error: true,
-						notification: err.response.data.error,
-						...newState,
-					},
-				});
-			}
+			await dispatch({
+				type: "SET_SNACKBAR",
+				snackbar: {
+					open: true,
+					error: true,
+					notification: err.response.data.error,
+					...newState,
+				},
+			});
 		}
 	};
 
@@ -126,20 +114,6 @@ const Background = styled.div`
 	flex: 0.6;
 `;
 
-// const Info = styled.div`
-// 	width: 50%;
-// 	height: 40%;
-// 	margin-top: 57vh;
-// 	margin-left: 48%;
-// 	background-image: linear-gradient(
-// 		to bottom right,
-// 		rgba(255, 255, 255, 0.2),
-// 		rgba(255, 255, 255, 0)
-// 	);
-// 	box-shadow: 10px 10px 10px rgba(30, 30, 30, 0.5);
-// 	backdrop-filter: blur(10px);
-// 	border-radius: 4px;
-// `;
 const ItfLogo = styled.img`
 	width: 15%;
 	margin-left: 38%;

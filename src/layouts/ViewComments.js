@@ -9,7 +9,7 @@ import styled from "styled-components";
 import Loading from "../components/Loading";
 import { useDataLayerValue } from "../reducer/DataLayer";
 const ViewComments = () => {
-	const [{ loading, comments, user }, dispatch] =
+	const [{ loading, comments, user, viewMeeting }, dispatch] =
 		useDataLayerValue();
 
 	const deleteComment = (id, index, newState) => async () => {
@@ -70,7 +70,7 @@ const ViewComments = () => {
 				<div style={{ padding: 3, height: "78vh", width: "95%" }}>
 					<h5>Comments</h5>
 					{comments.map((comment, id) => {
-						console.log(comment.text.length);
+						console.log(comment)
 						return (
 							<Paper style={{ padding: "5px 20px", marginTop: "10px" }} key={id}>
 								<Grid container wrap="nowrap" spacing={2}>
@@ -82,7 +82,7 @@ const ViewComments = () => {
 												justifyContent: "space-between",
 											}}
 										>
-											<h4
+											<div style={{ display: "flex", flexDirection: "column" }}><h4
 												style={{
 													margin: 0,
 													textAlign: "left",
@@ -91,16 +91,15 @@ const ViewComments = () => {
 											>
 												{comment.fullName}
 											</h4>
+												<p style={{ fontSize: "13px", fontFamily: "cursive" }}>Agenda - {comment.agendaBody}</p></div>
 											<Delete>
-												{/* {(comment.user === user._id || user.role === "admin") &&  */}
 												<DeleteIcon
-													className={comment.user === user._id || user.role === "admin" ? "logoField" : "seize"}
+													className={(comment.user === user._id && viewMeeting.ended === false) ? "logoField" : "seize"}
 													onClick={deleteComment(comment._id, id + 1, {
 														vertical: "top",
 														horizontal: "right",
 													})}
 												/>
-												{/* } */}
 											</Delete>
 										</div>
 										<h4 style={{ fontWeight: "lighter", textAlign: "left" }}>
