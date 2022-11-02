@@ -22,6 +22,7 @@ import Polls from "./Polls";
 import ViewUser from "./ViewUser";
 import EditMeeting from "./EditMeeting";
 import EditUser from "./EditUser"
+import Minutes from "./Minutes";
 import ChangePassword from "./ChangePassword";
 import { Routes, Route } from "react-router-dom";
 
@@ -50,6 +51,7 @@ function Main() {
 							<Route path="/dashboard" element={<Dashboard />} />
 							<Route path="/polls" element={<Polls />} />
 							<Route path="/meetings/meeting/vote" element={<Vote />} />
+							<Route path="/meetings/meeting/minutes" element={<Minutes />} />
 							<Route path="/change-password" element={<ChangePassword />} />
 							<Route
 								path="/meetings/meeting/poll/create"

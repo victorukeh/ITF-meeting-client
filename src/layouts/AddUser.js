@@ -10,7 +10,7 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import SelectDropDown from "../components/SelectDropDown";
-import { Link } from "react-router-dom";
+import { redirect } from "react-router-dom";
 import axios from "axios";
 import "../styles/css/link.css";
 
@@ -93,6 +93,7 @@ const AddUser = () => {
 					...newState,
 				},
 			});
+			return redirect("/users");
 		} catch (err) {
 			console.log(err)
 			await dispatch({
@@ -234,7 +235,7 @@ const AddUser = () => {
 				{/* </div> */}
 			</div>
 			<div style={{ width: "100%" }}>
-				<Link
+				{/* <Link
 					to="/users"
 					className={
 						values.name === "" ||
@@ -248,36 +249,36 @@ const AddUser = () => {
 							? "seize"
 							: "normal"
 					}
+				> */}
+				<Button
+					variant="contained"
+					color="success"
+					style={{
+						marginLeft: "2.7%",
+						width: "94.5%",
+						marginRight: "2.7%",
+						marginTop: "2%",
+					}}
+					disabled={
+						values.name === "" ||
+							values.title === "" ||
+							values.email === "" ||
+							// values.representing === "" ||
+							values.positon === "" ||
+							values.role === "" ||
+							values.department === "" ||
+							values.password === ""
+							? true
+							: false
+					}
+					onClick={createUser({
+						vertical: "top",
+						horizontal: "right",
+					})}
 				>
-					<Button
-						variant="contained"
-						color="success"
-						style={{
-							marginLeft: "2.7%",
-							width: "94.5%",
-							marginRight: "2.7%",
-							marginTop: "2%",
-						}}
-						disabled={
-							values.name === "" ||
-								values.title === "" ||
-								values.email === "" ||
-								// values.representing === "" ||
-								values.positon === "" ||
-								values.role === "" ||
-								values.department === "" ||
-								values.password === ""
-								? true
-								: false
-						}
-						onClick={createUser({
-							vertical: "top",
-							horizontal: "right",
-						})}
-					>
-						Create
-					</Button>
-				</Link>
+					Create
+				</Button>
+				{/* </Link> */}
 				<Button
 					variant="contained"
 					color="warning"
