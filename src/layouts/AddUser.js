@@ -17,10 +17,10 @@ import "../styles/css/link.css";
 import { useDataLayerValue } from "../reducer/DataLayer";
 
 const AddUser = () => {
-	const [{ token, notification }, dispatch] = useDataLayerValue();
+	const [{ token }, dispatch] = useDataLayerValue();
 	const titles = ["Dr", "admin", "Mr", "Mrs", "Miss", "Prof"];
 	const roles = ["admin", "user", "representative"];
-	const departments = ["Directorate", "Admin & Human Resource", "Finance & Account", "Information & Communication Technology", "Business Training Development", "Field Services", "Revenue Inspectorate & Compliance", "Technical Vocational Skills & Training", "Procurement", "Research & Curriculum Development Department", "Corporate Planning", "Internal Audit", "Public Affairs", "Legal and Council Affairs", "Standardization, Certification and Consultancy"]
+	const departments = ["Estate Management", "Directorate", "Admin & Human Resource", "Finance & Account", "Information & Communication Technology", "Business Training Development", "Field Services", "Revenue Inspectorate & Compliance", "Technical Vocational Skills & Training", "Procurement", "Research & Curriculum Development Department", "Corporate Planning", "Internal Audit", "Public Affairs", "Legal and Council Affairs", "Standardization, Certification and Consultancy"]
 	const [availableUsers, setAvailableUsers] = useState([])
 	const [values, setValues] = useState({
 		showPassword: false,
