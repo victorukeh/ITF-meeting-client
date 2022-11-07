@@ -132,7 +132,7 @@ const UserMeeting = () => {
 				loading: true
 			})
 			const response = await axios.get(
-				`http://localhost:2000/api/v1/meeting/comments/admin?meeting=${viewMeeting._id}`,
+				`http://localhost:2000/api/v1/meeting/comments?meeting=${viewMeeting._id}`,
 				{
 					headers: { Authorization: `Bearer ${token}` },
 				}

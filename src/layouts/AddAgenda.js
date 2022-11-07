@@ -21,7 +21,7 @@ const AddMeeting = () => {
 			agenda: event.target.value,
 		});
 	};
-	const [agendas, setagendas] = React.useState([]);
+	const [agendas, setagendas] = useState([]);
 	const [files, setFiles] = useState([]);
 	const [selectedFiles, setSelectedFiles] = useState(null);
 

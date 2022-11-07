@@ -65,24 +65,17 @@ const ViewComments = () => {
 
 	return (
 		<>
-			{!loading ? <div style={{ width: "100%", overflowY: "auto" }}>
+			{!loading ? <Container>
 				<Back to="/meetings/meeting" color="primary" />
-				<div style={{ padding: 3, height: "78vh", width: "95%" }}>
-					<h5>Comments</h5>
+				<Comment>
+					<Comments>Comments</Comments>
 					{comments.map((comment, id) => {
-						console.log(comment)
 						return (
-							<Paper style={{ padding: "5px 20px", marginTop: "10px" }} key={id}>
+							<Paper style={paper} key={id}>
 								<Grid container wrap="nowrap" spacing={2}>
 									<Grid item xs zeroMinWidth>
-										<div
-											style={{
-												display: "flex",
-												flexDirection: "row",
-												justifyContent: "space-between",
-											}}
-										>
-											<div style={{ display: "flex", flexDirection: "column" }}><h4
+										<GridBox>
+											<HeaderBox><Header
 												style={{
 													margin: 0,
 													textAlign: "left",
@@ -90,8 +83,8 @@ const ViewComments = () => {
 												}}
 											>
 												{comment.fullName}
-											</h4>
-												<p style={{ fontSize: "13px", fontFamily: "cursive" }}>Agenda - {comment.agendaBody}</p></div>
+											</Header>
+												<Agenda>Agenda - {comment.agendaBody}</Agenda></HeaderBox>
 											<Delete>
 												<DeleteIcon
 													className={(comment.user === user._id && viewMeeting.ended === false) ? "logoField" : "seize"}
@@ -101,22 +94,22 @@ const ViewComments = () => {
 													})}
 												/>
 											</Delete>
-										</div>
-										<h4 style={{ fontWeight: "lighter", textAlign: "left" }}>
+										</GridBox>
+										<Body>
 											{comment.text.length > 124 ? (
 												<ReadMore>{comment.text}</ReadMore>
 											) : (
-												<p>{comment.text}</p>
+												<Text>{comment.text}</Text>
 											)}
-										</h4>
+										</Body>
 										<Time date={comment.createdAt} />
 									</Grid>
 								</Grid>
 							</Paper>
 						);
 					})}
-				</div>
-			</div> : <Loader>
+				</Comment>
+			</Container> : <Loader>
 				<Loading type="spin" color="#7485e8" />
 			</Loader>}
 		</>
@@ -126,6 +119,41 @@ const ViewComments = () => {
 
 export default ViewComments;
 
+const paper = { padding: "5px 20px", marginTop: "10px" }
+const Text = styled.p``
+const Body = styled.h4`
+	font-weight: lighter;
+	text-align: left;
+`
+const Comments = styled.h5``
+const Agenda = styled.p`
+	font-size: 13px;
+	font-family: cursive;
+	margin-bottom: -2%;
+`
+const Header = styled.h4`
+	margin: 0;
+	text-align: "left";
+	text-transform: uppercase;
+`
+
+const HeaderBox = styled.div`
+	display: flex;
+	flex-direction: column;
+`
+
+const GridBox = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+`
+const Comment = styled.div`
+	padding-left: 1%;
+	height: 78vh;
+	width: 95%; 
+	overflow-y: auto
+`
+const Container = styled.div``
 const Loader = styled.div`
 width: 100%;
  height: 70vh; 

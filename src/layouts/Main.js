@@ -24,6 +24,7 @@ import EditMeeting from "./EditMeeting";
 import EditUser from "./EditUser"
 import Minutes from "./Minutes";
 import ChangePassword from "./ChangePassword";
+import MinuteComments from "./MinuteComments";
 import { Routes, Route } from "react-router-dom";
 
 import { useDataLayerValue } from "../reducer/DataLayer";
@@ -67,6 +68,7 @@ function Main() {
 							<Route path="/set-meetings/meeting/admin" element={<Meeting />} />
 							<Route path="/set-meetings/meeting/admin/edit" element={<EditMeeting />} />
 							<Route path="/meetings/meeting" element={<UserMeeting />} />
+							<Route path="/meetings/meeting/minutes/comments" element={<MinuteComments />} />
 							<Route path="/meetings/meeting/agenda" element={<AddAgenda />} />
 							<Route
 								path="/set-meetings/meeting/create"

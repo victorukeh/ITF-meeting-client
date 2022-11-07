@@ -95,7 +95,6 @@ const AddUser = () => {
 			});
 			return redirect("/users");
 		} catch (err) {
-			console.log(err)
 			await dispatch({
 				type: "SET_SNACKBAR",
 				snackbar: {

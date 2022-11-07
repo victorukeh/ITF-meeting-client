@@ -114,6 +114,10 @@ const Poll = () => {
 				{
 					headers: { Authorization: `Bearer ${token}` },
 				})
+			dispatch({
+				type: "SET_POLL",
+				poll: response.data.poll
+			})
 			await dispatch({
 				type: "SET_SNACKBAR",
 				snackbar: {
