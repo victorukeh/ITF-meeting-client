@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.29a47b42.css",
-    "main.js": "/static/js/main.7c5dffeb.js",
+    "main.js": "/static/js/main.0ed2e84c.js",
     "static/media/check.jpg": "/static/media/check.6d2962cc0438c3267eeb.jpg",
     "static/media/itf-logo.jpg": "/static/media/itf-logo.e5124261decc075f1b41.jpg",
     "index.html": "/index.html",
     "main.29a47b42.css.map": "/static/css/main.29a47b42.css.map",
-    "main.7c5dffeb.js.map": "/static/js/main.7c5dffeb.js.map"
+    "main.0ed2e84c.js.map": "/static/js/main.0ed2e84c.js.map"
   },
   "entrypoints": [
     "static/css/main.29a47b42.css",
-    "static/js/main.7c5dffeb.js"
+    "static/js/main.0ed2e84c.js"
   ]
 }
