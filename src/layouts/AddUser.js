@@ -37,7 +37,7 @@ const AddUser = () => {
 		getUsers();
 	}, []);
 	const getUsers = async () => {
-		const response = await axios.get("http://localhost:2000/api/v1/users", {
+		const response = await axios.get(`${process.env.REACT_APP_URL}/users`, {
 			headers: { Authorization: `Bearer ${token}` },
 		});
 		let users = []
@@ -62,7 +62,7 @@ const AddUser = () => {
 	const createUser = (newState) => async () => {
 		try {
 			const response = await axios.post(
-				"http://localhost:2000/api/v1/auth/signUp",
+				`${process.env.REACT_APP_URL}/auth/signUp`,
 				{
 					password: values.password,
 					email: values.email,

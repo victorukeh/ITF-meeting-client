@@ -28,7 +28,7 @@ const EditUser = () => {
 	const editUser = (id, newState) => async () => {
 		try {
 			const response = await axios.put(
-				`http://localhost:2000/api/v1/users/edit?user=${id}`,
+				`${process.env.REACT_APP_URL}/users/edit?user=${id}`,
 				{
 					email: values.email,
 					fullName: values.name,

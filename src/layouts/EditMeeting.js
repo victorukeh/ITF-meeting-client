@@ -29,7 +29,7 @@ const EditMeeting = () => {
 	const updateMeeting = (id, newState) => async () => {
 		try {
 			const response = await axios.put(
-				`http://localhost:2000/api/v1/meeting/edit?meeting=${id}`,
+				`${process.env.REACT_APP_URL}/meeting/edit?meeting=${id}`,
 				{
 					title: values.title,
 					description: values.description,

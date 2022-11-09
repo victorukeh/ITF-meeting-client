@@ -43,7 +43,7 @@ function Users() {
 				type: "SET_LOADING",
 				loading: true
 			})
-			const response = await axios.get("http://localhost:2000/api/v1/users", {
+			const response = await axios.get(`${process.env.REACT_APP_URL}/users`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			dispatch({
@@ -72,7 +72,7 @@ function Users() {
 	const deleteUser = (id, index, newState) => async () => {
 		try {
 			const response = await axios.delete(
-				`http://localhost:2000/api/v1/users/delete?user=${id}`, {
+				`${process.env.REACT_APP_URL}/users/delete?user=${id}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);
@@ -123,7 +123,7 @@ function Users() {
 
 	const findUser = (user, newState) => async () => {
 		try {
-			const response = await axios.get(`http://localhost:2000/api/v1/users/find?name=${user}`)
+			const response = await axios.get(`${process.env.REACT_APP_URL}/users/find?name=${user}`)
 			dispatch({
 				type: "VIEW_USER",
 				viewUser: response.data.user
@@ -292,11 +292,11 @@ export default Users;
 
 const Loader = styled.div`
 	width: 100%;
- 	height: 70vh; 
- 	display: flex;
-  	align-items: center;
+	height: 70vh;
+	display: flex;
+	align-items: center;
 	flex-direction: column;
- 	justify-content: center
+	justify-content: center;
 `
 
 const Action = styled.div`
@@ -305,7 +305,8 @@ const Action = styled.div`
 	flex-direction: row;
 	justify-content: flex-end;
 	align-items: center;
-`;
+`
+
 const Delete = styled.div`
 	.logoField {
 		color: #9fa1a3;
@@ -314,19 +315,19 @@ const Delete = styled.div`
 	}
 	&:hover {
 		.logoField {
-			color: #f2a5ac;
-		}
+		color: #f2a5ac;
 	}
+}
 `;
 
 const Edit = styled.div`
 	.logo {
-		color: #9fa1a3;
-		cursor: pointer;
-	}
+	color: #9fa1a3;
+	cursor: pointer;
+}
 	&:hover {
 		.logo {
-			color: #f2a5ac;
-		}
+		color: #f2a5ac;
 	}
+}
 `;

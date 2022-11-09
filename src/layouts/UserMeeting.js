@@ -37,7 +37,7 @@ const UserMeeting = () => {
 	const createComment = (id, index, newState) => async () => {
 		try {
 			const response = await axios.post(
-				`http://localhost:2000/api/v1/meeting/comment/add?meeting=${viewMeeting._id}&agenda=${id}`,
+				`${process.env.REACT_APP_URL}/meeting/comment/add?meeting=${viewMeeting._id}&agenda=${id}`,
 				{
 					text: addComment,
 				},
@@ -70,7 +70,7 @@ const UserMeeting = () => {
 	const getPolls = async () => {
 		try {
 			const response = await axios.get(
-				`http://localhost:2000/api/v1/meeting/poll-meet?meeting=${viewMeeting._id}`,
+				`${process.env.REACT_APP_URL}/meeting/poll-meet?meeting=${viewMeeting._id}`,
 				{
 					headers: { Authorization: `Bearer ${token}` },
 				}
@@ -90,7 +90,7 @@ const UserMeeting = () => {
 	const endMeeting = (newState) => async () => {
 		try {
 			const response = await axios.put(
-				`http://localhost:2000/api/v1/meeting/end?id=${viewMeeting._id}`,
+				`${process.env.REACT_APP_URL}/meeting/end?id=${viewMeeting._id}`,
 				{},
 				{
 					headers: { Authorization: `Bearer ${token}` },
@@ -132,7 +132,7 @@ const UserMeeting = () => {
 				loading: true
 			})
 			const response = await axios.get(
-				`http://localhost:2000/api/v1/meeting/comments?meeting=${viewMeeting._id}`,
+				`${process.env.REACT_APP_URL}/meeting/comments?meeting=${viewMeeting._id}`,
 				{
 					headers: { Authorization: `Bearer ${token}` },
 				}

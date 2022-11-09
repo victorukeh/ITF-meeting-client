@@ -44,7 +44,7 @@ const Polls = () => {
 
 	const onClickHandler = async (d) => {
 		const fetchMeeting = await axios.get(
-			`http://localhost:2000/api/v1/meeting/find?title=${d}`, {
+			`${process.env.REACT_APP_URL}/meeting/find?title=${d}`, {
 			headers: { Authorization: `Bearer ${token}` },
 		}
 		);
@@ -63,14 +63,14 @@ const Polls = () => {
 			checkMeeting: true,
 		});
 		const response = await axios.get(
-			`http://localhost:2000/api/v1/meeting/agendas?meeting=${f._id}`, {
+			`${process.env.REACT_APP_URL}/meeting/agendas?meeting=${f._id}`, {
 			headers: { Authorization: `Bearer ${token}` },
 		}
 		);
 		let array = [];
 		for (const agenda of response.data.agendas) {
 			const docs = await axios.get(
-				`http://localhost:2000/api/v1/meeting/agenda/docs?meeting=${f._id}&agenda=${agenda._id}`, {
+				`${process.env.REACT_APP_URL}/meeting/agenda/docs?meeting=${f._id}&agenda=${agenda._id}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);
@@ -95,7 +95,7 @@ const Polls = () => {
 			loading: true
 		})
 		const response = await axios.get(
-			"http://localhost:2000/api/v1/meeting/polls?limit=50", {
+			`${process.env.REACT_APP_URL}/meeting/polls?limit=50`, {
 			headers: { Authorization: `Bearer ${token}` },
 		}
 		);
@@ -121,7 +121,7 @@ const Polls = () => {
 
 	const getPoll = async (id) => {
 		let response = await axios.get(
-			`http://localhost:2000/api/v1/meeting/poll?poll=${id}`, {
+			`${process.env.REACT_APP_URL}/meeting/poll?poll=${id}`, {
 			headers: { Authorization: `Bearer ${token}` },
 		}
 		);
@@ -131,7 +131,7 @@ const Polls = () => {
 		});
 		window.localStorage.setItem("poll", JSON.stringify(response.data.poll));
 		response = await axios.get(
-			`http://localhost:2000/api/v1/meeting/options?poll=${id}`, {
+			`${process.env.REACT_APP_URL}/meeting/options?poll=${id}`, {
 			headers: { Authorization: `Bearer ${token}` },
 		}
 		);
@@ -155,24 +155,24 @@ const Polls = () => {
 	const deleteMeeting = (id, index, newState) => async () => {
 		try {
 			const docs = await axios.get(
-				`http://localhost:2000/api/v1/meeting/docs?meeting=${id}`, {
+				`${process.env.REACT_APP_URL}/meeting/docs?meeting=${id}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);
 			for (const doc of docs.data.docs) {
 				await axios.delete(
-					`http://localhost:2000/api/v1/meeting/document/delete?document=${doc._id}`, {
+					`${process.env.REACT_APP_URL}/meeting/document/delete?document=${doc._id}`, {
 					headers: { Authorization: `Bearer ${token}` },
 				}
 				);
 			}
 			await axios.delete(
-				`http://localhost:2000/api/v1/meeting/agenda/delete?meeting=${id}`, {
+				`${process.env.REACT_APP_URL}/meeting/agenda/delete?meeting=${id}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);
 			const message = await axios.delete(
-				`http://localhost:2000/api/v1/meeting/delete?meeting=${id}`, {
+				`${process.env.REACT_APP_URL}/meeting/delete?meeting=${id}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);

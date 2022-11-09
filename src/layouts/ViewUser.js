@@ -12,7 +12,7 @@ const ViewUser = () => {
 	const deleteUser = (id, newState) => async () => {
 		try {
 			const response = await axios.delete(
-				`http://localhost:2000/api/v1/users/delete?user=${id}`
+				`${process.env.REACT_APP_URL}/users/delete?user=${id}`
 			);
 
 			await dispatch({

@@ -58,7 +58,7 @@ const ChangePassword = () => {
 	const submit = (newState) => async () => {
 		try {
 			const response = await axios.put(
-				"http://localhost:2000/api/v1/auth/change-password",
+				`${process.env.REACT_APP_URL}/auth/change-password`,
 				{
 					currentPassword: values.currentPassword,
 					newPassword: values.newPassword,

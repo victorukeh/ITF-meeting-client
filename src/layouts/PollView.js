@@ -62,7 +62,7 @@ const PollView = () => {
 	const createPoll = (newState) => async () => {
 		try {
 			const response = await axios.post(
-				`http://localhost:2000/api/v1/meeting/polls/create-poll?meeting=${viewMeeting._id}`,
+				`${process.env.REACT_APP_URL}/meeting/polls/create-poll?meeting=${viewMeeting._id}`,
 				{
 					question: values.question,
 					options: arr,

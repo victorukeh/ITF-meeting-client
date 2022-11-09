@@ -17,6 +17,9 @@ import Stack from "@mui/material/Stack";
 import axios from "axios";
 import Loading from "../components/Loading";
 import "../styles/css/searchbar.css";
+// import dotenv from "dotenv";
+// dotenv.config()
+
 const Meetings = () => {
 	const [{ meetings, loading, token }, dispatch] =
 		useDataLayerValue();
@@ -43,7 +46,7 @@ const Meetings = () => {
 				loading: true
 			})
 			const fetchMeeting = await axios.get(
-				`http://localhost:2000/api/v1/meeting/find?id=${d}`, {
+				`${process.env.REACT_APP_URL}/meeting/find?id=${d}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);
@@ -62,14 +65,14 @@ const Meetings = () => {
 				checkMeeting: true,
 			});
 			const response = await axios.get(
-				`http://localhost:2000/api/v1/meeting/agendas?meeting=${f._id}`, {
+				`${process.env.REACT_APP_URL}/meeting/agendas?meeting=${f._id}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);
 			let array = [];
 			for (const agenda of response.data.agendas) {
 				const docs = await axios.get(
-					`http://localhost:2000/api/v1/meeting/agenda/docs?meeting=${f._id}&agenda=${agenda._id}`, {
+					`${process.env.REACT_APP_URL}/meeting/agenda/docs?meeting=${f._id}&agenda=${agenda._id}`, {
 					headers: { Authorization: `Bearer ${token}` },
 				}
 				);
@@ -104,7 +107,7 @@ const Meetings = () => {
 				loading: true
 			})
 			const response = await axios.get(
-				"http://localhost:2000/api/v1/meeting?limit=50", {
+				`${process.env.REACT_APP_URL}/meeting?limit=50`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);
@@ -146,24 +149,24 @@ const Meetings = () => {
 	const deleteMeeting = (id, index, newState) => async () => {
 		try {
 			const docs = await axios.get(
-				`http://localhost:2000/api/v1/meeting/docs?meeting=${id}`, {
+				`${process.env.REACT_APP_URL}/meeting/docs?meeting=${id}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);
 			for (const doc of docs.data.docs) {
 				await axios.delete(
-					`http://localhost:2000/api/v1/meeting/document/delete?document=${doc._id}`, {
+					`${process.env.REACT_APP_URL}/meeting/document/delete?document=${doc._id}`, {
 					headers: { Authorization: `Bearer ${token}` },
 				}
 				);
 			}
 			await axios.delete(
-				`http://localhost:2000/api/v1/meeting/agenda/delete?meeting=${id}`, {
+				`${process.env.REACT_APP_URL}/meeting/agenda/delete?meeting=${id}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);
 			const message = await axios.delete(
-				`http://localhost:2000/api/v1/meeting/delete?meeting=${id}`, {
+				`${process.env.REACT_APP_URL}/meeting/delete?meeting=${id}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);

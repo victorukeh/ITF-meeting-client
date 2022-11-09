@@ -37,7 +37,7 @@ const Minutes = () => {
                 type: "SET_LOADING",
                 loading: true
             })
-            const response = await axios.get(`http://localhost:2000/api/v1/meeting/comments/minutes?meeting=${viewMeeting._id}`, {
+            const response = await axios.get(`${process.env.REACT_APP_URL}/meeting/comments/minutes?meeting=${viewMeeting._id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             console.log(response.data.comments)
@@ -59,7 +59,7 @@ const Minutes = () => {
     }
     const getMinutes = async () => {
         try {
-            const response = await axios.get(`http://localhost:2000/api/v1/meeting/minutes?meeting=${viewMeeting._id}`, {
+            const response = await axios.get(`${process.env.REACT_APP_URL}/meeting/minutes?meeting=${viewMeeting._id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             if (response.data.minutes[0].length < 1) {
@@ -81,7 +81,7 @@ const Minutes = () => {
             const formData = new FormData();
             formData.append("file", selectedFile);
             const response = await axios.put(
-                `http://localhost:2000/api/v1/meeting/replace?meeting=${viewMeeting._id}`,
+                `${process.env.REACT_APP_URL}/meeting/replace?meeting=${viewMeeting._id}`,
                 formData, {
                 headers: { Authorization: `Bearer ${token}` },
             }
@@ -114,7 +114,7 @@ const Minutes = () => {
             const formData = new FormData();
             formData.append("file", selectedFile);
             const response = await axios.post(
-                `http://localhost:2000/api/v1/meeting/file?meeting=${viewMeeting._id}`,
+                `${process.env.REACT_APP_URL}/meeting/file?meeting=${viewMeeting._id}`,
                 formData, {
                 headers: { Authorization: `Bearer ${token}` },
             }
@@ -146,7 +146,7 @@ const Minutes = () => {
         try {
             const minutes = "minutes"
             const response = await axios.post(
-                `http://localhost:2000/api/v1/meeting/comment/add?meeting=${viewMeeting._id}&type=${minutes}`,
+                `${process.env.REACT_APP_URL}/meeting/comment/add?meeting=${viewMeeting._id}&type=${minutes}`,
                 {
                     text: addComment,
                 },

@@ -22,7 +22,7 @@ const Vote = () => {
 	const deletePoll = (id, index, newState) => async () => {
 		try {
 			const response = await axios.delete(
-				`http://localhost:2000/api/v1/meetings/meeting/polls/delete?poll=${id}`, {
+				`${process.env.REACT_APP_URL}/meetings/meeting/polls/delete?poll=${id}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);
@@ -55,7 +55,7 @@ const Vote = () => {
 
 	const getPoll = async (id) => {
 		let response = await axios.get(
-			`http://localhost:2000/api/v1/meeting/poll?poll=${id}`, {
+			`${process.env.REACT_APP_URL}/meeting/poll?poll=${id}`, {
 			headers: { Authorization: `Bearer ${token}` },
 		}
 		);
@@ -65,7 +65,7 @@ const Vote = () => {
 		});
 		window.localStorage.setItem("poll", JSON.stringify(response.data.poll));
 		response = await axios.get(
-			`http://localhost:2000/api/v1/meeting/options?poll=${id}`, {
+			`${process.env.REACT_APP_URL}/meeting/options?poll=${id}`, {
 			headers: { Authorization: `Bearer ${token}` },
 		}
 		);

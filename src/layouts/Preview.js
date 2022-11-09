@@ -24,7 +24,7 @@ const Preview = () => {
 	const createMeeting = (newState) => async () => {
 		try {
 			const response = await axios.post(
-				"http://localhost:2000/api/v1/meeting/create-meeting",
+				`${process.env.REACT_APP_URL}/meeting/create-meeting`,
 				{
 					title: addMeeting.title,
 					description: addMeeting.description,
@@ -46,7 +46,7 @@ const Preview = () => {
 				for (const item of fullAgenda) {
 					const formData = new FormData();
 					const agenda = await axios.post(
-						`http://localhost:2000/api/v1/meeting/agenda/add?meeting=${response.data.meeting._id}`,
+						`${process.env.REACT_APP_URL}/meeting/agenda/add?meeting=${response.data.meeting._id}`,
 						{
 							agenda: item.agenda,
 						}, {
@@ -57,7 +57,7 @@ const Preview = () => {
 						formData.append("files", doc);
 					}
 					const docs = await axios.post(
-						`http://localhost:2000/api/v1/meeting/files?agenda=${agenda.data.agenda._id}&meeting=${response.data.meeting._id}`,
+						`${process.env.REACT_APP_URL}/meeting/files?agenda=${agenda.data.agenda._id}&meeting=${response.data.meeting._id}`,
 						formData, {
 						headers: { Authorization: `Bearer ${token}` },
 					}

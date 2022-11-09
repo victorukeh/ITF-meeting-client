@@ -59,7 +59,7 @@ const Poll = () => {
 	const submitVote = (newState) => async () => {
 		try {
 			const response = await axios.put(
-				`http://localhost:2000/api/v1/meeting/poll/vote?option=${active.option}`,
+				`${process.env.REACT_APP_URL}/meeting/poll/vote?option=${active.option}`,
 				{},
 				{
 					headers: { Authorization: `Bearer ${token}` },
@@ -76,7 +76,7 @@ const Poll = () => {
 				});
 			} else {
 				const option = await axios.get(
-					`http://localhost:2000/api/v1/meeting/options?poll=${response.data.vote.poll}`, {
+					`${process.env.REACT_APP_URL}/meeting/options?poll=${response.data.vote.poll}`, {
 					headers: { Authorization: `Bearer ${token}` },
 				}
 				);
@@ -109,7 +109,7 @@ const Poll = () => {
 	const endPoll = (newState) => async () => {
 		try {
 			const response = await axios.put(
-				`http://localhost:2000/api/v1/meeting/poll/edit?id=${poll._id}`,
+				`${process.env.REACT_APP_URL}/meeting/poll/edit?id=${poll._id}`,
 				{},
 				{
 					headers: { Authorization: `Bearer ${token}` },

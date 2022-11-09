@@ -19,7 +19,7 @@ const ViewComments = () => {
 				loading: true
 			})
 			const response = await axios.delete(
-				`http://localhost:2000/api/v1/meeting/comment/delete?id=${id}`
+				`${process.env.REACT_APP_URL}/meeting/comment/delete?id=${id}`
 			);
 			const deleted = comments.filter((o, i) => index !== i);
 			await dispatch({
@@ -54,7 +54,7 @@ const ViewComments = () => {
 			}
 		}
 		const response = await axios.delete(
-			`http://localhost:2000/api/v1/meeting/comment/delete?id=${id}`
+			`${process.env.REACT_APP_URL}/meeting/comment/delete?id=${id}`
 		);
 		const deleted = comments.filter((o, i) => index !== i);
 		await dispatch({

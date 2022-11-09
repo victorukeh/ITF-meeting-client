@@ -36,14 +36,14 @@ const Meeting = () => {
 			checkMeeting: true,
 		});
 		const response = await axios.get(
-			`http://localhost:2000/api/v1/meeting/agendas?meeting=${f._id}`, {
+			`${process.env.REACT_APP_URL}/meeting/agendas?meeting=${f._id}`, {
 			headers: { Authorization: `Bearer ${token}` },
 		}
 		);
 		let array = [];
 		for (const agenda of response.data.agendas) {
 			const docs = await axios.get(
-				`http://localhost:2000/api/v1/meeting/agenda/docs?meeting=${f._id}&agenda=${agenda._id}`, {
+				`${process.env.REACT_APP_URL}/meeting/agenda/docs?meeting=${f._id}&agenda=${agenda._id}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);
@@ -67,7 +67,7 @@ const Meeting = () => {
 	const getmeetings = async () => {
 		try {
 			const response = await axios.get(
-				"http://localhost:2000/api/v1/meeting?limit=10", {
+				`${process.env.REACT_APP_URL}/meeting?limit=10`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);

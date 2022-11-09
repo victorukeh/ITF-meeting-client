@@ -22,7 +22,7 @@ const Login = () => {
 	const handleClick = (newState) => async () => {
 		try {
 			const response = await axios.post(
-				"http://localhost:2000/api/v1/auth/login",
+				`${process.env.REACT_APP_URL}/auth/login`,
 				{
 					email: email,
 					password: password,
