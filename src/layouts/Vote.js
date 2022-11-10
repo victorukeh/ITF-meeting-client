@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -17,12 +17,38 @@ import MeetingPreview from "../components/MeetingPreview";
 import axios from "axios";
 
 const Vote = () => {
-	const [{ user, pollsForMeeting, token }, dispatch] = useDataLayerValue();
+	const [{ user, pollsForMeeting, token, viewMeeting }, dispatch] = useDataLayerValue();
 	const [open, setOpen] = useState(false);
+
+	useEffect(() => {
+		getPolls()
+	}, [])
+
+	const getPolls = async () => {
+		try {
+			const response = await axios.get(
+				`${process.env.REACT_APP_URL}/meeting/poll-meet?meeting=${viewMeeting._id}`,
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+			await dispatch({
+				type: "SET_POLLSFORMEETING",
+				pollsForMeeting: response.data.polls,
+			});
+			window.localStorage.setItem("pollsForMeeting", JSON.stringify(response.data.polls));
+		} catch (err) {
+			if (err.response.status === 401) {
+				window.localStorage.removeItem("token")
+				window.location.reload(false)
+			}
+		}
+	};
+
 	const deletePoll = (id, index, newState) => async () => {
 		try {
 			const response = await axios.delete(
-				`${process.env.REACT_APP_URL}/meetings/meeting/polls/delete?poll=${id}`, {
+				`${process.env.REACT_APP_URL}/meeting/polls/delete?poll=${id}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			}
 			);
@@ -34,12 +60,11 @@ const Vote = () => {
 					...newState,
 				},
 			});
-
-			const deleted = pollsForMeeting.filter((o, i) => index !== i);
-			await dispatch({
+			dispatch({
 				type: "SET_POLLSFORMEETING",
-				pollsForMeeting: deleted,
+				pollsForMeeting: pollsForMeeting.filter((o, i) => index !== i + 1),
 			});
+			window.localStorage.setItem("pollsForMeeting", JSON.stringify(pollsForMeeting.filter((o, i) => index !== i + 1)))
 		} catch (err) {
 			await dispatch({
 				type: "SET_SNACKBAR",
@@ -150,7 +175,7 @@ const Vote = () => {
 												<EditIcon className="logo" />
 											</Edit> */}
 											<Delete
-												onClick={deletePoll(row.question._id, id + 1, {
+												onClick={deletePoll(row._id, id + 1, {
 													vertical: "top",
 													horizontal: "right",
 												})}

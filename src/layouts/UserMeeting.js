@@ -79,6 +79,7 @@ const UserMeeting = () => {
 				type: "SET_POLLSFORMEETING",
 				pollsForMeeting: response.data.polls,
 			});
+			window.localStorage.setItem("pollsForMeeting", JSON.stringify(response.data.polls));
 		} catch (err) {
 			if (err.response.status === 401) {
 				window.localStorage.removeItem("token")
@@ -242,7 +243,7 @@ const UserMeeting = () => {
 									<Button
 										variant="contained"
 										color="success"
-										onClick={getAdminComments}
+										onClick={() => getAdminComments()}
 									>
 										View Comments
 									</Button>

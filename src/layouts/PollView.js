@@ -14,6 +14,7 @@ import Button from "@mui/material/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import "../styles/css/link.css"
 
 import DeleteIcon from "@material-ui/icons/Delete";
 
@@ -61,6 +62,10 @@ const PollView = () => {
 
 	const createPoll = (newState) => async () => {
 		try {
+			await dispatch({
+				type: "SET_LOADING",
+				loading: true
+			})
 			const response = await axios.post(
 				`${process.env.REACT_APP_URL}/meeting/polls/create-poll?meeting=${viewMeeting._id}`,
 				{
@@ -77,6 +82,8 @@ const PollView = () => {
 				type: "SET_OPTIONS",
 				options: response.data.options,
 			});
+			window.localStorage.setItem("poll", JSON.stringify(response.data.poll));
+			window.localStorage.setItem("options", JSON.stringify(response.data.options));
 			await dispatch({
 				type: "SET_SNACKBAR",
 				snackbar: {
@@ -85,6 +92,10 @@ const PollView = () => {
 					...newState,
 				},
 			});
+			await dispatch({
+				type: "SET_LOADING",
+				loading: false
+			})
 		} catch (err) {
 			await dispatch({
 				type: "SET_SNACKBAR",
@@ -99,7 +110,7 @@ const PollView = () => {
 	};
 	return (
 		<div>
-			<Back color="Primary" to="/meetings/meeting/vote" />
+			<Back color="primary" to="/meetings/meeting/vote" />
 			<div
 				style={{
 					width: "100%",
@@ -132,23 +143,25 @@ const PollView = () => {
 						justifyContent: "flex-end",
 					}}
 				>
-					<Button
-						onClick={createPoll({
-							vertical: "top",
-							horizontal: "right",
-						})}
+					<Link
+						to="/meetings/polls/view"
+						className={arr.length < 2 || values.question === "" ? "seize" : "normal"}
 						style={{ marginRight: "1%" }}
-						variant="contained"
-						color="success"
-						disabled={arr.length < 2 || values.question === "" ? true : false}
 					>
-						<Link
-							to="/polls/view"
-							style={{ textDecoration: "none", color: "white" }}
+						<Button
+							onClick={createPoll({
+								vertical: "top",
+								horizontal: "right",
+							})}
+							style={{ marginRight: "1%" }}
+							variant="contained"
+							color="success"
+							disabled={arr.length < 2 || values.question === "" ? true : false}
 						>
-							Create Poll
-						</Link>
-					</Button>
+							Create
+
+						</Button>
+					</Link>
 					<Button onClick={addInput} color="primary" variant="contained">
 						Option +
 					</Button>
@@ -169,7 +182,7 @@ const PollView = () => {
 									sx={{ color: "action.active", mr: 1, my: 0.5 }}
 								/>
 								<TextField
-									id={i}
+									id={JSON.stringify(i)}
 									label={number}
 									variant="standard"
 									onChange={handleChangeNew}

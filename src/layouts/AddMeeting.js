@@ -37,7 +37,7 @@ const AddMeeting = () => {
 	};
 	return (
 		<>
-			<Back color="Primary" to="/set-meetings/meeting/admin" />
+			<Back color="primary" to="/set-meetings/meeting/admin" />
 			<Container>
 				<Box
 					component="form"

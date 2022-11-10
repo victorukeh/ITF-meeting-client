@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Paper } from "@material-ui/core";
 import Back from "../components/Back";
 import Time from "../components/Time";
@@ -9,8 +9,48 @@ import styled from "styled-components";
 import Loading from "../components/Loading";
 import { useDataLayerValue } from "../reducer/DataLayer";
 const ViewComments = () => {
-	const [{ loading, comments, user, viewMeeting }, dispatch] =
+	const [{ loading, comments, user, token, viewMeeting }, dispatch] =
 		useDataLayerValue();
+
+	useEffect(() => {
+		getAdminComments()
+	}, [])
+
+	const getAdminComments = async () => {
+		try {
+			await dispatch({
+				type: "SET_LOADING",
+				loading: true
+			})
+			const response = await axios.get(
+				`${process.env.REACT_APP_URL}/meeting/comments?meeting=${viewMeeting._id}`,
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+			dispatch({ type: "SET_COMMENTS", comments: response.data.comments });
+
+			window.localStorage.setItem(
+				"comments",
+				JSON.stringify(response.data.comments)
+			);
+			await dispatch({
+				type: "SET_LOADING",
+				loading: false
+			})
+		} catch (err) {
+			if (err.response.status === 401) {
+				window.localStorage.removeItem("token")
+				window.location.reload(false)
+			}
+		}
+	};
+	const setMeeting = async () => {
+		await dispatch({
+			type: "SET_CHECKMEETING",
+			checkMeeting: false,
+		});
+	};
 
 	const deleteComment = (id, index, newState) => async () => {
 		try {
@@ -53,14 +93,14 @@ const ViewComments = () => {
 				window.location.reload(false)
 			}
 		}
-		const response = await axios.delete(
-			`${process.env.REACT_APP_URL}/meeting/comment/delete?id=${id}`
-		);
-		const deleted = comments.filter((o, i) => index !== i);
-		await dispatch({
-			type: "SET_COMMENTS",
-			comments: deleted,
-		});
+		// const response = await axios.delete(
+		// 	`${process.env.REACT_APP_URL}/meeting/comment/delete?id=${id}`
+		// );
+		// const deleted = comments.filter((o, i) => index !== i);
+		// await dispatch({
+		// 	type: "SET_COMMENTS",
+		// 	comments: deleted,
+		// });
 	};
 
 	return (

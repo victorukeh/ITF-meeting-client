@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PollButton from "./PollButton";
+import Loading from "./Loading";
 import Button from "@mui/material/Button";
 import Grid from "@material-ui/core/Grid";
 import Time from "./Time";
@@ -8,7 +9,7 @@ import { useDataLayerValue } from "../reducer/DataLayer";
 import styled from "styled-components";
 import axios from "axios";
 const Poll = () => {
-	const [{ poll, options, user, token }, dispatch] = useDataLayerValue();
+	const [{ poll, options, user, token, loading }, dispatch] = useDataLayerValue();
 	const [max, setMax] = useState(0)
 	const [sumValue, setSumValue] = useState(0);
 	const currentURL = window.location.href
@@ -140,137 +141,153 @@ const Poll = () => {
 	};
 	return (
 		<>
-			{use === "polls" ? <Back to="/polls" color="primary" /> : <Back to="/meetings/meeting/vote" color="primary" />}
-			<div
-				style={{
-					display: "flex",
-					flexDirection: "column",
-					justifyContent: "center",
-					alignItems: "center",
-				}}
-			>
-				<h2 style={{ marginBottom: "0px" }}>{poll.question}</h2>
-				<div style={{ display: "flex", flexDirection: "row" }}>
-					<p style={{ color: "gray" }}>
-						Asked by admin about<span style={{ color: "white" }}>.</span>
-					</p>
-					<Time date={poll.createdAt} />
-				</div>
-
-				<Grid
-					container
-					spacing={3}
-					alignItems="flex-end"
-					style={{ marginRight: "0px" }}
-				>
-					<Grid item xs={8}>
-						<div
-							style={{
-								width: "100%",
-								display: "flex",
-								flexDirection: "column",
-								alignItems: "center",
-								height: "60vh",
-								overflowY: "auto",
-							}}
-						>
-							{options.map((option, id) => (
-								<PollButton
-									sumValue={sumValue}
-									option={option}
-									key={id}
-									max={max}
-									onClickHandler={() => onClickHandler(id, option._id)}
-									color={
-										user.role === "user" &&
-											active.isActive === true &&
-											active.id === id &&
-											active.option !== null
-											? "2px solid #b20505"
-											: "2px solid whitesmoke"
-									}
-								/>
-
-							))}
+			{!loading ? (
+				<>
+					{use === "polls" ? <Back to="/polls" color="primary" /> : <Back to="/meetings/meeting/vote" color="primary" />}
+					<div
+						style={{
+							display: "flex",
+							flexDirection: "column",
+							justifyContent: "center",
+							alignItems: "center",
+						}}
+					>
+						<h2 style={{ marginBottom: "0px" }}>{poll.question}</h2>
+						<div style={{ display: "flex", flexDirection: "row" }}>
+							<p style={{ color: "gray" }}>
+								Asked by admin about<span style={{ color: "white" }}>.</span>
+							</p>
+							<Time date={poll.createdAt} />
 						</div>
-					</Grid>
-					<Grid item xs={4}>
-						<div
-							style={{
-								marginTop: "-125%",
-								width: "100%",
-								display: "flex",
-								flexDirection: "column",
-							}}
+
+						<Grid
+							container
+							spacing={3}
+							alignItems="flex-end"
+							style={{ marginRight: "0px" }}
 						>
-							{user.role === "user" && (
-								<Button
-									onClick={submitVote({
-										vertical: "top",
-										horizontal: "right",
-									})}
-									disabled={poll.end === true ? true : false}
-									variant="contained"
-									color="success"
-									fullWidth
-								>
-									Submit your Vote
-								</Button>
-							)}
-							{user.role === "admin" && (
-								<Button
-									onClick={endPoll({
-										vertical: "top",
-										horizontal: "right",
-									})}
-									variant="contained"
-									color="success"
-									disabled={poll.end === true ? true : false}
-									fullWidth
-								>
-									End Poll
-								</Button>
-							)}
-							<div
-								style={{
-									border: "2px solid whitesmoke",
-									borderRadius: "5px",
-									width: "100%",
-									height: "20vh",
-									marginTop: "5%",
-									display: "flex",
-									flexDirection: "column",
-									justifyContent: "center",
-									alignItems: "center",
-								}}
-							>
-								<p
-									style={{ marginTop: "5%", marginBottom: "0%", color: "gray" }}
-								>
-									Votes
-								</p>
-								<h1
+							<Grid item xs={8}>
+								<div
 									style={{
-										marginTop: "0px",
-										fontSize: "50px",
-										fontFamily: "Open Sans",
+										width: "100%",
+										display: "flex",
+										flexDirection: "column",
+										alignItems: "center",
+										height: "60vh",
+										overflowY: "auto",
 									}}
 								>
-									{sumValue}
-								</h1>
-							</div>
-							{poll.closed === true && <div style={{ flexDirection: "column", color: "red", fontFamily: "Arial sans-serif", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-								<h3>Poll Has Ended</h3>
-								{/* <p>Poll ended at </p>
-								<p>{poll.endTime}</p> */}
-							</div>}
+									{options.map((option, id) => (
+										<PollButton
+											sumValue={sumValue}
+											option={option}
+											key={id}
+											max={max}
+											onClickHandler={() => onClickHandler(id, option._id)}
+											color={
+												user.role === "user" &&
+													active.isActive === true &&
+													active.id === id &&
+													active.option !== null
+													? "2px solid #b20505"
+													: "2px solid whitesmoke"
+											}
+										/>
 
-						</div>
-					</Grid>
-				</Grid>
-			</div>
+									))}
+								</div>
+							</Grid>
+							<Grid item xs={4}>
+								<div
+									style={{
+										marginTop: "-125%",
+										width: "100%",
+										display: "flex",
+										flexDirection: "column",
+									}}
+								>
+									{user.role === "user" && (
+										<Button
+											onClick={submitVote({
+												vertical: "top",
+												horizontal: "right",
+											})}
+											disabled={poll.end === true ? true : false}
+											variant="contained"
+											color="success"
+											fullWidth
+										>
+											Submit your Vote
+										</Button>
+									)}
+									{user.role === "admin" && (
+										<Button
+											onClick={endPoll({
+												vertical: "top",
+												horizontal: "right",
+											})}
+											variant="contained"
+											color="success"
+											disabled={poll.end === true ? true : false}
+											fullWidth
+										>
+											End Poll
+										</Button>
+									)}
+									<div
+										style={{
+											border: "2px solid whitesmoke",
+											borderRadius: "5px",
+											width: "100%",
+											height: "20vh",
+											marginTop: "5%",
+											display: "flex",
+											flexDirection: "column",
+											justifyContent: "center",
+											alignItems: "center",
+										}}
+									>
+										<p
+											style={{ marginTop: "5%", marginBottom: "0%", color: "gray" }}
+										>
+											Votes
+										</p>
+										<h1
+											style={{
+												marginTop: "0px",
+												fontSize: "50px",
+												fontFamily: "Open Sans",
+											}}
+										>
+											{sumValue}
+										</h1>
+									</div>
+									{poll.closed === true && <div style={{ flexDirection: "column", color: "red", fontFamily: "Arial sans-serif", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+										<h3>Poll Has Ended</h3>
+										{/* <p>Poll ended at </p>
+								<p>{poll.endTime}</p> */}
+									</div>}
+
+								</div>
+							</Grid>
+						</Grid>
+					</div>
+				</>) : (
+				<Loader>
+					<Loading type="spin" color="#7485e8" />
+				</Loader>
+			)}
 		</>
 	);
 };
 
 export default Poll;
+
+const Loader = styled.div`
+width: 100%;
+ height: 70vh; 
+ display: flex;
+  align-items: center;
+flex-direction: column;
+ justify-content: center
+`
