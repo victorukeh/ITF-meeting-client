@@ -8,10 +8,10 @@ export const initialState = {
 	inDropZone: false,
 	fileList: [],
 	meetings: JSON.parse(localStorage.getItem("meetings")) || [],
-	addMeeting: { title: "", description: "", start: "", end: "" },
+	addMeeting: JSON.parse(localStorage.getItem("addMeeting")) || { title: "", description: "", start: "2022-10-24T10:30" },
 	agenda: "",
 	docs: [],
-	fullAgenda: [],
+	fullAgenda: JSON.parse(localStorage.getItem("fullAgenda")) || [],
 	notification: "",
 	viewMeeting: JSON.parse(localStorage.getItem("viewMeeting")) || null,
 	agendaAndDocs: JSON.parse(localStorage.getItem("agendaAndDocs")) || [],
@@ -33,7 +33,8 @@ export const initialState = {
 	options: JSON.parse(localStorage.getItem("options")) || null,
 	viewUser: JSON.parse(localStorage.getItem("viewUser")) || null,
 	setMeeting: JSON.parse(localStorage.getItem("setMeeting")) || null,
-	loading: false
+	loading: false,
+	agendas: JSON.parse(localStorage.getItem("agendas")) || [],
 };
 
 // The reducer's primary job is to listen to actions
@@ -41,6 +42,11 @@ const reducer = (state, action) => {
 	// Action has a type and a payload
 
 	switch (action.type) {
+		case "SET_AGENDAS":
+			return {
+				...state,
+				agendas: action.agendas,
+			};
 		case "SET_LOADING":
 			return {
 				...state,

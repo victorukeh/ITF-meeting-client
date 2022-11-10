@@ -14,32 +14,38 @@ import styled from "styled-components";
 import Back from "../components/Back";
 
 const AddMeeting = () => {
-	const [{ agenda, fullAgenda }, dispatch] = useDataLayerValue();
+	const [{ agenda, fullAgenda, agendas, docs }, dispatch] = useDataLayerValue();
+	console.log(agendas)
+	console.log("fa: ", fullAgenda)
 	const handleAgendaChange = async (event) => {
 		await dispatch({
 			type: "SET_AGENDA",
 			agenda: event.target.value,
 		});
 	};
-	const [agendas, setagendas] = useState([]);
 	const [files, setFiles] = useState([]);
 	const [selectedFiles, setSelectedFiles] = useState(null);
 
 	const addnewAgenda = async () => {
-		setagendas((x) => {
-			return [...x, { name: agenda, id: agendas.length + 1, selectedFiles }];
-		});
-		const docs = files;
-		const file = {
+		await dispatch({
+			type: "SET_AGENDAS",
+			agendas: [...agendas, { name: agenda, id: agendas.length + 1, selectedFiles }]
+		})
+		window.localStorage.setItem("agendas", JSON.stringify([...agendas, { name: agenda, id: agendas.length + 1, selectedFiles }]));
+
+		await dispatch({
+			type: "SET_DOCS",
+			docs: files
+		})
+		fullAgenda.push({
 			agenda: agenda,
-			docs: docs,
-		};
-		setFiles([]);
-		fullAgenda.push(file);
+			docs: files,
+		});
 		await dispatch({
 			type: "SET_FULLAGENDA",
 			fullAgenda: fullAgenda,
 		});
+		window.localStorage.setItem("fullAgenda", JSON.stringify(fullAgenda));
 		await dispatch({
 			type: "ADD_FILE_TO_LIST",
 			fileList: [],
@@ -49,12 +55,28 @@ const AddMeeting = () => {
 			agenda: "",
 		});
 		setSelectedFiles(null);
+		setFiles([]);
 	};
 
+
 	const removeAgenda = (m) => {
-		setagendas((x) => {
-			return [...x].filter((x) => x.id !== m.id);
-		});
+		function check(x) {
+			const use = [...x].filter(({ agenda }) => agenda !== m.name);
+			return use
+		}
+		const value = check(fullAgenda);
+		dispatch({
+			type: "SET_FULLAGENDA",
+			fullAgenda: value
+		})
+		// setagendas((x) => {
+		// 	return [...x].filter((x) => x.id !== m.id);
+		// });
+		dispatch({
+			type: "SET_AGENDAS",
+			agendas: [...agendas].filter((x) => x.id !== m.id)
+		})
+		window.localStorage.setItem("agendas", JSON.stringify(agendas));
 	};
 
 	const getFilesName = (m) => {
@@ -68,6 +90,14 @@ const AddMeeting = () => {
 
 		return text;
 	};
+
+	const resetAgendas = () => {
+		dispatch({
+			type: "SET_AGENDAS",
+			agendas: []
+		})
+		window.localStorage.setItem("agendas", JSON.stringify([]));
+	}
 	return (
 		<>
 			<Back color="Primary" to="/set-meetings/meeting/create" />
@@ -82,11 +112,21 @@ const AddMeeting = () => {
 				>
 					<MainContent>
 						<Agenda>Agendas - {agendas.length}</Agenda>
-						<Link to="/set-meetings/meeting/preview" style={link}>
+						<div style={{ minWidth: "220px", display: "flex", justifyContent: "space-around" }}>
+							<Link to="/set-meetings/meeting/preview" style={link}>
+								<Button variant="contained" color="success">
+									Preview
+								</Button>
+							</Link>
+							<Button variant="contained" color="warning" onClick={() => resetAgendas()}>
+								Reset
+							</Button>
+						</div>
+						{/* <Link to="/set-meetings/meeting/preview" style={link}>
 							<Button variant="contained" color="success">
 								Preview
 							</Button>
-						</Link>
+						</Link> */}
 					</MainContent>
 
 					<Form>
@@ -132,7 +172,7 @@ const AddMeeting = () => {
 						<Button
 							variant="contained"
 							component="label"
-							onClick={addnewAgenda}
+							onClick={() => addnewAgenda()}
 							disabled={agenda.length > 0 ? false : true}
 						>
 							Add Agenda

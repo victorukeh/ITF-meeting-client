@@ -111,7 +111,7 @@ const Preview = () => {
 
 			<MeetingView>
 				{fullAgenda.map((f, id) => {
-					console.log(f.docs.length);
+					console.log("fullAgenda: ", fullAgenda)
 					return (
 						<AgendaView key={id}>
 							<AgendaItems>

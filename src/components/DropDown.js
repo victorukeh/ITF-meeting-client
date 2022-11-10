@@ -83,7 +83,7 @@ function DropDown({ button, items }) {
 				onClose={handleClose}
 			>
 				{items.map((item) => {
-					const url = `http://localhost:2000/${item.name}`;
+					const url = `${process.env.REACT_APP_URL}/${item.name}`;
 					const use = item.name.split("-").slice(1).join("-")
 					return (
 						<a

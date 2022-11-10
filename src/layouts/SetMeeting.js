@@ -83,6 +83,25 @@ const SetMeeting = () => {
 		setMappedMeetings(result);
 	};
 
+	const resetAll = async () => {
+		dispatch({
+			type: "SET_FULLAGENDA",
+			fullAgenda: []
+		})
+		await dispatch({
+			type: "SET_ADDMEETING",
+			addMeeting: { title: "", description: "", start: "" }
+		})
+		window.localStorage.setItem("addMeeting", JSON.stringify({ title: "", description: "", start: "" }));
+		dispatch({
+			type: "SET_AGENDAS",
+			agendas: []
+		})
+
+		window.localStorage.setItem("fullAgenda", JSON.stringify([]))
+		window.localStorage.setItem("agendas", JSON.stringify([]))
+	}
+
 	const deleteMeeting = (id, index, newState) => async () => {
 		try {
 			const docs = await axios.get(
@@ -216,6 +235,7 @@ const SetMeeting = () => {
 					<Link
 						style={{ textDecoration: "none" }}
 						to="/set-meetings/meeting/create"
+						onClick={() => resetAll()}
 					>
 						<Button variant="contained">ADD NEW MEETING</Button>
 					</Link>

@@ -9,42 +9,32 @@ import Back from "../components/Back";
 import { useDataLayerValue } from "../reducer/DataLayer";
 
 const AddMeeting = () => {
-	const [{ token }, dispatch] = useDataLayerValue();
-	const datetime = new Date().toISOString();
-	const [start, setStart] = useState(dayjs(datetime));
-	const [title, setTitle] = useState("");
-	const [description, setDescription] = useState("");
+	const [{ token, addMeeting }, dispatch] = useDataLayerValue();
+	console.log(addMeeting)
 	const handleChange = (event) => {
-		const date = new Date(event.target.value).toISOString();
-		setStart(date);
+		const date = event.target.value;
+		dispatch({
+			type: "SET_ADDMEETING",
+			addMeeting: { ...addMeeting, start: date.split(".")[0] }
+		});
 	};
 
 	const handleMeetingChange = async () => {
-		const meeting = {
-			title: title,
-			description: description,
-			start: start,
-		};
-		await dispatch({
-			type: "SET_ADDMEETING",
-			addMeeting: {
-				title: meeting.title,
-				description: meeting.description,
-				start: meeting.start,
-			},
-		});
-		await dispatch({
-			type: "SET_FULLAGENDA",
-			fullAgenda: [],
-		});
+		window.localStorage.setItem("addMeeting", JSON.stringify(addMeeting));
 	};
 
 	const handleMeetingTitle = (event) => {
-		setTitle(event.target.value);
+		dispatch({
+			type: "SET_ADDMEETING",
+			addMeeting: { ...addMeeting, title: event.target.value }
+		});
 	};
 
 	const handleMeetingDescription = (event) => {
-		setDescription(event.target.value);
+		dispatch({
+			type: "SET_ADDMEETING",
+			addMeeting: { ...addMeeting, description: event.target.value }
+		});
 	};
 	return (
 		<>
@@ -64,6 +54,7 @@ const AddMeeting = () => {
 							id="outlined-basic"
 							label="Enter new meeting name"
 							variant="outlined"
+							value={addMeeting.title}
 							fullWidth
 							size="small"
 							onChange={handleMeetingTitle}
@@ -77,6 +68,7 @@ const AddMeeting = () => {
 							id="outlined-basic"
 							label="Enter new meeting description"
 							variant="outlined"
+							value={addMeeting.description}
 							onChange={handleMeetingDescription}
 							fullWidth
 							size="small"
@@ -85,7 +77,7 @@ const AddMeeting = () => {
 						<TextField
 							id="datetime-local"
 							type="datetime-local"
-							defaultValue="2022-10-24T10:30"
+							defaultValue={addMeeting.start}
 							InputLabelProps={{
 								shrink: true,
 							}}
@@ -107,7 +99,11 @@ const AddMeeting = () => {
 					<Button
 						variant="contained"
 						style={{ marginTop: "3%", marginLeft: "40vw", width: "40%" }}
-						disabled={title.length < 1 ? true : false}
+						disabled={addMeeting.title.length < 1 ? true : false}
+					// onClick={() => dispatch({
+					// 	type: "SET_AGENDAS",
+					// 	agendas: []
+					// })}
 					>
 						Add Meeting
 					</Button>

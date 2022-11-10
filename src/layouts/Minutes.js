@@ -178,7 +178,7 @@ const Minutes = () => {
     const handleComment = (event) => {
         setAddComment(event.target.value);
     };
-    let url = minutes !== null && `http://localhost:2000/${minutes.name}`
+    let url = minutes !== null && `${process.env.REACT_APP_URL}/${minutes.name}`
     return (
         <>
             <Back to="/meetings/meeting/" color="primary" />
