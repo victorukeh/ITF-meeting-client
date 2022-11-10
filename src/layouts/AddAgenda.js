@@ -15,8 +15,6 @@ import Back from "../components/Back";
 
 const AddMeeting = () => {
 	const [{ agenda, fullAgenda, agendas, docs }, dispatch] = useDataLayerValue();
-	console.log(agendas)
-	console.log("fa: ", fullAgenda)
 	const handleAgendaChange = async (event) => {
 		await dispatch({
 			type: "SET_AGENDA",

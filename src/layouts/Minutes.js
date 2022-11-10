@@ -40,7 +40,6 @@ const Minutes = () => {
             const response = await axios.get(`${process.env.REACT_APP_URL}/meeting/comments/minutes?meeting=${viewMeeting._id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
-            console.log(response.data.comments)
             dispatch({
                 type: "SET_COMMENTS",
                 comments: response.data.comments

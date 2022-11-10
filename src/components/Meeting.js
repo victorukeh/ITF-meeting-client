@@ -81,7 +81,6 @@ const Meeting = () => {
 				JSON.stringify(response.data.meetings)
 			)
 		} catch (err) {
-			console.log(err)
 			if (err.response.status === 401) {
 				window.localStorage.removeItem("token")
 				window.location.reload(false)

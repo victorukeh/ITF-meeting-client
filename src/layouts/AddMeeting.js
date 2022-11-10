@@ -10,7 +10,6 @@ import { useDataLayerValue } from "../reducer/DataLayer";
 
 const AddMeeting = () => {
 	const [{ token, addMeeting }, dispatch] = useDataLayerValue();
-	console.log(addMeeting)
 	const handleChange = (event) => {
 		const date = event.target.value;
 		dispatch({

@@ -69,7 +69,6 @@ const Vote = () => {
 			headers: { Authorization: `Bearer ${token}` },
 		}
 		);
-		console.log(response);
 		await dispatch({
 			type: "SET_OPTIONS",
 			options: response.data.options,

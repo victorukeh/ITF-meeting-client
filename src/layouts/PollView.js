@@ -69,7 +69,6 @@ const PollView = () => {
 				},
 				{ headers: { Authorization: `Bearer ${token}` } }
 			);
-			console.log(response);
 			await dispatch({
 				type: "SET_POLL",
 				poll: response.data.poll,
