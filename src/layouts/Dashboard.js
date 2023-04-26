@@ -30,11 +30,11 @@ const Dashboard = () => {
 export default Dashboard;
 
 const BodyContent = styled.div`
-	height: 83vh;
 	display: flex;
 	flex-direction: row;
-	width: 100%;
 	justify-content: space-between;
+	padding-left: 5%;
+	padding-right: 5%;
 `;
 
 const Loader = styled.div`

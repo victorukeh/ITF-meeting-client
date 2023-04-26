@@ -11,53 +11,49 @@ import ArticleIcon from "@mui/icons-material/Article";
 import LockIcon from "@mui/icons-material/Lock";
 import { useDataLayerValue } from "../reducer/DataLayer";
 import { NavLink, Link } from "react-router-dom";
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import "../styles/css/sidebar.css";
 const Sidebar = () => {
-	const [{ checkMeeting, user, polls }, dispatch] = useDataLayerValue();
-
-	const signOut = (newState) => async () => {
-		window.localStorage.removeItem("token");
-		window.localStorage.removeItem("user");
-		await window.location.reload();
-		await dispatch({
-			type: "SET_SNACKBAR",
-			snackbar: {
-				open: true,
-				notification: "You are now logged out",
-				...newState,
-			},
-		});
-	};
+	const [{ user }, dispatch] = useDataLayerValue();
 
 	return (
 		<>
 			<Container>
 				<Header>
-					<ItfLogo src={Logo} />
-					<HeaderText>Management Meeting</HeaderText>
+					{/* <ItfLogo src={Logo} /> */}
+					<HeaderText>Ukeh Meets</HeaderText>
 				</Header>
 				<SubHeader>Menu</SubHeader>
 				<div
 					style={{
 						display: "flex",
 						flexDirection: "column",
-						justifyContent: "space-around",
+						// justifyContent: "space-around",
 					}}
-					className={user.role === "user" ? "user" : "admin"}
+					className={user && user.role === "user" ? "user" : "admin"}
 				>
 					<NavLink style={{ textDecoration: "none" }} to="/dashboard">
 						{({ isActive }) => (
 							<Navigation
-								color={isActive ? "#b20505" : undefined}
+								color={isActive ? "#f8b500" : undefined}
 								Logo={ViewAgendaIcon}
 								text="Dashboard"
+							/>
+						)}
+					</NavLink>
+					<NavLink style={{ textDecoration: "none" }} to="/metrics">
+						{({ isActive }) => (
+							<Navigation
+								color={isActive ? "#f8b500" : undefined}
+								Logo={AutoGraphIcon}
+								text="Metrics"
 							/>
 						)}
 					</NavLink>
 					<NavLink style={{ textDecoration: "none" }} to="/meetings">
 						{({ isActive }) => (
 							<Navigation
-								color={isActive ? "#b20505" : undefined}
+								color={isActive ? "#f8b500" : undefined}
 								Logo={ArticleIcon}
 								text="Meetings"
 							/>
@@ -66,19 +62,19 @@ const Sidebar = () => {
 					<NavLink style={{ textDecoration: "none" }} to="/polls">
 						{({ isActive }) => (
 							<Navigation
-								color={isActive ? "#b20505" : undefined}
+								color={isActive ? "#f8b500" : undefined}
 								Logo={HowToVoteIcon}
 								text="Polls"
 							/>
 						)}
 					</NavLink>
 
-					{user.role === "admin" && (
+					{user && user.role === "admin" && (
 						<NavLink style={{ textDecoration: "none" }} to="/users">
 							{({ isActive }) =>
 								user.role === "admin" && (
 									<Navigation
-										color={isActive ? "#b20505" : undefined}
+										color={isActive ? "#f8b500" : undefined}
 										Logo={PeopleIcon}
 										text="Users"
 									/>
@@ -86,14 +82,14 @@ const Sidebar = () => {
 							}
 						</NavLink>
 					)}
-					{user.role === "admin" && (
+					{user && user.role === "admin" && (
 						<NavLink
 							style={{ textDecoration: "none" }}
 							to="/set-meetings/meeting/admin"
 						>
 							{({ isActive }) => (
 								<Navigation
-									color={isActive ? "#b20505" : undefined}
+									color={isActive ? "#f8b500" : undefined}
 									Logo={MeetingRoomIcon}
 									text="Set Meetings"
 								/>
@@ -103,22 +99,12 @@ const Sidebar = () => {
 					<NavLink style={{ textDecoration: "none" }} to="/change-password">
 						{({ isActive }) => (
 							<Navigation
-								color={isActive ? "#b20505" : undefined}
+								color={isActive ? "#f8b500" : undefined}
 								Logo={LockIcon}
 								text="Change Password"
 							/>
 						)}
 					</NavLink>
-					<Link
-						style={{ textDecoration: "none" }}
-						to="/"
-						onClick={signOut({
-							vertical: "top",
-							horizontal: "right",
-						})}
-					>
-						<Navigation Logo={LogoutIcon} text="Sign out" />
-					</Link>
 				</div>
 			</Container>
 		</>
@@ -143,12 +129,13 @@ const Container = styled.div`
 	background-color: #fff;
 	height: 100vh;
 	padding-left: 2%;
-	border-right: 2px solid #c5c7c9;
 `;
 
 const Header = styled.div`
 	display: flex;
 	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 	margin-top: -4%;
 	width: 100%;
 `;
@@ -156,10 +143,12 @@ const Header = styled.div`
 const HeaderText = styled.p`
 	color: #0e2345;
 	margin-top: 21%;
-	margin-left: 5%;
-	font-family: Helvetica;
-	font-size: 17px;
+	padding-left: 5%;
+	font-family: cursive;
+	font-size: 26px;
 	font-weight: bold;
+	text-transform: uppercase;
+	padding-right: 10%;
 `;
 
 const SubHeader = styled.p`

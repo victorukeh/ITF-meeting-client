@@ -203,7 +203,7 @@ const Meetings = () => {
 	return (
 		<>
 			{!loading ? (
-				<div>
+				<div style={{paddingLeft: "5%", paddingRight: "5%"}}>
 					<div
 						style={{
 							display: "flex",

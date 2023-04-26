@@ -94,6 +94,7 @@ const Meeting = () => {
 				maxWidth: 400,
 				flex: "0.5",
 				mr: 1,
+				backgroundColor: "#fff" 
 			}}
 			component="nav"
 			aria-labelledby="nested-list-subheader"
@@ -111,7 +112,7 @@ const Meeting = () => {
 							<Groups2Icon />
 						</ListItemIcon>
 						<Link
-							style={{ textDecoration: "none", color: "#333" }}
+							style={{ textDecoration: "none", color: "#333"}}
 							key={id}
 							to="/meetings/meeting"
 							onClick={() => onClickHandler(f)}

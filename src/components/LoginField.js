@@ -39,24 +39,22 @@ const LoginField = ({ Label, Logo }) => {
 		<>
 			{/* className={classNames(classes.margin, classes.textField)} */}
 			{Label === "Password" ? (
-				<FormControl style={{ display: "flex", flexDirection: "row" }}>
+				<FormControl style={{ display: "flex", flexDirection: "row"}}>
 					<Grid
 						container
 						spacing={3}
 						alignItems="flex-end"
-						style={{ marginRight: "0px" }}
 					>
 						<Grid item>
 							<Logo />
 						</Grid>
 						<Grid item>
-							<InputLabel htmlFor="adornment-password" style={{marginLeft: "15%"}}>Password</InputLabel>
+							<InputLabel htmlFor="adornment-password" style={{marginLeft: "48px"}}>Password</InputLabel>
 							<Input
 								id="adornment-password"
 								type={showPassword ? "text" : "password"}
 								value={password}
 								onChange={handleChange}
-								style={{width: "80%"}}
 								endAdornment={
 									<InputAdornment position="end">
 										<IconButton
@@ -74,18 +72,18 @@ const LoginField = ({ Label, Logo }) => {
 					<Logo style={{ flex: "0.2" }} />
 				</FormControl>
 			) : (
-				<div style={{ marginRight: "0px", marginBottom: "10px" }}>
+				<div style={{ marginRight: "0px", marginBottom: "10px"}}>
 					<Grid
 						container
 						spacing={3}
 						alignItems="flex-end"
-						style={{ marginRight: "0px" }}
+						style={{ marginRight: "0px"}}
 					>
 						<Grid item>
 							<Logo />
 						</Grid>
-						<Grid item>
-							<TextField id="input-with-icon-grid" label={Label} onChange={handleUsernameChange}/>
+						<Grid item style={{ width: "80%" }}>
+							<TextField id="input-with-icon-grid" label={Label} onChange={handleUsernameChange} fullWidth/>
 						</Grid>
 					</Grid>
 				</div>

@@ -164,16 +164,21 @@ const UserMeeting = () => {
 
 	return (
 		<>
-			{!loading ? <Container>
-				<MeetingBox>
+		<Container>
+			<View></View>
+			<Interaction></Interaction>
+		</Container>
+			{/* {!loading && */}
+			 {/* <Container> */}
+				{/* <MeetingBox>
 					<MeetingText>{viewMeeting.title}</MeetingText>
 					<MeetingParagraph>
 						{viewMeeting.description}
 					</MeetingParagraph>
-				</MeetingBox>
+				</MeetingBox> */}
 
-				<MeetingView>
-					{agendaAndDocs.map((f, id) => (
+				{/* <MeetingView> */}
+					{/* {agendaAndDocs.map((f, id) => (
 						<AgendaView key={id}>
 							<AgendaItems>
 								<Agenda>
@@ -298,119 +303,143 @@ const UserMeeting = () => {
 								</Link>
 							</ButtonBox>
 						</AgendaView>
-					))}
-				</MeetingView>
-			</Container> : <Loader>
-				<Loading type="spin" color="#7485e8" />
-			</Loader>}
+					))} */}
+				{/* </MeetingView> */}
+			{/* </Container> :  */}
+			 {/* <Loader> */}
+			 	{/* <Loading type="spin" color="#7485e8" /> */}
+			 {/* </Loader>} */}
 		</>
 	);
 };
 
 export default UserMeeting;
 
-const Loader = styled.div`
-width: 100%;
- height: 70vh; 
- display: flex;
-  align-items: center;
-flex-direction: column;
- justify-content: center;
+const Container = styled.div`
+	display: flex;
+	width: 100%;
+	height: 100vh;
+	flex-direction: row;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 3px;
+	overflow-y: hidden;
+	overflow-x: hidden;
+
 `
 
-const Container = styled.div`
-	width: 80%;
-	margin-left: 10%;
-	margin-right: 10%;
-	-moz-box-shadow: 0 0 3px #ccc;
-	-webkit-box-shadow: 0 0 3px #ccc;
-	box-shadow: 0 0 3px #ccc;
-	height: 70vh;
-	overflow-y: auto;
-`;
+const View = styled.div`
+	flex: 0.7;
+	background-color: #f5f5f5;
+	border-radius: 20px;
+`
 
-const MeetingText = styled.div`
-	margin-top: 2%;
-	font-family: Helvetica;
-	font-weight: bold;
-`;
+const Interaction = styled.div`
+	flex: 0.3;
+`
+// const Loader = styled.div`
+// width: 100%;
+//  height: 70vh; 
+//  display: flex;
+//   align-items: center;
+// flex-direction: column;
+//  justify-content: center;
+// `
 
-const MeetingBox = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	flex-direction: column;
-`;
-
-const MeetingParagraph = styled.p`
-	font-family: Verdana, sans-serif;
-	margin-left: 5%;
-	margin-right: 5% ;
-	text-align: center;
-	font-size: 14px;
-	color: #333;
-`;
-const MeetingView = styled.div`
-	margin-left: 5%;
-	overflow-y: auto;
-	height: 79vh;
-`;
-
-const AgendaView = styled.div`
-	display: flex;
-	flex-direction: column;
-`;
-
-const AgendaItems = styled.div`
-	display: flex;
-	justify-content: space-between;
-	margin-right: 4%;
-`;
-
-const Agenda = styled.p`
-	flex: 0.8;
-	font-size: 1.1rem;
-`;
-
-const List = styled.ul``;
-
-const ListContent = styled.div``;
-
-const ListItem = styled.li``;
-
-const ButtonBox = styled.div`
-	background: white;
-	position: fixed;
-	height: 10%;
-	width: 78.3%;
-	bottom: 0;
-	right: 0;
-	border-top: 1px solid grey;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-`;
-
-const Comment = styled.div`
-	display: flex;
-	flex-direction: row;
-	margin-left: 3%;
-	width: 17%;
-	justify-content: space-around;
-	cursor: pointer;
-`;
-
-const CommentText = styled.p`
-	margin-top: 0px;
-	font-size: 0.86rem;
-	color: #bfe30e;
-`;
-// const Box = styled.div`
-// 	width: 45%;
+// const Container = styled.div`
+// 	width: 80%;
+// 	margin-left: 10%;
+// 	margin-right: 10%;
 // 	-moz-box-shadow: 0 0 3px #ccc;
 // 	-webkit-box-shadow: 0 0 3px #ccc;
 // 	box-shadow: 0 0 3px #ccc;
+// 	height: 70vh;
+// 	overflow-y: auto;
+// `;
+
+
+// const MeetingText = styled.div`
+// 	margin-top: 2%;
+// 	font-family: Helvetica;
+// 	font-weight: bold;
+// `;
+
+// const MeetingBox = styled.div`
 // 	display: flex;
+// 	align-items: center;
+// 	justify-content: center;
+// 	width: 100%;
+// 	flex-direction: column;
+// `;
+
+// const MeetingParagraph = styled.p`
+// 	font-family: Verdana, sans-serif;
+// 	margin-left: 5%;
+// 	margin-right: 5% ;
+// 	text-align: center;
+// 	font-size: 14px;
+// 	color: #333;
+// `;
+// const MeetingView = styled.div`
+// 	margin-left: 5%;
+// 	overflow-y: auto;
+// 	height: 79vh;
+// `;
+
+// const AgendaView = styled.div`
+// 	display: flex;
+// 	flex-direction: column;
+// `;
+
+// const AgendaItems = styled.div`
+// 	display: flex;
+// 	justify-content: space-between;
+// 	margin-right: 4%;
+// `;
+
+// const Agenda = styled.p`
+// 	flex: 0.8;
+// 	font-size: 1.1rem;
+// `;
+
+// const List = styled.ul``;
+
+// const ListContent = styled.div``;
+
+// const ListItem = styled.li``;
+
+// const ButtonBox = styled.div`
+// 	background: white;
+// 	position: fixed;
+// 	height: 10%;
+// 	width: 78.3%;
+// 	bottom: 0;
+// 	right: 0;
+// 	border-top: 1px solid grey;
+// 	display: flex;
+// 	align-items: center;
 // 	justify-content: center;
 // `;
+
+// const Comment = styled.div`
+// 	display: flex;
+// 	flex-direction: row;
+// 	margin-left: 3%;
+// 	width: 17%;
+// 	justify-content: space-around;
+// 	cursor: pointer;
+// `;
+
+// const CommentText = styled.p`
+// 	margin-top: 0px;
+// 	font-size: 0.86rem;
+// 	color: #bfe30e;
+// `;
+// // const Box = styled.div`
+// // 	width: 45%;
+// // 	-moz-box-shadow: 0 0 3px #ccc;
+// // 	-webkit-box-shadow: 0 0 3px #ccc;
+// // 	box-shadow: 0 0 3px #ccc;
+// // 	display: flex;
+// // 	justify-content: center;
+// // `;

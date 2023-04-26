@@ -5,12 +5,10 @@ import { useEffect } from "react";
 import { Notification } from "./components/Notification";
 import { useDataLayerValue } from "./reducer/DataLayer";
 function App() {
-	const [{ token, user, snackbar }, dispatch] = useDataLayerValue();
+	const [{ user, snackbar }, dispatch] = useDataLayerValue();
 	const { vertical, horizontal, open, notification } = snackbar;
-	useEffect(() => {
-		window.localStorage.setItem("token", JSON.stringify(token));
-		window.localStorage.setItem("user", JSON.stringify(user));
-	}, [token])
+	const token = JSON.parse(window.localStorage.getItem("token"));
+	console.log('Token:', token) 
 	const handleClose = () => {
 		dispatch({
 			type: "SET_SNACKBAR",
@@ -18,9 +16,8 @@ function App() {
 		});
 	};
 	return (
-		<div className="App">
-			{!token && <Login />}
-			{token && <Main />}
+		<div className="app">
+			{!token ? <Login /> : <Main />}
 			<Notification
 				vertical={vertical}
 				horizontal={horizontal}

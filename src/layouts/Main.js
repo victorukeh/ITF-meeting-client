@@ -31,6 +31,8 @@ import { useDataLayerValue } from "../reducer/DataLayer";
 
 function Main() {
 	const [{ token, viewMeeting, snackbar }, dispatch] = useDataLayerValue();
+	const [url, setUrl] = useState("")
+	console.log(url)
 
 	useEffect(() => {
 		const meeting = window.localStorage.getItem("viewMeeting");
@@ -39,14 +41,21 @@ function Main() {
 			dispatch({ type: "SET_VIEWMEETING", viewMeeting: JSON.parse(meeting) });
 		if (docs !== null)
 			dispatch({ type: "SET_AGENDAANDDOCS", agendaAndDocs: JSON.parse(docs) });
+		
+
 	}, []);
+
+	useEffect(() => {
+		const result = window.location.href
+		setUrl(result.split("/"))
+	}, [window.location.href])
 	return (
 		<>
 			<MainContainer>
 				<Sidebar />
 				<Container>
 					<MainContent>
-						<Header />
+						{url.length > 4 && url[4] === "meeting" && url[3] === "meetings"? "" : <Header />}
 						<Routes>
 							<Route path="/" element={<Dashboard />} />
 							<Route path="/dashboard" element={<Dashboard />} />
@@ -98,19 +107,18 @@ const MainContainer = styled.div`
 	height: 100vh;
 	width: 100%;
 
-	background: #d7d8e0;
-	/* overflow-y: hidden; */
+	background-color: #d7d8e0;
+	overflow-x: hidden;
+	overflow-y: hidden;
 `;
 
 const Container = styled.div`
 	flex: 0.8;
-	background-color: white;
+	background-color: #f6f7f6;
 	/* display: flex;
 	flex-direction: row; */
 `;
 
 const MainContent = styled.div`
-	padding-left: 5%;
 	height: 15%;
-	margin-right: 5%;
 `;
