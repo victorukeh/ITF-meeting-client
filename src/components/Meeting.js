@@ -94,7 +94,6 @@ const Meeting = () => {
 				maxWidth: 400,
 				flex: "0.5",
 				mr: 1,
-				backgroundColor: "#fff" 
 			}}
 			component="nav"
 			aria-labelledby="nested-list-subheader"

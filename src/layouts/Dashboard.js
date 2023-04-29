@@ -33,8 +33,14 @@ const BodyContent = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	padding-left: 5%;
-	padding-right: 5%;
+	margin-left: 2%;
+	margin-right: 2%;
+	padding-left: 4%;
+	padding-right: 4%;
+	padding-bottom: 5%;
+	padding-top: 4%;
+	background-color: #fff;
+	border-radius: 8px;
 `;
 
 const Loader = styled.div`

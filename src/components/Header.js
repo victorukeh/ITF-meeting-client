@@ -9,8 +9,9 @@ import Navigation from "./Navigation";
 
 import { Link } from "react-router-dom";
 import { IconButton } from "@mui/material";
-
+import { useDataLayerValue } from "../reducer/DataLayer";
 const Header = () => {
+  const [{}, dispatch] = useDataLayerValue();
   const user = JSON.parse(window.localStorage.getItem("user"));
   console.log("User: ", user);
   const token = window.localStorage.getItem("token");
