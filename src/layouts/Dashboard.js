@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Calender from "../components/Calender";
-import Header from "../components/Header";
 import Meeting from "../components/Meeting";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
-import Loading from "../components/Loading";
 import { useDataLayerValue } from "../reducer/DataLayer";
 const Dashboard = () => {
-	const [{ meetings, loading }, dispatch] = useDataLayerValue();
+	const [{ meetings }] = useDataLayerValue();
 
 
 	const handleMouseEnter = (arg) => {
@@ -42,12 +40,3 @@ const BodyContent = styled.div`
 	background-color: #fff;
 	border-radius: 8px;
 `;
-
-const Loader = styled.div`
-width: 100%;
- height: 70vh; 
- display: flex;
-  align-items: center;
-flex-direction: column;
- justify-content: center
-`

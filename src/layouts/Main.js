@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
-import Body from "../components/Body";
 import Dashboard from "./Dashboard";
 import styled from "styled-components";
 import AddMeeting from "./AddMeeting";
@@ -8,12 +7,10 @@ import Meeting from "./Meeting";
 import Header from "../components/Header";
 import AddAgenda from "../layouts/AddAgenda";
 import Preview from "../layouts/Preview";
-import SetMeeting from "../layouts/SetMeeting";
 import UserMeeting from "../layouts/UserMeeting";
 import ViewComments from "../layouts/ViewComments";
 import Vote from "../layouts/Vote";
 import AddUser from "./AddUser";
-import Alert from "@material-ui/lab/Alert";
 import Users from "../layouts/Users";
 import PollView from "../layouts/PollView";
 import ViewPoll from "../layouts/ViewPoll";
@@ -28,11 +25,13 @@ import MinuteComments from "./MinuteComments";
 import { Routes, Route } from "react-router-dom";
 
 import { useDataLayerValue } from "../reducer/DataLayer";
+import Metrics from "./Metrics";
 
 function Main() {
-	const [{ token, viewMeeting, snackbar }, dispatch] = useDataLayerValue();
-	const [url, setUrl] = useState("")
-	console.log(url)
+	const [{}, dispatch] = useDataLayerValue();
+	const [url, setUrl] = useState([])
+
+	console.log("Url: ", url)
 
 	useEffect(() => {
 		const meeting = window.localStorage.getItem("viewMeeting");
@@ -55,11 +54,12 @@ function Main() {
 				<Sidebar />
 				<Container>
 					<MainContent>
-						{url.length > 4 && url[4] === "meeting" && url[3] === "meetings"? "" : <Header />}
+						{url[3] == 'meetings' &&  url[4] == 'meeting' ? <></> : <Header />}
 						<Routes>
 							<Route path="/" element={<Dashboard />} />
 							<Route path="/dashboard" element={<Dashboard />} />
 							<Route path="/polls" element={<Polls />} />
+							<Route path="/metrics" element={<Metrics/>}/>
 							<Route path="/meetings/meeting/vote" element={<Vote />} />
 							<Route path="/meetings/meeting/minutes" element={<Minutes />} />
 							<Route path="/change-password" element={<ChangePassword />} />
