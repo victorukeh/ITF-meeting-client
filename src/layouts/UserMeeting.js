@@ -9,6 +9,10 @@ import Loading from "../components/Loading";
 import Box from "@mui/material/Box";
 import DropDown from "../components/DropDown";
 import ArrowButton from "../components/icons/ArrowButton";
+import MeetingType from "../components/MeetingType";
+import MeetingSize from "../components/MeetingSize";
+import Microphone from "../components/icons/Microphone";
+import Pin from "../components/icons/Pin";
 import axios from "axios";
 // import MeetingBox from ""
 import "../styles/css/dropDown.css";
@@ -21,7 +25,7 @@ const UserMeeting = () => {
     id: "",
     isOpen: false,
   });
-  const [chat, setChat] = useState(true)
+  const [chat, setChat] = useState(true);
 
   const handleComment = (event) => {
     setAddComment(event.target.value);
@@ -170,8 +174,22 @@ const UserMeeting = () => {
     <>
       {!loading ? (
         <Container>
-          <Interaction style={{width: chat === false && "100%"}}></Interaction>
-		{chat == true && <Chat></Chat>}
+          <Interaction style={{ width: chat === false && "100%" }}>
+            <Section1>
+              <ArrowButton />
+              <Header>
+                <Text1>UI Meeting weekly monthly yearly Week 15</Text1>{" "}
+                <Text2>20 May, 2022</Text2>
+              </Header>
+              <MeetingType />
+              <MeetingSize size="101" />
+            </Section1>
+            <Section2>
+              <Pin color="#34ac96" bg="#ffffff" />
+              <Microphone color="#ffffff" bg="#3a84f8" />
+            </Section2>
+          </Interaction>
+          {chat == true && <Chat></Chat>}
           {/* <MeetingBox>
               <MeetingText>{viewMeeting.title}</MeetingText>
               <MeetingParagraph>{viewMeeting.description}</MeetingParagraph>
@@ -343,6 +361,7 @@ const Interaction = styled.div`
   margin-bottom: 2%;
   border-radius: 30px;
   height: 92vh;
+  flex-direction: column;
   background-color: #f5f5f5;
 
   /* flex-direction: row;
@@ -364,15 +383,57 @@ const Chat = styled.div`
 `;
 
 const Section1 = styled.div`
+  margin-top: 3%;
+  margin-left: 3%;
+  margin-right: 3%;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex: 0.1;
+`;
+const Header = styled.div`
+  margin-left: 5%;
+  /* width: 31em; */
+`;
 
-`
+const Text1 = styled.p`
+  font-size: 20px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-weight: 500;
+  width: auto;
+  white-space: nowrap;
+`;
 
+const Text2 = styled.p`
+  font-size: 12px;
+  margin-top: 10px;
+  color: #333;
+  font-weight: 300;
+  width: auto;
+`;
+
+const Section2 = styled.div`
+  margin-left: 3%;
+  margin-right: 3%;
+  width: auto;
+  background-color: red;
+  border-radius: 15px;
+  background-image: url("https://media.istockphoto.com/id/1295425402/photo/businesswoman-talking-during-video-call-in-the-office.jpg?s=612x612&w=0&k=20&c=ql2yfi5_sEpxWwasArETDOA9o3k1fP5SACj3e3G407o=");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top;
+  flex: 0.5;
+  display: flex;
+  padding-top: 1%;
+  padding-right: 1%;
+  justify-content: flex-end;
+`;
 const View = styled.div`
   flex: 0.7;
   background-color: #f5f5f5;
   border-radius: 20px;
 `;
-
 
 const Loader = styled.div`
   width: 100%;

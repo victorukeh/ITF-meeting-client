@@ -3,3 +3,32 @@
     overflow-y: hidden;
     background-color: #fff;
 }
+
+.ripple {
+    background-position: center;
+    transition: background 0.8s;
+    cursor: pointer;
+  }
+  .ripple:hover {
+    background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
+  }
+  .ripple:active {
+    background-color: #6eb9f7;
+    background-size: 100%;
+    transition: background 0s;
+  }
+
+
+  .ripple2 {
+    background-position: center;
+    transition: background 0.8s;
+    cursor: pointer;
+  }
+  .ripple2:hover {
+    background: #73f2db radial-gradient(circle, transparent 1%, #73f2db 1%) center/15000%;
+  }
+  .ripple2:active {
+    background-color: #32ad96;
+    background-size: 100%;
+    transition: background 0s;
+  }
