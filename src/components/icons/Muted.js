@@ -1,15 +1,15 @@
 import React from "react";
+import { BsFillMicMuteFill } from "react-icons/bs";
 import styled from "styled-components";
-
-const Microphone = ({ color, bg, onClick, Icon }) => {
+const Muted = ({color, bg}) => {
   return (
-    <Container className="ripple" style={{ backgroundColor: bg }} onClick={onClick}>
-      <Icon style={{ color: color }}/>
+    <Container className = "ripple__muted" style={{backgroundColor: bg}}>
+      <BsFillMicMuteFill style={{color: color}}/>
     </Container>
-  );
-};
+  )
+}
 
-export default Microphone;
+export default Muted
 
 const Container = styled.div`
   width: 30px;

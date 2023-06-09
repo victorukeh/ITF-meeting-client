@@ -13,9 +13,20 @@ import MeetingType from "../components/MeetingType";
 import MeetingSize from "../components/MeetingSize";
 import Microphone from "../components/icons/Microphone";
 import Pin from "../components/icons/Pin";
+import Muted from "../components/icons/Muted";
+import TrayIcon from "../components/icons/TrayIcon";
+import EndMeeting from "../components/buttons/EndMeeting";
+import Chat from "../components/Chat"
 import axios from "axios";
+import {  BiExpand } from "react-icons/bi";
+import {  MdGroups2 } from "react-icons/md";
+import {  BsThreeDots, BsFillMicFill, BsFillCameraVideoFill, BsFillMicMuteFill, BsFillCameraVideoOffFill, BsPinAngleFill, BsPinFill } from "react-icons/bs";
+import {  FaPoll, FaCompress } from "react-icons/fa";
+
+// BsFillCameraVideoOffFill
 // import MeetingBox from ""
 import "../styles/css/dropDown.css";
+import SplideCarousel from "../components/SplideCarousel";
 
 const UserMeeting = () => {
   const [{ loading, viewMeeting, agendaAndDocs, token, user }, dispatch] =
@@ -26,6 +37,11 @@ const UserMeeting = () => {
     isOpen: false,
   });
   const [chat, setChat] = useState(true);
+  const [speak ,setSpeak ] = useState(false)
+  const [video, setVideo] = useState(false)
+  const [compress, setCompress] = useState(false)
+  const [pin, setPin] = useState(false)
+  const [voice, setVoice] = useState(false)
 
   const handleComment = (event) => {
     setAddComment(event.target.value);
@@ -170,6 +186,53 @@ const UserMeeting = () => {
     });
   };
 
+  const users = [
+    {
+      image:
+        "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+      alt: "pic1",
+    },
+    {
+      image:
+        "https://media.istockphoto.com/id/1220136617/photo/happy-african-teen-girl-blogger-talking-to-camera-video-calling-recording-vlog-happy-afro.jpg?s=612x612&w=0&k=20&c=58m5lsdab69UxD38bZ2qrbi4MiIAY6N4aAhTQc--NF8=",
+      alt: "pic2",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+      alt: "pic3",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+      alt: "pic1",
+    },
+    {
+      image:
+        "https://media.istockphoto.com/id/1303366695/photo/portrait-of-smiling-african-american-young-woman-indoors-talking-to-camera-video-calling.jpg?s=612x612&w=0&k=20&c=zX_K5PfqzhuvHWc_QDYdCem3Lw2qa2dBdf0tTEn5wkg=",
+      alt: "pic2",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+      alt: "pic3",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+      alt: "pic1",
+    },
+    {
+      image:
+        "https://media.istockphoto.com/id/669888024/photo/businessman-in-textile-factory.jpg?s=612x612&w=0&k=20&c=m-g6TVWaAChfSdStLzHoNuegjVdAop9JJMIJoICb2Kw=",
+      alt: "pic2",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+      alt: "pic3",
+    },
+  ];
   return (
     <>
       {!loading ? (
@@ -182,14 +245,37 @@ const UserMeeting = () => {
                 <Text2>20 May, 2022</Text2>
               </Header>
               <MeetingType />
-              <MeetingSize size="101" />
+              <MeetingSize size="31" />
             </Section1>
             <Section2>
-              <Pin color="#34ac96" bg="#ffffff" />
-              <Microphone color="#ffffff" bg="#3a84f8" />
+              {!pin ? <Pin color="#34ac96" bg="#ffffff" Icon={BsPinAngleFill} onClick={() => setPin(!pin)} pin={pin}/> : <Pin color="#f95a39" bg="#ffffff" Icon={BsPinFill} onClick={() => setPin(!pin)} pin={pin}/>}
+             {voice ? <Microphone color="#ffffff" bg="#3a84f8" Icon={BsFillMicFill} onClick={() => setVoice(!voice)}/>: <Microphone color="#ffffff" bg="#3a84f8" Icon={BsFillMicMuteFill} onClick={() => setVoice(!voice)}/>}
             </Section2>
+            <Section3>
+              <Conversation>
+                {" "}
+                {users.map((row, id) => {
+                  return (
+                    <Display style={{ backgroundImage: `url(${row.image})` }} >
+						<Muted color="#262827" bg="#ffffff"/>
+					</Display>
+                  );
+                })}
+              </Conversation>
+            </Section3>
+			<Section4>
+				<TrayIcon Icon={MdGroups2} onClick={(e) => setChat(!chat)}/>
+				{!compress ? <TrayIcon Icon={BiExpand} onClick={() => setCompress(!compress)}/> : <TrayIcon Icon={FaCompress} onClick={() => setCompress(!compress)}/>}
+				{speak ? <TrayIcon Icon={BsFillMicFill} onClick={() => setSpeak(!speak)}/> : <TrayIcon Icon={BsFillMicMuteFill} onClick={() => setSpeak(!speak)}/>}
+				<EndMeeting/>
+				{video ? <TrayIcon Icon={BsFillCameraVideoFill} onClick={() => setVideo(!video)}/>: <TrayIcon Icon={BsFillCameraVideoOffFill} onClick={() => setVideo(!video)}/>}
+				<TrayIcon Icon={FaPoll}/>
+				<TrayIcon Icon={BsThreeDots}/>
+			</Section4>
           </Interaction>
-          {chat == true && <Chat></Chat>}
+          {chat == true && <Work>
+				<Chat/>
+			</Work>}
           {/* <MeetingBox>
               <MeetingText>{viewMeeting.title}</MeetingText>
               <MeetingParagraph>{viewMeeting.description}</MeetingParagraph>
@@ -371,7 +457,7 @@ const Interaction = styled.div`
   overflow-y: hidden; */
 `;
 
-const Chat = styled.div`
+const Work = styled.div`
   display: flex;
   width: 30%;
   height: 100vh;
@@ -388,7 +474,6 @@ const Section1 = styled.div`
   margin-right: 3%;
   display: flex;
   flex-direction: row;
-  width: 100%;
   flex: 0.1;
 `;
 const Header = styled.div`
@@ -403,6 +488,14 @@ const Text1 = styled.p`
   font-weight: 500;
   width: auto;
   white-space: nowrap;
+
+  /* @media (max-width: 768px) {
+    font-size: 14px;
+  } */
+
+  @media (max-width: 1360px) {
+    font-size: 14px;
+  }
 `;
 
 const Text2 = styled.p`
@@ -417,18 +510,58 @@ const Section2 = styled.div`
   margin-left: 3%;
   margin-right: 3%;
   width: auto;
-  background-color: red;
   border-radius: 15px;
   background-image: url("https://media.istockphoto.com/id/1295425402/photo/businesswoman-talking-during-video-call-in-the-office.jpg?s=612x612&w=0&k=20&c=ql2yfi5_sEpxWwasArETDOA9o3k1fP5SACj3e3G407o=");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top;
-  flex: 0.5;
+  flex: 0.6;
   display: flex;
   padding-top: 1%;
   padding-right: 1%;
   justify-content: flex-end;
 `;
+
+const Section3 = styled.div`
+  margin-left: 3%;
+  margin-right: 3%;
+  flex: 0.25;
+  align-items: center;
+  overflow: auto;
+  padding-top: 2%;
+`;
+
+const Conversation = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+`;
+
+const Display = styled.div`
+  border-radius: 10px;
+  width: 30%;
+  height: 90%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top;
+  margin-bottom: 5%;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1%;
+  padding-right: 1%;
+`;
+
+const Section4 = styled.div`
+  flex: 0.15;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
 const View = styled.div`
   flex: 0.7;
   background-color: #f5f5f5;

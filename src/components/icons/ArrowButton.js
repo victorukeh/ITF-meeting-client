@@ -4,7 +4,7 @@ import {BsArrowLeft} from "react-icons/bs"
 
 const ArrowButton = () => {
   return (
-    <Button>
+    <Button className='ripple__tray'>
         <BsArrowLeft/>
     </Button>
   )
@@ -20,4 +20,5 @@ const Button = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;

@@ -1,10 +1,9 @@
 import React from 'react'
-import {  BsPinAngleFill } from "react-icons/bs";
 import styled from "styled-components";
-const Pin = ({color, bg}) => {
+const Pin = ({color, bg, Icon, onClick, pin}) => {
   return (
-    <Container className = "ripple2" style={{backgroundColor: bg}}>
-    <BsPinAngleFill style={{color: color}}/>
+  <Container className = {!pin ? "ripple2" : "ripple3"} style={{backgroundColor: bg}} onClick={onClick}>
+    <Icon style={{color: color}}/>
   </Container>
   )
 }

@@ -32,3 +32,64 @@
     background-size: 100%;
     transition: background 0s;
   }
+
+
+
+  .ripple3{
+    background-position: center;
+    transition: background 0.8s;
+    cursor: pointer;
+  }
+  .ripple3:hover {
+    background: #f6bcb0 radial-gradient(circle, transparent 1%, #f6bcb0 1%) center/15000%;
+  }
+  .ripple3:active {
+    background-color: #ffffff;
+    background-size: 100%;
+    transition: background 0s;
+  }
+
+
+
+  .ripple__muted {
+    background-position: center;
+    transition: background 0.8s;
+    cursor: pointer;
+  }
+  .ripple__muted:hover {
+    background: #cfcdcd radial-gradient(circle, transparent 1%, #cfcdcd 1%) center/15000%;
+  }
+  .ripple__muted:active {
+    background-color: #ffffff;
+    background-size: 100%;
+    transition: background 0s;
+  }
+
+
+  .ripple__tray {
+    background-position: center;
+    transition: background 0.8s;
+    cursor: pointer;
+  }
+  .ripple__tray:hover {
+    background: #fcfcfc radial-gradient(circle, transparent 1%, #fcfcfc 1%) center/15000%;
+  }
+  .ripple__tray:active {
+    background-color: #e6e5e5;
+    background-size: 100%;
+    transition: background 0s;
+  }
+  /* #fcfcfc */
+
+  .blur{
+  overflow: hidden;
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 21%;
+    height: 50px;
+    bottom: 10;
+    background: linear-gradient(transparent, white);
+  }
+  }

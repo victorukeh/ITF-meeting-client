@@ -28,4 +28,9 @@ const Button = styled.div`
   width: 90px;
   color: #ffffff;
   margin-top: 2%;
+
+  @media (max-width: 1360px) {
+    font-size: 10px;
+  width: 70px;
+  }
 `;
