@@ -16,12 +16,22 @@ import Pin from "../components/icons/Pin";
 import Muted from "../components/icons/Muted";
 import TrayIcon from "../components/icons/TrayIcon";
 import EndMeeting from "../components/buttons/EndMeeting";
-import Chat from "../components/Chat"
+import Chat from "../components/Chat";
+import Agenda from "../components/Agenda";
 import axios from "axios";
-import {  BiExpand } from "react-icons/bi";
-import {  MdGroups2 } from "react-icons/md";
-import {  BsThreeDots, BsFillMicFill, BsFillCameraVideoFill, BsFillMicMuteFill, BsFillCameraVideoOffFill, BsPinAngleFill, BsPinFill } from "react-icons/bs";
-import {  FaPoll, FaCompress } from "react-icons/fa";
+import { BiExpand } from "react-icons/bi";
+import { MdGroups2, MdViewAgenda } from "react-icons/md";
+import {
+  BsThreeDots,
+  BsFillMicFill,
+  BsFillCameraVideoFill,
+  BsFillMicMuteFill,
+  BsFillCameraVideoOffFill,
+  BsPinAngleFill,
+  BsPinFill,
+} from "react-icons/bs";
+import { FaPoll, FaCompress } from "react-icons/fa";
+import { FiShare } from "react-icons/fi";
 
 // BsFillCameraVideoOffFill
 // import MeetingBox from ""
@@ -36,12 +46,15 @@ const UserMeeting = () => {
     id: "",
     isOpen: false,
   });
-  const [chat, setChat] = useState(true);
-  const [speak ,setSpeak ] = useState(false)
-  const [video, setVideo] = useState(false)
-  const [compress, setCompress] = useState(false)
-  const [pin, setPin] = useState(false)
-  const [voice, setVoice] = useState(false)
+  const [bar, setBar] = useState({
+    chat: false,
+    agenda: false,
+  });
+  const [speak, setSpeak] = useState(false);
+  const [video, setVideo] = useState(false);
+  const [compress, setCompress] = useState(false);
+  const [pin, setPin] = useState(false);
+  const [voice, setVoice] = useState(false);
 
   const handleComment = (event) => {
     setAddComment(event.target.value);
@@ -237,7 +250,7 @@ const UserMeeting = () => {
     <>
       {!loading ? (
         <Container>
-          <Interaction style={{ width: chat === false && "100%" }}>
+          <Interaction style={{ width: !bar.chat && !bar.agenda && "100%" }}>
             <Section1>
               <ArrowButton />
               <Header>
@@ -248,34 +261,122 @@ const UserMeeting = () => {
               <MeetingSize size="31" />
             </Section1>
             <Section2>
-              {!pin ? <Pin color="#34ac96" bg="#ffffff" Icon={BsPinAngleFill} onClick={() => setPin(!pin)} pin={pin}/> : <Pin color="#f95a39" bg="#ffffff" Icon={BsPinFill} onClick={() => setPin(!pin)} pin={pin}/>}
-             {voice ? <Microphone color="#ffffff" bg="#3a84f8" Icon={BsFillMicFill} onClick={() => setVoice(!voice)}/>: <Microphone color="#ffffff" bg="#3a84f8" Icon={BsFillMicMuteFill} onClick={() => setVoice(!voice)}/>}
+              {!pin ? (
+                <Pin
+                  color="#34ac96"
+                  bg="#ffffff"
+                  Icon={BsPinAngleFill}
+                  onClick={() => setPin(!pin)}
+                  pin={pin}
+                />
+              ) : (
+                <Pin
+                  color="#f95a39"
+                  bg="#ffffff"
+                  Icon={BsPinFill}
+                  onClick={() => setPin(!pin)}
+                  pin={pin}
+                />
+              )}
+              {voice ? (
+                <Microphone
+                  color="#ffffff"
+                  bg="#3a84f8"
+                  Icon={BsFillMicFill}
+                  onClick={() => setVoice(!voice)}
+                />
+              ) : (
+                <Microphone
+                  color="#ffffff"
+                  bg="#3a84f8"
+                  Icon={BsFillMicMuteFill}
+                  onClick={() => setVoice(!voice)}
+                />
+              )}
             </Section2>
             <Section3>
               <Conversation>
-                {" "}
                 {users.map((row, id) => {
                   return (
-                    <Display style={{ backgroundImage: `url(${row.image})` }} >
-						<Muted color="#262827" bg="#ffffff"/>
-					</Display>
+                    <Display style={{ backgroundImage: `url(${row.image})` }}>
+                      <Muted color="#262827" bg="#ffffff" />
+                    </Display>
                   );
                 })}
               </Conversation>
             </Section3>
-			<Section4>
-				<TrayIcon Icon={MdGroups2} onClick={(e) => setChat(!chat)}/>
-				{!compress ? <TrayIcon Icon={BiExpand} onClick={() => setCompress(!compress)}/> : <TrayIcon Icon={FaCompress} onClick={() => setCompress(!compress)}/>}
-				{speak ? <TrayIcon Icon={BsFillMicFill} onClick={() => setSpeak(!speak)}/> : <TrayIcon Icon={BsFillMicMuteFill} onClick={() => setSpeak(!speak)}/>}
-				<EndMeeting/>
-				{video ? <TrayIcon Icon={BsFillCameraVideoFill} onClick={() => setVideo(!video)}/>: <TrayIcon Icon={BsFillCameraVideoOffFill} onClick={() => setVideo(!video)}/>}
-				<TrayIcon Icon={FaPoll}/>
-				<TrayIcon Icon={BsThreeDots}/>
-			</Section4>
+            <Section4>
+              <TrayIcon
+                Icon={MdGroups2}
+                text="Chat"
+                onClick={(e) =>
+                  setBar({
+                    chat: !bar.chat,
+                    agenda: false,
+                  })
+                }
+              />
+              {!compress ? (
+                <TrayIcon
+                  Icon={BiExpand}
+                  onClick={() => setCompress(!compress)}
+                  text="Expand"
+                />
+              ) : (
+                <TrayIcon
+                  Icon={FaCompress}
+                  onClick={() => setCompress(!compress)}
+                  text="Compress"
+                />
+              )}
+              <TrayIcon
+                Icon={MdViewAgenda}
+                text="Agenda"
+                onClick={() =>
+                  setBar({
+                    chat: false,
+                    agenda: !bar.agenda,
+                  })
+                }
+              />
+              {speak ? (
+                <TrayIcon
+                  Icon={BsFillMicFill}
+                  onClick={() => setSpeak(!speak)}
+                  text="Mute"
+                />
+              ) : (
+                <TrayIcon
+                  Icon={BsFillMicMuteFill}
+                  onClick={() => setSpeak(!speak)}
+                  text="Unmute"
+                />
+              )}
+              <EndMeeting />
+              {video ? (
+                <TrayIcon
+                  Icon={BsFillCameraVideoFill}
+                  onClick={() => setVideo(!video)}
+                  text="Enable"
+                />
+              ) : (
+                <TrayIcon
+                  Icon={BsFillCameraVideoOffFill}
+                  onClick={() => setVideo(!video)}
+                  text="Disable"
+                />
+              )}
+              <TrayIcon Icon={FaPoll} text="Polls" />
+              <TrayIcon Icon={FiShare} text="Share Screen" />
+              <TrayIcon Icon={BsThreeDots} text="Menu" />
+            </Section4>
           </Interaction>
-          {chat == true && <Work>
-				<Chat/>
-			</Work>}
+          {(bar.agenda || bar.chat) && (
+            <Work>
+              {bar.agenda && <Agenda />}
+              {bar.chat && <Chat />}
+            </Work>
+          )}
           {/* <MeetingBox>
               <MeetingText>{viewMeeting.title}</MeetingText>
               <MeetingParagraph>{viewMeeting.description}</MeetingParagraph>
@@ -625,11 +726,6 @@ const AgendaItems = styled.div`
   display: flex;
   justify-content: space-between;
   margin-right: 4%;
-`;
-
-const Agenda = styled.p`
-  flex: 0.8;
-  font-size: 1.1rem;
 `;
 
 const List = styled.ul``;

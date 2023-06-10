@@ -81,6 +81,33 @@
   }
   /* #fcfcfc */
 
+  .ripple__chat__one {
+    background-position: center;
+    transition: background 0.8s;
+    cursor: pointer;
+  }
+  .ripple__chat__one:hover {
+    background: #fad1a0 radial-gradient(circle, transparent 1%, #fad1a0 1%) center/15000%;
+  }
+  .ripple__chat__one:active {
+    background-color: #feae4f;
+    background-size: 100%;
+    transition: background 0s;
+  }
+
+  .ripple__chat__two {
+    background-position: center;
+    transition: background 0.8s;
+    cursor: pointer;
+  }
+  .ripple__chat__two:hover {
+    background: #6cd9c5 radial-gradient(circle, transparent 1%, #6cd9c5 1%) center/15000%;
+  }
+  .ripple__chat__two:active {
+    background-color: #34ac96;
+    background-size: 100%;
+    transition: background 0s;
+  }
   .blur{
   overflow: hidden;
   &::after {
@@ -92,4 +119,62 @@
     bottom: 10;
     background: linear-gradient(transparent, white);
   }
+  }
+
+  .agenda__icon{
+    cursor: pointer;
+    font-size: 20px;
+    color: #5f6670; 
+  }
+
+  /* .pop-up {
+    position: relative;
+    display: inline-block;
+  }
+  .pop-up .pop-up-content {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    z-index: 1;
+    transition: visibility 0s, opacity 0.3s ease-out;
+  }
+  .pop-up:hover .pop-up-content {
+    visibility: visible;
+    opacity: 1;
+  } */
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltip .tooltiptext {
+    font-size: 14px;
+    visibility: hidden;
+    width: 120px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 3px 0;
+    
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
   }

@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-const TrayIcon = ({ Icon, onClick }) => {
+const TrayIcon = ({ Icon, onClick, text }) => {
   return (
-    <Container className="ripple__tray" onClick={onClick}>
-      <Icon />
-    </Container>
+      <Container className="ripple__tray tooltip" onClick={onClick}>
+        <Icon />
+        <span class="tooltiptext">{text}</span>
+      </Container>
   );
 };
 
